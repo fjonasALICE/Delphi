@@ -1,10 +1,7 @@
 # Include the configuration.
 -include Makefile.inc
 
-PYTHIADIR=/gluster2/h_popp01/software/pythia8
-PYTHIAINC=$(PYTHIADIR)/include
-PYTHIALIB=$(PYTHIADIR)/lib
-PYTHIA=-I$(PYTHIAINC) -L$(PYTHIALIB) -lpythia8
+PYTHIA=-I$(PREFIX_INCLUDE) -L$(PREFIX_LIB) -lpythia8
 
 ROOT=$(shell root-config --cflags --libs)
 

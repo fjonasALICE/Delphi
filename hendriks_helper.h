@@ -4,7 +4,7 @@ void Set_Pythia_Randomseed(Pythia8::Pythia &p);
 void Fill_Non_Decay_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h);
 void Fill_Decay_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h);
 void Pass_Parameters_To_Pythia(Pythia8::Pythia &p, int argc, char **argv);
-void SoftQCD_HardQCD_Switch(int iBin, double *pTHatBin, char **argv, Pythia8::Pythia &p);
+void SoftQCD_HardQCD_Switch(int iBin, double *pTHatBin, char **argv, Pythia8::Pythia &p, int &nEvent);
 void Add_Histos_Scale_Write2File( std::vector <TH1D*> &vec_temp_histo, TH1* final_histo, TFile &file, double etaRange);
 
 
@@ -68,7 +68,7 @@ void Pass_Parameters_To_Pythia(Pythia8::Pythia &p, int argc, char **argv){
 }
 
 //----------------------------------------------------------------------
-void SoftQCD_HardQCD_Switch(int iBin, double *pTHatBin, char **argv, Pythia8::Pythia &p){
+void SoftQCD_HardQCD_Switch(int iBin, double *pTHatBin, char **argv, Pythia8::Pythia &p, int &nEvent){
 
   if( !strcmp(argv[2],"frag") ||
       !strcmp(argv[2],"decay") ){
@@ -77,7 +77,10 @@ void SoftQCD_HardQCD_Switch(int iBin, double *pTHatBin, char **argv, Pythia8::Py
     if (iBin == 0) {
       p.readString("HardQCD:all = off");
       p.readString("SoftQCD:inelastic = on");
+      nEvent *= 10;
     } else {
+      if(iBin == 1)
+	nEvent /= 10;
       p.readString("HardQCD:all = on");
       p.readString("SoftQCD:inelastic = off");
     }
