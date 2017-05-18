@@ -62,9 +62,13 @@ int main(int argc, char **argv) {
     etaPHOS = 0.12;
 
 
-  const int pTHatBins = 8;
-  double pTHatBin[pTHatBins+1] = {2., 5., 8., 12., 17.,
-				  23., 30., 37., 10000.};
+  const int pTHatBins = 9;
+  // ---for direct photons---
+  // double pTHatBin[pTHatBins+1] = {2., 5., 8., 12., 17.,
+  // 				  23., 30., 37., 10000.};
+  // ---for shower photons---
+  double pTHatBin[pTHatBins+1] = {2., 15., 19., 24., 29.,
+				  35., 42., 50., 59., 10000.};
 
   TH1D *h_non_decay_photons_etaTPC = new TH1D("h_non_decay_photons_etaTPC","non_decay photons_etaTPC", ptBins, ptMin, ptMax);
   TH1D *h_non_decay_photons_etaEMCal = new TH1D("h_non_decay_photons_etaEMCal","non_decay photons_etaEMCal", ptBins, ptMin, ptMax);
@@ -117,7 +121,7 @@ int main(int argc, char **argv) {
   //--- begin pTHat bin loop ----------------------------------
   for (int iBin = 0; iBin < pTHatBins; ++iBin) {
 
-    SoftQCD_HardQCD_Switch(iBin, pTHatBin, argv, p);
+    SoftQCD_HardQCD_Switch(iBin, pTHatBin, argv, p, nEvent);
     p.init();
 
     //--- begin event loop ----------------------------------------------
