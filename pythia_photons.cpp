@@ -62,13 +62,18 @@ int main(int argc, char **argv) {
     etaPHOS = 0.12;
 
 
-  const int pTHatBins = 9;
   // ---for direct photons---
+  // const int pTHatBins = 8;
   // double pTHatBin[pTHatBins+1] = {2., 5., 8., 12., 17.,
-  // 				  23., 30., 37., 10000.};
+  //  				  23., 30., 37., 10000.};
+  
   // ---for shower photons---
-  double pTHatBin[pTHatBins+1] = {2., 15., 19., 24., 29.,
-				  35., 42., 50., 59., 10000.};
+  const int pTHatBins = 10;
+  printf("-----------------------\nusing %d pTHat bins\n-----------------------", pTHatBins);
+  
+  double pTHatBin[pTHatBins+1] = {2., 13., 17., 22., 28.,
+   				  35., 42., 50., 59., 70.,
+				  10000.};
 
   TH1D *h_non_decay_photons_etaTPC = new TH1D("h_non_decay_photons_etaTPC","non_decay photons_etaTPC", ptBins, ptMin, ptMax);
   TH1D *h_non_decay_photons_etaEMCal = new TH1D("h_non_decay_photons_etaEMCal","non_decay photons_etaEMCal", ptBins, ptMin, ptMax);
@@ -135,10 +140,12 @@ int main(int argc, char **argv) {
       Fill_Non_Decay_Photon_Pt(p.event, etaEMCal, vec_non_decay_photons_etaEMCal_bin.at(iBin));
       Fill_Non_Decay_Photon_Pt(p.event, etaPHOS, vec_non_decay_photons_etaPHOS_bin.at(iBin));
 
-      Fill_Decay_Photon_Pt(p.event, etaTPC, vec_decay_photons_etaTPC_bin.at(iBin));
-      Fill_Decay_Photon_Pt(p.event, etaEMCal, vec_decay_photons_etaEMCal_bin.at(iBin));
-      Fill_Decay_Photon_Pt(p.event, etaPHOS, vec_decay_photons_etaPHOS_bin.at(iBin));
-
+      if( !strcmp(argv[2],"decay") ){
+	Fill_Decay_Photon_Pt(p.event, etaTPC, vec_decay_photons_etaTPC_bin.at(iBin));
+	Fill_Decay_Photon_Pt(p.event, etaEMCal, vec_decay_photons_etaEMCal_bin.at(iBin));
+	Fill_Decay_Photon_Pt(p.event, etaPHOS, vec_decay_photons_etaPHOS_bin.at(iBin));
+      }
+      
       vec_pTHat_bin.at(iBin)->Fill(p.info.pTHat());
 
     }// end of event loop
@@ -163,9 +170,13 @@ int main(int argc, char **argv) {
   Add_Histos_Scale_Write2File( vec_non_decay_photons_etaTPC_bin, h_non_decay_photons_etaTPC, file, 2*etaTPC);
   Add_Histos_Scale_Write2File( vec_non_decay_photons_etaEMCal_bin, h_non_decay_photons_etaEMCal, file, 2*etaEMCal);
   Add_Histos_Scale_Write2File( vec_non_decay_photons_etaPHOS_bin, h_non_decay_photons_etaPHOS, file, 2*etaPHOS);
-  Add_Histos_Scale_Write2File( vec_decay_photons_etaTPC_bin, h_decay_photons_etaTPC, file, 2*etaTPC);
-  Add_Histos_Scale_Write2File( vec_decay_photons_etaEMCal_bin, h_decay_photons_etaEMCal, file, 2*etaEMCal);
-  Add_Histos_Scale_Write2File( vec_decay_photons_etaPHOS_bin, h_decay_photons_etaPHOS, file, 2*etaPHOS);
+
+  if( !strcmp(argv[2],"decay") ){
+    Add_Histos_Scale_Write2File( vec_decay_photons_etaTPC_bin, h_decay_photons_etaTPC, file, 2*etaTPC);
+    Add_Histos_Scale_Write2File( vec_decay_photons_etaEMCal_bin, h_decay_photons_etaEMCal, file, 2*etaEMCal);
+    Add_Histos_Scale_Write2File( vec_decay_photons_etaPHOS_bin, h_decay_photons_etaPHOS, file, 2*etaPHOS);
+  }
+  
   Add_Histos_Scale_Write2File( vec_pTHat_bin, h_pTHat, file, 1.);
 
   file.Close();

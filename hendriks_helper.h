@@ -77,10 +77,10 @@ void SoftQCD_HardQCD_Switch(int iBin, double *pTHatBin, char **argv, Pythia8::Py
     if (iBin == 0) {
       p.readString("HardQCD:all = off");
       p.readString("SoftQCD:inelastic = on");
-      nEvent *= 10;
+      nEvent *= 2;
     } else {
       if(iBin == 1)
-	nEvent /= 10;
+	nEvent /= 2;
       p.readString("HardQCD:all = on");
       p.readString("SoftQCD:inelastic = off");
     }
