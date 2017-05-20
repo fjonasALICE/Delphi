@@ -1,0 +1,4 @@
+Concerning ptgamma @ 2-50 GeV @ 13 TeV:
+pythia direct contribution (noMPI noHadro): 10x1M in 200min
+pythia shower/frag contribution (noMPI noHadro): 10x1M in 250min
+pythia decay contribution (full Events): 10x40k in 250min

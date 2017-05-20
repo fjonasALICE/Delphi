@@ -1,15 +1,14 @@
-#include <iostream>
-#include <cmath>
-#include <cstring>
+//#include <iostream>
+//#include <cmath>
+//#include <cstring>
 #include <vector>
 #include <TStyle.h>
 #include "Pythia8/Pythia.h"
 #include "TFile.h"
 #include "TH1.h"
-#include "TH2.h"
-#include "TMath.h"
-#include "TRandom3.h"
-#include "hendriks_helper.h"
+//#include "TMath.h"
+//#include "TH1.h"
+#include "hendrikshelper.h"
 
 using std::cout;
 using namespace Pythia8;
@@ -41,13 +40,12 @@ int main(int argc, char **argv) {
   int nEvent = strtol(argv[3], NULL, 10); // number of events
 
   Pythia p;
-  Settings& settings = p.settings;
-  Pythia8::Info& info = p.info; // explicit class information to avoid confusion with TMath.....Info()
-
-  Pass_Parameters_To_Pythia(p, argc, argv); // which energy, scales, optional master switches
+  HendriksHelper pyHelp;
+  
+  pyHelp.Pass_Parameters_To_Pythia(p, argc, argv); // which energy, scales, optional master switches
 
   p.readString("Next:NumberCount = 100000");
-  Set_Pythia_Randomseed(p);
+  pyHelp.Set_Pythia_Randomseed(p);
 
 
 
@@ -68,12 +66,11 @@ int main(int argc, char **argv) {
   //  				  23., 30., 37., 10000.};
   
   // ---for shower photons---
-  const int pTHatBins = 10;
+  const int pTHatBins = 9;
   printf("-----------------------\nusing %d pTHat bins\n-----------------------", pTHatBins);
   
-  double pTHatBin[pTHatBins+1] = {2., 13., 17., 22., 28.,
-   				  35., 42., 50., 59., 70.,
-				  10000.};
+  double pTHatBin[pTHatBins+1] = {2., 20., 23., 27., 32.,
+				  38., 45., 53., 65., 10000.};
 
   TH1D *h_non_decay_photons_etaTPC = new TH1D("h_non_decay_photons_etaTPC","non_decay photons_etaTPC", ptBins, ptMin, ptMax);
   TH1D *h_non_decay_photons_etaEMCal = new TH1D("h_non_decay_photons_etaEMCal","non_decay photons_etaEMCal", ptBins, ptMin, ptMax);
@@ -126,7 +123,7 @@ int main(int argc, char **argv) {
   //--- begin pTHat bin loop ----------------------------------
   for (int iBin = 0; iBin < pTHatBins; ++iBin) {
 
-    SoftQCD_HardQCD_Switch(iBin, pTHatBin, argv, p, nEvent);
+    pyHelp.SoftQCD_HardQCD_Switch(iBin, pTHatBin, argv, p, nEvent);
     p.init();
 
     //--- begin event loop ----------------------------------------------
@@ -134,16 +131,16 @@ int main(int argc, char **argv) {
       // Generate event.
       if (!p.next()) continue;
       // reject non-diffractive softQCD events in the hardQCD regime
-      if (iBin == 0 && info.isNonDiffractive() && p.info.pTHat() > pTHatBin[1]) continue;
+      if (iBin == 0 && p.info.isNonDiffractive() && p.info.pTHat() > pTHatBin[1]) continue;
       
-      Fill_Non_Decay_Photon_Pt(p.event, etaTPC, vec_non_decay_photons_etaTPC_bin.at(iBin));
-      Fill_Non_Decay_Photon_Pt(p.event, etaEMCal, vec_non_decay_photons_etaEMCal_bin.at(iBin));
-      Fill_Non_Decay_Photon_Pt(p.event, etaPHOS, vec_non_decay_photons_etaPHOS_bin.at(iBin));
+      pyHelp.Fill_Non_Decay_Photon_Pt(p.event, etaTPC, vec_non_decay_photons_etaTPC_bin.at(iBin));
+      pyHelp.Fill_Non_Decay_Photon_Pt(p.event, etaEMCal, vec_non_decay_photons_etaEMCal_bin.at(iBin));
+      pyHelp.Fill_Non_Decay_Photon_Pt(p.event, etaPHOS, vec_non_decay_photons_etaPHOS_bin.at(iBin));
 
       if( !strcmp(argv[2],"decay") ){
-	Fill_Decay_Photon_Pt(p.event, etaTPC, vec_decay_photons_etaTPC_bin.at(iBin));
-	Fill_Decay_Photon_Pt(p.event, etaEMCal, vec_decay_photons_etaEMCal_bin.at(iBin));
-	Fill_Decay_Photon_Pt(p.event, etaPHOS, vec_decay_photons_etaPHOS_bin.at(iBin));
+	pyHelp.Fill_Decay_Photon_Pt(p.event, etaTPC, vec_decay_photons_etaTPC_bin.at(iBin));
+	pyHelp.Fill_Decay_Photon_Pt(p.event, etaEMCal, vec_decay_photons_etaEMCal_bin.at(iBin));
+	pyHelp.Fill_Decay_Photon_Pt(p.event, etaPHOS, vec_decay_photons_etaPHOS_bin.at(iBin));
       }
       
       vec_pTHat_bin.at(iBin)->Fill(p.info.pTHat());
@@ -167,17 +164,17 @@ int main(int argc, char **argv) {
   //--- write to root file ---------------------------------------
   TFile file(rootFileName, "RECREATE");
 
-  Add_Histos_Scale_Write2File( vec_non_decay_photons_etaTPC_bin, h_non_decay_photons_etaTPC, file, 2*etaTPC);
-  Add_Histos_Scale_Write2File( vec_non_decay_photons_etaEMCal_bin, h_non_decay_photons_etaEMCal, file, 2*etaEMCal);
-  Add_Histos_Scale_Write2File( vec_non_decay_photons_etaPHOS_bin, h_non_decay_photons_etaPHOS, file, 2*etaPHOS);
+  pyHelp.Add_Histos_Scale_Write2File( vec_non_decay_photons_etaTPC_bin, h_non_decay_photons_etaTPC, file, 2*etaTPC);
+  pyHelp.Add_Histos_Scale_Write2File( vec_non_decay_photons_etaEMCal_bin, h_non_decay_photons_etaEMCal, file, 2*etaEMCal);
+  pyHelp.Add_Histos_Scale_Write2File( vec_non_decay_photons_etaPHOS_bin, h_non_decay_photons_etaPHOS, file, 2*etaPHOS);
 
   if( !strcmp(argv[2],"decay") ){
-    Add_Histos_Scale_Write2File( vec_decay_photons_etaTPC_bin, h_decay_photons_etaTPC, file, 2*etaTPC);
-    Add_Histos_Scale_Write2File( vec_decay_photons_etaEMCal_bin, h_decay_photons_etaEMCal, file, 2*etaEMCal);
-    Add_Histos_Scale_Write2File( vec_decay_photons_etaPHOS_bin, h_decay_photons_etaPHOS, file, 2*etaPHOS);
+    pyHelp.Add_Histos_Scale_Write2File( vec_decay_photons_etaTPC_bin, h_decay_photons_etaTPC, file, 2*etaTPC);
+    pyHelp.Add_Histos_Scale_Write2File( vec_decay_photons_etaEMCal_bin, h_decay_photons_etaEMCal, file, 2*etaEMCal);
+    pyHelp.Add_Histos_Scale_Write2File( vec_decay_photons_etaPHOS_bin, h_decay_photons_etaPHOS, file, 2*etaPHOS);
   }
   
-  Add_Histos_Scale_Write2File( vec_pTHat_bin, h_pTHat, file, 1.);
+  pyHelp.Add_Histos_Scale_Write2File( vec_pTHat_bin, h_pTHat, file, 1.);
 
   file.Close();
 

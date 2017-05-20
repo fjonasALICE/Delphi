@@ -10,9 +10,8 @@ MERGE=haddav.C
 PYTHIAPHOTON=pythia_photons.cpp
 
 # PYTHIA standalone
-pythia_photons: $(PYTHIAPHOTON) 
+pythia_photons: $(PYTHIAPHOTON) hendrikshelper.o 
 	$(CXX) -o $@ $+ $(PYTHIA) -ldl $(ROOT)
-
 
 # POHWEH showered
 powheg_direct_photons: $(POWHEG)
@@ -25,3 +24,6 @@ haddav: $(MERGE)
 haddav_weightCut: $(MERGE2)
 	$(CXX) -o $@ $+ $(PYTHIA) -ldl $(ROOT) -I$(INC) $(FASTJET)
 
+# helpful functions for pythia
+hendrikshelper.o: hendrikshelper.cxx hendrikshelper.h
+	$(CXX) -c hendrikshelper.cxx $(PYTHIA) -ldl $(ROOT)
