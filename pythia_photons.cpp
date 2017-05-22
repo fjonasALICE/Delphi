@@ -1,4 +1,4 @@
-//#include <iostream>
+#include <iostream>
 //#include <cmath>
 //#include <cstring>
 #include <vector>
@@ -51,6 +51,7 @@ int main(int argc, char **argv) {
 
   //--- Histograms ---------------------------------------------------
   TH1::SetDefaultSumw2(kTRUE);
+  TH1::SetDefaultSumw2(kTRUE);
   gStyle->SetOptStat(0);
 
   const double ptMin = 0., ptMax = 100.;
@@ -84,6 +85,8 @@ int main(int argc, char **argv) {
 
   TH1D *h_pTHat = new TH1D("h_pTHat","pTHat aka born kt", ptBins, ptMin, ptMax);
 
+  TH1D *h_weightSum = new TH1D("h_weightSum","sum of weights", 1, 0., 1.);
+  h_weightSum->Fill(0.5);
   // organise pTHat wise histograms in vectors
   vector <TH1D*> vec_non_decay_photons_etaTPC_bin;
   vector <TH1D*> vec_non_decay_photons_etaEMCal_bin;
@@ -152,14 +155,17 @@ int main(int argc, char **argv) {
     p.stat();
 
     double sigma = p.info.sigmaGen()*1e9; // cross section in picobarn
-    double sigma_per_event = sigma/p.info.weightSum(); // weightSum = number of events in standard Pythia8
-    vec_non_decay_photons_etaTPC_bin.at(iBin)->Scale(sigma_per_event);
-    vec_non_decay_photons_etaEMCal_bin.at(iBin)->Scale(sigma_per_event);
-    vec_non_decay_photons_etaPHOS_bin.at(iBin)->Scale(sigma_per_event);
-    vec_decay_photons_etaTPC_bin.at(iBin)->Scale(sigma_per_event);
-    vec_decay_photons_etaEMCal_bin.at(iBin)->Scale(sigma_per_event);
-    vec_decay_photons_etaPHOS_bin.at(iBin)->Scale(sigma_per_event);
-    vec_pTHat_bin.at(iBin)->Scale(sigma_per_event);
+    //    double sigma_per_event = sigma/p.info.weightSum(); // weightSum = number of events in standard Pythia8
+
+    h_weightSum->AddBinContent(1,p.info.weightSum());
+
+    vec_non_decay_photons_etaTPC_bin.at(iBin)->Scale(sigma);
+    vec_non_decay_photons_etaEMCal_bin.at(iBin)->Scale(sigma);
+    vec_non_decay_photons_etaPHOS_bin.at(iBin)->Scale(sigma);
+    vec_decay_photons_etaTPC_bin.at(iBin)->Scale(sigma);
+    vec_decay_photons_etaEMCal_bin.at(iBin)->Scale(sigma);
+    vec_decay_photons_etaPHOS_bin.at(iBin)->Scale(sigma);
+    vec_pTHat_bin.at(iBin)->Scale(sigma);
 
   }// end of pTHat bin loop
 
@@ -177,6 +183,8 @@ int main(int argc, char **argv) {
   }
   
   pyHelp.Add_Histos_Scale_Write2File( vec_pTHat_bin, h_pTHat, file, 1.);
+
+  h_weightSum->Write();
 
   file.Close();
 
