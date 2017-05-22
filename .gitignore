@@ -5,3 +5,5 @@ Makefile.inc
 */
 *.o
 haddav*
+submit*
+pythia_photons
