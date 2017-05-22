@@ -71,6 +71,8 @@ int main(int argc, char **argv) {
   
   // test how much hardQCD overestimates cross section
   double pTHatBin[pTHatBins+1] = {2., 5., 8., 12., 17., 23., 30., 1000.};
+  // test #2
+  //double pTHatBin[pTHatBins+1] = {2., 8., 12., 17., 23., 30., 1000.};
 
   TH1D *h_non_decay_photons_etaTPC = new TH1D("h_non_decay_photons_etaTPC","non_decay photons_etaTPC", ptBins, ptMin, ptMax);
   TH1D *h_non_decay_photons_etaEMCal = new TH1D("h_non_decay_photons_etaEMCal","non_decay photons_etaEMCal", ptBins, ptMin, ptMax);
