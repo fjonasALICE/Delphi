@@ -1,9 +1,9 @@
 *root
+submit_pythia_photons.sh
 .#*
 *~
 Makefile.inc
 */
 *.o
 haddav*
-submit*
 pythia_photons
