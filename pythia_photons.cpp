@@ -67,11 +67,11 @@ int main(int argc, char **argv) {
   //  				  23., 30., 37., 10000.};
   
   // ---for shower photons---
-  const int pTHatBins = 7;
+  const int pTHatBins = 1;
   printf("-----------------------\nusing %d pTHat bins\n-----------------------", pTHatBins);
   
   // test how much hardQCD overestimates cross section
-  double pTHatBin[pTHatBins+1] = {2., 5., 8., 12., 17., 23., 30., 1000.};
+  double pTHatBin[pTHatBins+1] = {0., 1000.};
   // test #2
   //double pTHatBin[pTHatBins+1] = {2., 8., 12., 17., 23., 30., 1000.};
 
