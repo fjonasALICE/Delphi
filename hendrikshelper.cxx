@@ -6,6 +6,7 @@
 #include "TH1.h"
 #include "TRandom3.h"
 #include "TFile.h"
+#include "TMath.h"
 
 
 //----------------------------------------------------------------------
@@ -13,6 +14,44 @@ void HendriksHelper::Fill_Non_Decay_Photon_Pt(Pythia8::Event &event, float etaMa
   for (int i = 5; i < event.size(); i++) {
     if(event[i].isFinal() && event[i].id() == 22 && TMath::Abs(event[i].eta()) < etaMax ) {
       if(event[i].status() < 90) h->Fill(event[i].pT());
+    }
+  }
+  return;
+}
+
+//----------------------------------------------------------------------
+void HendriksHelper::Fill_Non_Decay_Iso_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h,
+                                                  bool isoCharged, double iso_cone_radius, double iso_pt){
+  for (int i = 5; i < event.size(); i++) {
+    if(event[i].isFinal() && event[i].id() == 22 && TMath::Abs(event[i].eta()) < etaMax ) {
+      if(event[i].status() < 90){
+        // isolation check------------------------------
+        double pt_temp = 0.;
+        if( isoCharged )
+          for(int j = 5; j < event.size(); j++){
+            // only charged considered for iso cut
+            if( event[j].isFinal() && event[j].isVisible() && event[j].isCharged() && j != i)
+              if( TMath::Sqrt(   (event[i].phi()-event[j].phi()) * (event[i].phi()-event[j].phi())
+                                 + (event[i].phi()-event[j].phi()) * (event[i].phi()-event[j].phi()) )
+                  < iso_cone_radius)
+                pt_temp += event[j].pT();
+          }
+
+        // charged + neutral pt considered for iso cut
+        if( !isoCharged )
+          for(int j = 5; j < event.size(); j++){
+            if( event[j].isFinal() && event[j].isVisible() && j != i)
+              if( TMath::Sqrt(   (event[i].phi()-event[j].phi()) * (event[i].phi()-event[j].phi())
+                                 + (event[i].phi()-event[j].phi()) * (event[i].phi()-event[j].phi()) )
+                  < iso_cone_radius)
+                pt_temp += event[j].pT();
+          }
+
+        if( pt_temp <= iso_pt)
+          h->Fill(event[i].pT());
+
+        //----------------------------------------------
+      }
     }
   }
   return;
@@ -62,6 +101,7 @@ void HendriksHelper::Pass_Parameters_To_Pythia(Pythia8::Pythia &p, int argc, cha
       p.readString("PartonLevel:FSR = off");
       p.readString("PartonLevel:ISR = off");
       p.readString("PartonLevel:Remnants = off");
+      p.readString("HadronLevel:all = off");
     }
   }
   else printf("---no optional argument is given -> full pythia events will be generated---\n");
@@ -93,7 +133,7 @@ void HendriksHelper::SoftQCD_HardQCD_Switch(int iBin, double *pTHatBin, char **a
     p.readString("PromptPhoton:qqbar2ggamma = on");
   }
   else
-    printf("No process switched on! Give \"dir\" or \"frag\" or \"decay\" as second argument");
+    printf("No process switched on. Provide \"dir\" or \"frag\" or \"decay\" as second argument");
 
   p.settings.parm("PhaseSpace:pTHatMin", pTHatBin[iBin]);
   p.settings.parm("PhaseSpace:pTHatMax", pTHatBin[iBin+1]);
