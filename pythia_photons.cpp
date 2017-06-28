@@ -1,13 +1,9 @@
 #include <iostream>
-//#include <cmath>
-//#include <cstring>
 #include <vector>
 #include <TStyle.h>
 #include "Pythia8/Pythia.h"
 #include "TFile.h"
 #include "TH1.h"
-//#include "TMath.h"
-//#include "TH1.h"
 #include "hendrikshelper.h"
 
 using std::cout;
@@ -59,15 +55,28 @@ int main(int argc, char **argv) {
     etaEMCal = 0.27,
     etaPHOS = 0.12;
 
-
-  // ---for direct photons---
-  // const int pTHatBins = 8;
-  // double pTHatBin[pTHatBins+1] = {2., 5., 8., 12., 17.,
-  //  				  23., 30., 37., 10000.};
-
-  // ---for shower photons---
+  // pTHatBins for direct photons
   const int pTHatBins = 7;
   double pTHatBin[pTHatBins+1] = {2., 5., 8., 12., 17., 23., 30., 1000.};
+ 
+  // pTHatBins for shower photons with softQCD limit 18 GeV
+  // const int pTHatBins = 13;
+  // double pTHatBin[pTHatBins+1] = { 0. , 18., 21., 24., 27.,
+  // 				   30., 34., 38., 43., 48.,
+  // 				   56., 67., 80.,
+  // 				   1000. };
+
+  //pTHatBins for shower photons with softQCD limit 15 Gev
+  // const int pTHatBins = 14;
+  // double pTHatBin[pTHatBins+1] = { 0. , 15., 18., 21.,
+  // 				   24., 27., 30., 34., 38.,
+  // 				   43., 48., 56., 67., 80.,
+  // 				   1000. };
+
+  // pTHatBins for shower photon test at lowest pt
+  // const int pTHatBins = 2;
+  // double pTHatBin[pTHatBins+1] = { 0. , 20., 1000. };
+ 
   printf("-----------------------\nusing %d pTHat bins\n-----------------------", pTHatBins);
 
   TH1D *h_non_decay_photons_etaTPC = new TH1D("h_non_decay_photons_etaTPC","non_decay photons_etaTPC", ptBins, ptMin, ptMax);
@@ -107,8 +116,10 @@ int main(int argc, char **argv) {
   TH1D *h_pTHat = new TH1D("h_pTHat","pTHat aka born kt", ptBins, ptMin, ptMax);
 
   TH1D *h_weightSum = new TH1D("h_weightSum","sum of weights", 1, 0., 1.);
-  h_weightSum->Fill(0.5);
+
   // organise pTHat wise histograms in vectors
+  vector <TH1D*> vec_weightSum_bin;
+
   vector <TH1D*> vec_non_decay_photons_etaTPC_bin;
   vector <TH1D*> vec_non_decay_photons_etaEMCal_bin;
   vector <TH1D*> vec_non_decay_photons_etaPHOS_bin;
@@ -148,81 +159,84 @@ int main(int argc, char **argv) {
     char buffer[64];
 
     // non-decay photon histos
-    int n = sprintf(buffer, "h_non_decay_photons_etaTPC_bin_%d", i) ;
+    int n = sprintf(buffer, "h_weightSum_bin_%02d", i) ;
+    vec_weightSum_bin.push_back( (TH1D*)h_weightSum->Clone(buffer) );
+
+    n = sprintf(buffer, "h_non_decay_photons_etaTPC_bin_%02d", i) ;
     vec_non_decay_photons_etaTPC_bin.push_back( (TH1D*)h_non_decay_photons_etaTPC->Clone(buffer) );
 
-    n = sprintf(buffer, "h_non_decay_photons_etaEMCal_bin_%d", i) ;
+    n = sprintf(buffer, "h_non_decay_photons_etaEMCal_bin_%02d", i) ;
     vec_non_decay_photons_etaEMCal_bin.push_back( (TH1D*)h_non_decay_photons_etaEMCal->Clone(buffer) );
 
-    n = sprintf(buffer, "h_non_decay_photons_etaPHOS_bin_%d", i) ;
+    n = sprintf(buffer, "h_non_decay_photons_etaPHOS_bin_%02d", i) ;
     vec_non_decay_photons_etaPHOS_bin.push_back( (TH1D*)h_non_decay_photons_etaPHOS->Clone(buffer) );
 
     // isolated photon histos TPC
-    n = sprintf(buffer, "h_iso_charged2GeV_R03_photons_etaTPC_bin_%d", i) ;
+    n = sprintf(buffer, "h_iso_charged2GeV_R03_photons_etaTPC_bin_%02d", i) ;
     vec_iso_charged2GeV_R03_photons_etaTPC_bin.push_back( (TH1D*)h_iso_charged2GeV_R03_photons_etaTPC->Clone(buffer) );
 
-    n = sprintf(buffer, "h_iso_charged2GeV_R04_photons_etaTPC_bin_%d", i) ;
+    n = sprintf(buffer, "h_iso_charged2GeV_R04_photons_etaTPC_bin_%02d", i) ;
     vec_iso_charged2GeV_R04_photons_etaTPC_bin.push_back( (TH1D*)h_iso_charged2GeV_R04_photons_etaTPC->Clone(buffer) );
 
-    n = sprintf(buffer, "h_iso_charged2GeV_R05_photons_etaTPC_bin_%d", i) ;
+    n = sprintf(buffer, "h_iso_charged2GeV_R05_photons_etaTPC_bin_%02d", i) ;
     vec_iso_charged2GeV_R05_photons_etaTPC_bin.push_back( (TH1D*)h_iso_charged2GeV_R05_photons_etaTPC->Clone(buffer) );
 
-    n = sprintf(buffer, "h_iso_full3GeV_R03_photons_etaTPC_bin_%d", i) ;
+    n = sprintf(buffer, "h_iso_full3GeV_R03_photons_etaTPC_bin_%02d", i) ;
     vec_iso_full3GeV_R03_photons_etaTPC_bin.push_back( (TH1D*)h_iso_full3GeV_R03_photons_etaTPC->Clone(buffer) );
 
-    n = sprintf(buffer, "h_iso_full3GeV_R04_photons_etaTPC_bin_%d", i) ;
+    n = sprintf(buffer, "h_iso_full3GeV_R04_photons_etaTPC_bin_%02d", i) ;
     vec_iso_full3GeV_R04_photons_etaTPC_bin.push_back( (TH1D*)h_iso_full3GeV_R04_photons_etaTPC->Clone(buffer) );
 
-    n = sprintf(buffer, "h_iso_full3GeV_R05_photons_etaTPC_bin_%d", i) ;
+    n = sprintf(buffer, "h_iso_full3GeV_R05_photons_etaTPC_bin_%02d", i) ;
     vec_iso_full3GeV_R05_photons_etaTPC_bin.push_back( (TH1D*)h_iso_full3GeV_R05_photons_etaTPC->Clone(buffer) );
     // isolated photon histos EMCAL
-    n = sprintf(buffer, "h_iso_charged2GeV_R03_photons_etaEMCal_bin_%d", i) ;
+    n = sprintf(buffer, "h_iso_charged2GeV_R03_photons_etaEMCal_bin_%02d", i) ;
     vec_iso_charged2GeV_R03_photons_etaEMCal_bin.push_back( (TH1D*)h_iso_charged2GeV_R03_photons_etaEMCal->Clone(buffer) );
 
-    n = sprintf(buffer, "h_iso_charged2GeV_R04_photons_etaEMCal_bin_%d", i) ;
+    n = sprintf(buffer, "h_iso_charged2GeV_R04_photons_etaEMCal_bin_%02d", i) ;
     vec_iso_charged2GeV_R04_photons_etaEMCal_bin.push_back( (TH1D*)h_iso_charged2GeV_R04_photons_etaEMCal->Clone(buffer) );
 
-    n = sprintf(buffer, "h_iso_charged2GeV_R05_photons_etaEMCal_bin_%d", i) ;
+    n = sprintf(buffer, "h_iso_charged2GeV_R05_photons_etaEMCal_bin_%02d", i) ;
     vec_iso_charged2GeV_R05_photons_etaEMCal_bin.push_back( (TH1D*)h_iso_charged2GeV_R05_photons_etaEMCal->Clone(buffer) );
 
-    n = sprintf(buffer, "h_iso_full3GeV_R03_photons_etaEMCal_bin_%d", i) ;
+    n = sprintf(buffer, "h_iso_full3GeV_R03_photons_etaEMCal_bin_%02d", i) ;
     vec_iso_full3GeV_R03_photons_etaEMCal_bin.push_back( (TH1D*)h_iso_full3GeV_R03_photons_etaEMCal->Clone(buffer) );
 
-    n = sprintf(buffer, "h_iso_full3GeV_R04_photons_etaEMCal_bin_%d", i) ;
+    n = sprintf(buffer, "h_iso_full3GeV_R04_photons_etaEMCal_bin_%02d", i) ;
     vec_iso_full3GeV_R04_photons_etaEMCal_bin.push_back( (TH1D*)h_iso_full3GeV_R04_photons_etaEMCal->Clone(buffer) );
 
-    n = sprintf(buffer, "h_iso_full3GeV_R05_photons_etaEMCal_bin_%d", i) ;
+    n = sprintf(buffer, "h_iso_full3GeV_R05_photons_etaEMCal_bin_%02d", i) ;
     vec_iso_full3GeV_R05_photons_etaEMCal_bin.push_back( (TH1D*)h_iso_full3GeV_R05_photons_etaEMCal->Clone(buffer) );
     // isolated photon histos PHOS
-    n = sprintf(buffer, "h_iso_charged2GeV_R03_photons_etaPHOS_bin_%d", i) ;
+    n = sprintf(buffer, "h_iso_charged2GeV_R03_photons_etaPHOS_bin_%02d", i) ;
     vec_iso_charged2GeV_R03_photons_etaPHOS_bin.push_back( (TH1D*)h_iso_charged2GeV_R03_photons_etaPHOS->Clone(buffer) );
 
-    n = sprintf(buffer, "h_iso_charged2GeV_R04_photons_etaPHOS_bin_%d", i) ;
+    n = sprintf(buffer, "h_iso_charged2GeV_R04_photons_etaPHOS_bin_%02d", i) ;
     vec_iso_charged2GeV_R04_photons_etaPHOS_bin.push_back( (TH1D*)h_iso_charged2GeV_R04_photons_etaPHOS->Clone(buffer) );
 
-    n = sprintf(buffer, "h_iso_charged2GeV_R05_photons_etaPHOS_bin_%d", i) ;
+    n = sprintf(buffer, "h_iso_charged2GeV_R05_photons_etaPHOS_bin_%02d", i) ;
     vec_iso_charged2GeV_R05_photons_etaPHOS_bin.push_back( (TH1D*)h_iso_charged2GeV_R05_photons_etaPHOS->Clone(buffer) );
 
-    n = sprintf(buffer, "h_iso_full3GeV_R03_photons_etaPHOS_bin_%d", i) ;
+    n = sprintf(buffer, "h_iso_full3GeV_R03_photons_etaPHOS_bin_%02d", i) ;
     vec_iso_full3GeV_R03_photons_etaPHOS_bin.push_back( (TH1D*)h_iso_full3GeV_R03_photons_etaPHOS->Clone(buffer) );
 
-    n = sprintf(buffer, "h_iso_full3GeV_R04_photons_etaPHOS_bin_%d", i) ;
+    n = sprintf(buffer, "h_iso_full3GeV_R04_photons_etaPHOS_bin_%02d", i) ;
     vec_iso_full3GeV_R04_photons_etaPHOS_bin.push_back( (TH1D*)h_iso_full3GeV_R04_photons_etaPHOS->Clone(buffer) );
 
-    n = sprintf(buffer, "h_iso_full3GeV_R05_photons_etaPHOS_bin_%d", i) ;
+    n = sprintf(buffer, "h_iso_full3GeV_R05_photons_etaPHOS_bin_%02d", i) ;
     vec_iso_full3GeV_R05_photons_etaPHOS_bin.push_back( (TH1D*)h_iso_full3GeV_R05_photons_etaPHOS->Clone(buffer) );
 
     // decay photon histos
-    n = sprintf(buffer, "h_decay_photons_etaTPC_bin_%d", i) ;
+    n = sprintf(buffer, "h_decay_photons_etaTPC_bin_%02d", i) ;
     vec_decay_photons_etaTPC_bin.push_back( (TH1D*)h_decay_photons_etaTPC->Clone(buffer) );
 
-    n = sprintf(buffer, "h_decay_photons_etaEMCal_bin_%d", i) ;
+    n = sprintf(buffer, "h_decay_photons_etaEMCal_bin_%02d", i) ;
     vec_decay_photons_etaEMCal_bin.push_back( (TH1D*)h_decay_photons_etaEMCal->Clone(buffer) );
 
-    n = sprintf(buffer, "h_decay_photons_etaPHOS_bin_%d", i) ;
+    n = sprintf(buffer, "h_decay_photons_etaPHOS_bin_%02d", i) ;
     vec_decay_photons_etaPHOS_bin.push_back( (TH1D*)h_decay_photons_etaPHOS->Clone(buffer) );
 
-    n = sprintf(buffer, "h_pTHat_bin_%d", i) ;
+    n = sprintf(buffer, "h_pTHat_bin_%02d", i) ;
     vec_pTHat_bin.push_back( (TH1D*)h_pTHat->Clone(buffer) );
 
   }
@@ -281,7 +295,8 @@ int main(int argc, char **argv) {
     double sigma = p.info.sigmaGen()*1e9; // cross section in picobarn
     //    double sigma_per_event = sigma/p.info.weightSum(); // weightSum = number of events in standard Pythia8
 
-    h_weightSum->AddBinContent(1,p.info.weightSum());
+    vec_weightSum_bin.at(iBin)->SetBinContent(1,p.info.weightSum());
+    h_weightSum->SetBinContent(1,h_weightSum->GetBinContent(1)+p.info.weightSum());
     cout << "- - - weightSum() = " << p.info.weightSum() << endl;
 
     vec_non_decay_photons_etaTPC_bin.at(iBin)->Scale(sigma);
@@ -350,6 +365,9 @@ int main(int argc, char **argv) {
 
   pyHelp.Add_Histos_Scale_Write2File( vec_pTHat_bin, h_pTHat, file, 1.);
 
+  for(int iBin=0; iBin < pTHatBins; iBin++){
+    vec_weightSum_bin.at(iBin)->Write();
+  }
   h_weightSum->Write();
 
   file.Close();

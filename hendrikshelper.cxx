@@ -119,10 +119,10 @@ void HendriksHelper::SoftQCD_HardQCD_Switch(int iBin, double *pTHatBin, char **a
     if (iBin == 0) {
       p.readString("HardQCD:all = off");
       p.readString("SoftQCD:nondiffractive = on");
-      // nEvent *= 2;
+      nEvent *= 10;
     } else {
-      // if(iBin == 1)
-      // nEvent /= 2;
+      if(iBin == 1)
+      nEvent /= 10;
       p.readString("HardQCD:all = on");
       p.readString("SoftQCD:nondiffractive = off");
     }
