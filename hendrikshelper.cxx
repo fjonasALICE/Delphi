@@ -32,7 +32,7 @@ void HendriksHelper::Fill_Non_Decay_Iso_Photon_Pt(Pythia8::Event &event, float e
             // only charged considered for iso cut
             if( event[j].isFinal() && event[j].isVisible() && event[j].isCharged() && j != i)
               if( TMath::Sqrt(   (event[i].phi()-event[j].phi()) * (event[i].phi()-event[j].phi())
-                                 + (event[i].phi()-event[j].phi()) * (event[i].phi()-event[j].phi()) )
+                                 + (event[i].eta()-event[j].eta()) * (event[i].eta()-event[j].eta()) )
                   < iso_cone_radius)
                 pt_temp += event[j].pT();
           }
@@ -42,7 +42,7 @@ void HendriksHelper::Fill_Non_Decay_Iso_Photon_Pt(Pythia8::Event &event, float e
           for(int j = 5; j < event.size(); j++){
             if( event[j].isFinal() && event[j].isVisible() && j != i)
               if( TMath::Sqrt(   (event[i].phi()-event[j].phi()) * (event[i].phi()-event[j].phi())
-                                 + (event[i].phi()-event[j].phi()) * (event[i].phi()-event[j].phi()) )
+                                 + (event[i].eta()-event[j].eta()) * (event[i].eta()-event[j].eta()) )
                   < iso_cone_radius)
                 pt_temp += event[j].pT();
           }
@@ -118,13 +118,13 @@ void HendriksHelper::SoftQCD_HardQCD_Switch(int iBin, double *pTHatBin, char **a
     // SoftQCD only in the first pthat bin, HardQCD otherwise
     if (iBin == 0) {
       p.readString("HardQCD:all = off");
-      p.readString("SoftQCD:nondiffractive = on");
+      p.readString("SoftQCD:inelastic = on");
       nEvent *= 10;
     } else {
       if(iBin == 1)
       nEvent /= 10;
       p.readString("HardQCD:all = on");
-      p.readString("SoftQCD:nondiffractive = off");
+      p.readString("SoftQCD:inelastic = off");
     }
 
   }
