@@ -56,8 +56,8 @@ int main(int argc, char **argv) {
     etaPHOS = 0.12;
 
   // pTHatBins for direct photons
-  // const int pTHatBins = 7;
-  // double pTHatBin[pTHatBins+1] = {1., 4., 7., 11., 16., 22., 30., 1000.};
+  const int pTHatBins = 4;
+  double pTHatBin[pTHatBins+1] = {15., 20., 26., 33., 1000.};
  
   //   pTHatBins for shower photons with softQCD limit 18 GeV
   // const int pTHatBins = 13;
@@ -67,11 +67,11 @@ int main(int argc, char **argv) {
   // 				   1000. };
 
   // pTHatBins for shower photons with softQCD limit 15 Gev
-  const int pTHatBins = 14;
-  double pTHatBin[pTHatBins+1] = { 0. , 15., 18., 21.,
-   				   24., 27., 30., 34., 38.,
-   				   43., 48., 56., 67., 80.,
-   				   1000. };
+  // const int pTHatBins = 14;
+  // double pTHatBin[pTHatBins+1] = { 0., 15., 18., 21.,
+  //  				   24., 27., 30., 34., 38.,
+  //  				   43., 48., 56., 67., 80.,
+  //  				   1000. };
 
   // pTHatBins for shower photon test at lowest pt
   // const int pTHatBins = 2;
@@ -358,11 +358,11 @@ int main(int argc, char **argv) {
 
       // reject non-diffractive softQCD events with super large weight, i.e. pthat << ptgamma
       bool is_large_weight = false;
-      if(iBin == 0)
+      if(iBin == 0 && p.info.isNonDiffractive())
 	for (int i = 5; i < p.event.size(); i++) {
-	  if(p.event[i].isFinal() && p.event[i].id() == 22 && TMath::Abs(p.event[i].eta()) < 0.5 ) {
-	    if(p.event[i].status() < 90 && p.event[i].pT() > 15.)
-	      if(p.event[i].pT() > p.info.pTHat()*1.3){
+	  if(p.event[i].isFinal() && p.event[i].id() == 22 && TMath::Abs(p.event[i].eta()) < etaTPC ) {
+	    if(p.event[i].status() < 90 && p.event[i].pT() > 10.)
+	      if(p.event[i].pT() > p.info.pTHat()*1.7){
 		cout << "softQCD event vetoed with " << "photon pt = " << p.event[i].pT() << "\t and pthat = " << p.info.pTHat() << endl;
 		is_large_weight = true;
 	      }
