@@ -1,9 +1,11 @@
 # Include the configuration.
 -include Makefile.inc
 
-PYTHIA=-I$(PREFIX_INCLUDE) -L$(PREFIX_LIB) -lpythia8
+PYTHIA=$(CXX_COMMON) -I$(PREFIX_INCLUDE) -L$(PREFIX_LIB) -lpythia8
 
 ROOT=$(shell root-config --cflags --libs)
+
+LHAPDF6=-I$(LHAPDF6_INCLUDE) $(LHAPDF6_LIB)/libLHAPDF.so
 
 MERGE=haddav.C
 
@@ -11,7 +13,7 @@ PYTHIAPHOTON=pythia_photons.cpp
 
 # PYTHIA standalone
 pythia_photons: $(PYTHIAPHOTON) hendrikshelper.o 
-	$(CXX) -o $@ $+ $(PYTHIA) -ldl $(ROOT)
+	$(CXX) -o $@ $+ $(PYTHIA) $(LHAPDF6) -ldl $(ROOT)
 
 # POHWEH showered
 powheg_direct_photons: $(POWHEG)

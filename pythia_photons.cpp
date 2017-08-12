@@ -40,6 +40,11 @@ int main(int argc, char **argv) {
 
   pyHelp.Pass_Parameters_To_Pythia(p, argc, argv); // which energy, scales, optional master switches
 
+  string pdfA = "LHAPDF6:nCTEQ15_1_1.LHgrid";
+  string pdfB = "LHAPDF6:nCTEQ15FullNuc_208_82.LHgrid";
+  p.readString("PDF:pSet = " + pdfA);
+  p.readString("PDF:pSetB = " + pdfB);
+
   p.readString("Next:NumberCount = 100000");
   pyHelp.Set_Pythia_Randomseed(p);
 
@@ -56,8 +61,8 @@ int main(int argc, char **argv) {
     etaPHOS = 0.12;
 
   // pTHatBins for direct photons
-  const int pTHatBins = 4;
-  double pTHatBin[pTHatBins+1] = {15., 20., 26., 33., 1000.};
+  // const int pTHatBins = 4;
+  // double pTHatBin[pTHatBins+1] = {15., 20., 26., 33., 1000.};
  
   //   pTHatBins for shower photons with softQCD limit 18 GeV
   // const int pTHatBins = 13;
@@ -67,11 +72,11 @@ int main(int argc, char **argv) {
   // 				   1000. };
 
   // pTHatBins for shower photons with softQCD limit 15 Gev
-  // const int pTHatBins = 14;
-  // double pTHatBin[pTHatBins+1] = { 0., 15., 18., 21.,
-  //  				   24., 27., 30., 34., 38.,
-  //  				   43., 48., 56., 67., 80.,
-  //  				   1000. };
+  const int pTHatBins = 14;
+  double pTHatBin[pTHatBins+1] = { 0., 15., 18., 21.,
+   				   24., 27., 30., 34., 38.,
+   				   43., 48., 56., 67., 80.,
+   				   1000. };
 
   // pTHatBins for shower photon test at lowest pt
   // const int pTHatBins = 2;
@@ -353,6 +358,13 @@ int main(int argc, char **argv) {
     for (int iEvent = 0; iEvent < nEvent; ++iEvent) {
       // Generate event.
       if (!p.next()) continue;
+
+      // boost if pPb 5.02 TeV
+      p.event.bst(0., 0., 0.435);
+      if(iEvent == 0)
+	cout << "energy of beam a = " << p.event[1].e() << endl
+	     << "energy of beam b = " << p.event[2].e() << endl;
+
       // reject non-diffractive softQCD events in the hardQCD regime
       if (iBin == 0 && p.info.isNonDiffractive() && p.info.pTHat() > pTHatBin[1]) continue;
 
