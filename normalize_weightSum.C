@@ -25,7 +25,7 @@ void normalize_weightSum(const char* rootInFileName){
   vector <TH1*> vec_histos_pthat_bins;
   // scale pTHat wise bins
   while ( (key = (TKey*)nextkey())) {
-     
+
     //keep only the highest cycle number for each key
     if (oldkey && !strcmp(oldkey->GetName(),key->GetName())) continue;
 
@@ -37,7 +37,7 @@ void normalize_weightSum(const char* rootInFileName){
       TH1 *h1 = (TH1*)obj;
       TString tempString = h1->GetName();
       if(tempString.Contains("weightSum"))
-	continue;
+        continue;
 
 
       if(tempString.Contains("bin")){
@@ -130,20 +130,20 @@ void normalize_weightSum(const char* rootInFileName){
       }
 
       if(!tempString.Contains("bin")){
-	target->cd();
-	TH1 *final_histo = (TH1*)h1->Clone();
-	final_histo->Reset();
-	for( int i = 0; i < vec_histos_pthat_bins.size(); i++){
-	  final_histo->Add(vec_histos_pthat_bins.at(i));
-	  vec_histos_pthat_bins.at(i)->Write();
-	}
-	final_histo->Write();
+        target->cd();
+        TH1 *final_histo = (TH1*)h1->Clone();
+        final_histo->Reset();
+        for( int i = 0; i < vec_histos_pthat_bins.size(); i++){
+          final_histo->Add(vec_histos_pthat_bins.at(i));
+          vec_histos_pthat_bins.at(i)->Write();
+        }
+        final_histo->Write();
       }
 
-    }  
+    }
 
-  }	   
-	   
+  }
+
 
 
   infile->Close();

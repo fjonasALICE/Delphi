@@ -18,6 +18,15 @@ void HendriksHelper::Fill_Non_Decay_Photon_Pt(Pythia8::Event &event, float etaMa
   }
   return;
 }
+//----------------------------------------------------------------------
+void HendriksHelper::Fill_invXsec_Non_Decay_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
+  for (int i = 5; i < event.size(); i++) {
+    if(event[i].isFinal() && event[i].id() == 22 && TMath::Abs(event[i].eta()) < etaMax ) {
+      if(event[i].status() < 90) h->Fill( event[i].pT(), 1./event[i].pT()/(2*TMath::Pi()) );
+    }
+  }
+  return;
+}
 
 //----------------------------------------------------------------------
 void HendriksHelper::Fill_Non_Decay_Iso_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h,
@@ -58,10 +67,61 @@ void HendriksHelper::Fill_Non_Decay_Iso_Photon_Pt(Pythia8::Event &event, float e
 }
 
 //----------------------------------------------------------------------
+void HendriksHelper::Fill_invXsec_Non_Decay_Iso_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h,
+                                                           bool isoCharged, double iso_cone_radius, double iso_pt){
+  for (int i = 5; i < event.size(); i++) {
+    if(event[i].isFinal() && event[i].id() == 22 && TMath::Abs(event[i].eta()) < etaMax ) {
+      if(event[i].status() < 90){
+        // isolation check------------------------------
+        double pt_temp = 0.;
+        if( isoCharged )
+          for(int j = 5; j < event.size(); j++){
+            // only charged considered for iso cut
+            if( event[j].isFinal() && event[j].isVisible() && event[j].isCharged() && j != i)
+              if( TMath::Sqrt(   (event[i].phi()-event[j].phi()) * (event[i].phi()-event[j].phi())
+                                 + (event[i].eta()-event[j].eta()) * (event[i].eta()-event[j].eta()) )
+                  < iso_cone_radius)
+                pt_temp += event[j].pT();
+          }
+
+        // charged + neutral pt considered for iso cut
+        if( !isoCharged )
+          for(int j = 5; j < event.size(); j++){
+            if( event[j].isFinal() && event[j].isVisible() && j != i)
+              if( TMath::Sqrt(   (event[i].phi()-event[j].phi()) * (event[i].phi()-event[j].phi())
+                                 + (event[i].eta()-event[j].eta()) * (event[i].eta()-event[j].eta()) )
+                  < iso_cone_radius)
+                pt_temp += event[j].pT();
+          }
+
+        if( pt_temp <= iso_pt)
+          h->Fill( event[i].pT(), 1./event[i].pT()/(2*TMath::Pi()) );
+
+        //----------------------------------------------
+      }
+    }
+  }
+  return;
+}
+
+
+
+
+//----------------------------------------------------------------------
 void HendriksHelper::Fill_Decay_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
   for (int i = 5; i < event.size(); i++) {
     if(event[i].isFinal() && event[i].id() == 22 && TMath::Abs(event[i].eta()) < etaMax ) {
       if(event[i].status() > 90) h->Fill(event[i].pT());
+    }
+  }
+  return;
+}
+
+//----------------------------------------------------------------------
+void HendriksHelper::Fill_invXsec_Decay_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
+  for (int i = 5; i < event.size(); i++) {
+    if(event[i].isFinal() && event[i].id() == 22 && TMath::Abs(event[i].eta()) < etaMax ) {
+      if(event[i].status() > 90) h->Fill(event[i].pT(), 1./event[i].pT()/(2*TMath::Pi()) );
     }
   }
   return;
@@ -119,10 +179,10 @@ void HendriksHelper::SoftQCD_HardQCD_Switch(int iBin, double *pTHatBin, char **a
     if (iBin == 0) {
       p.readString("HardQCD:all = off");
       p.readString("SoftQCD:inelastic = on");
-      nEvent *= 10;
+      nEvent *= 50;
     } else {
       if(iBin == 1)
-      nEvent /= 10;
+      nEvent /= 50;
       p.readString("HardQCD:all = on");
       p.readString("SoftQCD:inelastic = off");
     }
@@ -147,7 +207,7 @@ void HendriksHelper::Add_Histos_Scale_Write2File( std::vector <TH1D*>& vec, TH1*
 
   file.cd();
 
-  for( int i = 0; i < vec.size(); i++){
+  for(unsigned int i = 0; i < vec.size(); i++){
     final_histo->Add(vec.at(i));
     vec.at(i)->Scale(1./etaRange, "width");
     vec.at(i)->SetXTitle("p_{T} (GeV/#it{c})");
