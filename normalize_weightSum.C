@@ -1,8 +1,11 @@
 
 void normalize_weightSum(const char* rootInFileName){
 
-  char rootOutFileName[1024];
-  snprintf( rootOutFileName, sizeof(rootOutFileName), "%s_normalized.root", rootInFileName);
+  //  char rootOutFileName[1024];
+  TString rootOutFileName = TString(rootInFileName);
+  rootOutFileName.ReplaceAll(".root","");
+  rootOutFileName.Append("_normalized.root");
+  //  snprintf( rootOutFileName, sizeof(rootOutFileName), "%s_normalized.root", rootInFileName);
 
   TFile *infile = new TFile(rootInFileName);
   TFile *target = new TFile(rootOutFileName,"RECREATE");
@@ -45,7 +48,8 @@ void normalize_weightSum(const char* rootInFileName){
 	if(tempString.Contains("bin_00")){
 	  vec_histos_pthat_bins.clear();
 	  TH1 *h_weightSum_bin = (TH1*)infile->Get("h_weightSum_bin_00");
-	  h1->Scale(1./h_weightSum_bin->GetBinContent(1));
+	  if(h_weightSum_bin->GetBinContent(1) > 0.000001)
+	    h1->Scale(1./h_weightSum_bin->GetBinContent(1));
 	  vec_histos_pthat_bins.push_back(h1);
 	}
 	if( (tempString.Contains("bin_01"))){

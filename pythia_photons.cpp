@@ -5,14 +5,13 @@
 #include "TFile.h"
 #include "TH1.h"
 #include "hendrikshelper.h"
+#include "TTree.h"
 
 using std::cout;
 using namespace Pythia8;
 
 int main(int, char **);
 int main(int argc, char **argv) {
-
-
 
   //--- read commandline args ----------------------------------------
   if (argc < 7) {
@@ -35,6 +34,7 @@ int main(int argc, char **argv) {
   const bool yesBoost = false;
   const double boost_beta_z = 0.435;
 
+  const int startBin = 1;
 
   //--- define output root file --------------------------------------
   char rootFileName[1024];
@@ -61,26 +61,36 @@ int main(int argc, char **argv) {
   TH1::SetDefaultSumw2(kTRUE);
   gStyle->SetOptStat(0);
 
-  const double ptMin = 0., ptMax = 100.;
-  const int ptBins = 100;
+  const double ptMin = 0., ptMax = 150.;
+  const int ptBins = 150;
   const double etaTPC = 0.9,
     etaEMCal = 0.27,
     etaPHOS = 0.12;
 
   // pTHatBins for direct photons
-  //  const int pTHatBins = 4;
-  //double pTHatBin[pTHatBins+1] = {12., 17., 24., 33., 1000.};
+  // const int pTHatBins = 11;
+  // double pTHatBin[pTHatBins+1] = {5.  ,  9., 14., 21., 30.,
+  // 				  40. , 51., 63., 76., 90.,
+  // 				  105., 1000.};
 
   // pTHatBins for shower photons with softQCD limit 12 Gev
   // const int pTHatBins = 15;
   // double pTHatBin[pTHatBins+1] = { 0.,  12., 15., 18., 21.,
-  //  				   24., 27., 30., 34., 38.,
-  //   				   43., 48., 56., 67., 80.,
-  //   				   1000. };
+  //    				   24., 27., 30., 34., 38.,
+  // 				   43., 48., 56., 67., 80.,
+  // 				   1000. };
+
+  // only HardQCD
+  const int pTHatBins = 19;
+  double pTHatBin[pTHatBins+1] = { 0.,
+				   9.  , 12. , 16. , 21. , 28.,
+     				   36. , 45. , 57. , 70. , 85.,
+  				   99. , 115., 132., 150., 169.,
+  				   190., 212., 235 , 1000. };
 
   // pTHatBins for larger softQCD regime = more conservative, but also more fluctuations
-  const int pTHatBins = 4;
-  double pTHatBin[pTHatBins+1] = { 0., 15., 20., 25., 1000.};
+  // const int pTHatBins = 4;
+  // double pTHatBin[pTHatBins+1] = { 0., 15., 20., 25., 1000.};
 
 
   // pTHatBins for shower photon test at lowest pt
@@ -556,46 +566,47 @@ int main(int argc, char **argv) {
   }
 
   //--- begin pTHat bin loop ----------------------------------
-  for (int iBin = 0; iBin < pTHatBins; ++iBin) {
+  for (int iBin = startBin; iBin < pTHatBins; ++iBin) {
 
     pyHelp.SoftQCD_HardQCD_Switch(iBin, pTHatBin, argv, p, nEvent);
     p.init();
 
     //--- begin event loop ----------------------------------------------
-    for (int iEvent = 0; iEvent < nEvent; ++iEvent) {
+    for (int iEvent = 1; iEvent <= nEvent; ++iEvent) {
       // Generate event.
       if (!p.next()) continue;
 
       // boost if pPb 5.02 TeV
       if( yesBoost ) p.event.bst(0., 0., boost_beta_z);
-      if(iEvent == 0)
+      if(iEvent == 1)
         cout << "energy of beam a = " << p.event[1].e() << endl
              << "energy of beam b = " << p.event[2].e() << endl;
 
-      // reject non-diffractive softQCD events in the hardQCD regime
-      if (iBin == 0 && p.info.pTHat() > pTHatBin[1]) continue;
+      if(iBin == 0 && p.info.isNonDiffractive()){
+	// reject non-diffractive softQCD events in the hardQCD regime
+	if (p.info.pTHat() > pTHatBin[1]) continue;
+	// reject non-diffractive softQCD events with super large weight, i.e. pthat << ptgamma
+	bool is_large_weight = false;
+	if(iBin == 0)
+	  for (int i = 5; i < p.event.size(); i++) {
+	    if(p.event[i].isFinal() && p.event[i].id() == 22 &&
+	       TMath::Abs(p.event[i].eta()) < 3.0 && p.event[i].status() < 90 ) {
+	      vec_fluctCut.at(0).Fill(p.event[i].pT());
+	      for(unsigned int j = 1; j < vec_fluctCut.size(); j++)
+		if(p.event[i].pT() > 20. &&
+		   p.event[i].pT() < p.info.pTHat()*(0.9+j*0.1))
+		  vec_fluctCut.at(j).Fill(p.event[i].pT());
 
-      // reject non-diffractive softQCD events with super large weight, i.e. pthat << ptgamma
-      bool is_large_weight = false;
-      if(iBin == 0)
-        for (int i = 5; i < p.event.size(); i++) {
-          if(p.event[i].isFinal() && p.event[i].id() == 22 &&
-             TMath::Abs(p.event[i].eta()) < 3.0 && p.event[i].status() < 90 ) {
-            vec_fluctCut.at(0).Fill(p.event[i].pT());
-            for(unsigned int j = 1; j < vec_fluctCut.size(); j++)
-              if(p.event[i].pT() > 20. &&
-                 p.event[i].pT() < p.info.pTHat()*(0.9+j*0.1))
-                vec_fluctCut.at(j).Fill(p.event[i].pT());
-
-            if(p.event[i].pT() > 20. &&
-               p.event[i].pT() > p.info.pTHat()*2.0){
-              cout << "softQCD event vetoed with " << "photon pt = " << p.event[i].pT() << "\t and pthat = " << p.info.pTHat() << endl;
-              is_large_weight = true;
-            }
-          }
-        }
-
-      if(is_large_weight) continue;
+	      if(p.event[i].pT() > 20. &&
+		 p.event[i].pT() > p.info.pTHat()*2.0){
+		cout << "softQCD event vetoed with " << "photon pt = " << p.event[i].pT() << "\t and pthat = " << p.info.pTHat() << endl;
+		is_large_weight = true;
+	      }
+	    }
+	  }
+      
+	if(is_large_weight) continue;
+      }
 
       // differentiate shower and prompt photons ---------------------------vvv
       for (int i = 5; i < p.event.size(); i++) {
