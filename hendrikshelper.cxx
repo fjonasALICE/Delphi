@@ -19,6 +19,33 @@ void HendriksHelper::Fill_Non_Decay_Photon_Pt(Pythia8::Event &event, float etaMa
   return;
 }
 //----------------------------------------------------------------------
+void HendriksHelper::Fill_Electron_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
+  for (int i = 5; i < event.size(); i++) {
+    if(event[i].isFinal() && TMath::Abs(event[i].id()) == 11 && TMath::Abs(event[i].eta()) < etaMax ) {
+      h->Fill(event[i].pT());
+    }
+  }
+  return;
+}
+//----------------------------------------------------------------------
+void HendriksHelper::Fill_ElectronNeg_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
+  for (int i = 5; i < event.size(); i++) {
+    if(event[i].isFinal() && event[i].id() == 11 && TMath::Abs(event[i].eta()) < etaMax ) {
+      h->Fill(event[i].pT());
+    }
+  }
+  return;
+}
+//----------------------------------------------------------------------
+void HendriksHelper::Fill_ElectronPos_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
+  for (int i = 5; i < event.size(); i++) {
+    if(event[i].isFinal() && event[i].id() == -11 && TMath::Abs(event[i].eta()) < etaMax ) {
+      h->Fill(event[i].pT());
+    }
+  }
+  return;
+}
+//----------------------------------------------------------------------
 void HendriksHelper::Fill_invXsec_Non_Decay_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
   for (int i = 5; i < event.size(); i++) {
     if(event[i].isFinal() && event[i].id() == 22 && TMath::Abs(event[i].eta()) < etaMax ) {
@@ -104,6 +131,30 @@ void HendriksHelper::Fill_invXsec_Non_Decay_Iso_Photon_Pt(Pythia8::Event &event,
   return;
 }
 
+//----------------------------------------------------------------------
+void HendriksHelper::Fill_Electron_TopMotherID(Pythia8::Event &event, float etaMax, TH1 *h){
+  for (int i = 5; i < event.size(); i++) {
+    if(event[i].isFinal() && TMath::Abs(event[i].id()) == 11 && TMath::Abs(event[i].eta()) < etaMax ) {
+      h->Fill( event[event[event[i].iTopCopy()].mother1()].id() );
+    }
+  }
+  return;
+}
+
+//----------------------------------------------------------------------
+void HendriksHelper::Fill_Electron_ByTopMotherID(Pythia8::Event &event, float etaMax, TH1 *h, std::vector <int> vec_id){
+  for (int i = 5; i < event.size(); i++) {
+    if(event[i].isFinal() && TMath::Abs(event[i].id()) == 11 && TMath::Abs(event[i].eta()) < etaMax) {
+      int x = event[event[event[i].iTopCopy()].mother1()].id();
+      if(std::find(vec_id.begin(), vec_id.end(), x) != vec_id.end()) {
+	std::cout << "wuff" << std::endl;
+	h->Fill( event[i].pT() );
+      }
+    }
+  }
+  return;
+}
+
 
 
 
@@ -182,7 +233,7 @@ void HendriksHelper::SoftQCD_HardQCD_Switch(int iBin, double *pTHatBin, char **a
       nEvent *= 50;
     } else {
       if(iBin == 1)
-      nEvent /= 50;
+	//nEvent /= 50;
       p.readString("HardQCD:all = on");
       p.readString("SoftQCD:inelastic = off");
     }

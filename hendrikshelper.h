@@ -19,11 +19,17 @@ class HendriksHelper{
 
   void Set_Pythia_Randomseed(Pythia8::Pythia &p); // set seed with ROOT's TRandom3
   void Fill_Non_Decay_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // fill pt of all non-decay (~direct) photons in the event within eta range
+  void Fill_Electron_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // fill pt of all electrons
+  void Fill_ElectronNeg_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // fill pt of all negative electrons
+  void Fill_ElectronPos_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // fill pt of all positive electrons = positrons
   void Fill_invXsec_Non_Decay_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // ...if you want to apply 1/(pt*2pi) as weight
   void Fill_Non_Decay_Iso_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h,
                                     bool isoCharged, double iso_cone_radius, double iso_pt); // fill isolated non-decay photons
   void Fill_invXsec_Non_Decay_Iso_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h,
                                              bool isoCharged, double iso_cone_radius, double iso_pt); //  ...if you want to apply 1/(pt*2pi) as weight
+
+  void Fill_Electron_TopMotherID(Pythia8::Event &event, float etaMax, TH1 *h); // fill the top mothers id code into the histo
+  void Fill_Electron_ByTopMotherID(Pythia8::Event &event, float etaMax, TH1 *h, std::vector <int> id); // fill electron by topmother id
   void Fill_Decay_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // same with decay photons
   void Fill_invXsec_Decay_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // same with decay photons
   void Pass_Parameters_To_Pythia(Pythia8::Pythia &p, int argc, char **argv); // set stuff with one line; check .cxx for enlightenment

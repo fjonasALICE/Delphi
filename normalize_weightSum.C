@@ -127,6 +127,26 @@ void normalize_weightSum(const char* rootInFileName){
 	  h1->Scale(1./h_weightSum_bin->GetBinContent(1));
 	  vec_histos_pthat_bins.push_back(h1);
 	}
+	if( (tempString.Contains("bin_16"))){
+	  TH1 *h_weightSum_bin = (TH1*)infile->Get("h_weightSum_bin_16");
+	  h1->Scale(1./h_weightSum_bin->GetBinContent(1));
+	  vec_histos_pthat_bins.push_back(h1);
+	}
+	if( (tempString.Contains("bin_17"))){
+	  TH1 *h_weightSum_bin = (TH1*)infile->Get("h_weightSum_bin_17");
+	  h1->Scale(1./h_weightSum_bin->GetBinContent(1));
+	  vec_histos_pthat_bins.push_back(h1);
+	}
+	if( (tempString.Contains("bin_18"))){
+	  TH1 *h_weightSum_bin = (TH1*)infile->Get("h_weightSum_bin_18");
+	  h1->Scale(1./h_weightSum_bin->GetBinContent(1));
+	  vec_histos_pthat_bins.push_back(h1);
+	}
+	if( (tempString.Contains("bin_19"))){
+	  TH1 *h_weightSum_bin = (TH1*)infile->Get("h_weightSum_bin_19");
+	  h1->Scale(1./h_weightSum_bin->GetBinContent(1));
+	  vec_histos_pthat_bins.push_back(h1);
+	}
 
 
 	target->cd();
