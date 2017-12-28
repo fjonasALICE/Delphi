@@ -10,9 +10,15 @@ LHAPDF6=-I$(LHAPDF6_INCLUDE) $(LHAPDF6_LIB)/libLHAPDF.so
 MERGE=haddav.C
 
 PYTHIAPHOTON=pythia_photons.cpp
+PYTHIAELECTRON=pythia_electrons.cpp
+PYTHIA2TREE=pythia2tree.cpp
 
 # PYTHIA standalone
 pythia_photons: $(PYTHIAPHOTON) hendrikshelper.o 
+	$(CXX) -o $@ $+ $(PYTHIA) $(LHAPDF6) -ldl $(ROOT)
+pythia_electrons: $(PYTHIAELECTRON) hendrikshelper.o 
+	$(CXX) -o $@ $+ $(PYTHIA) $(LHAPDF6) -ldl $(ROOT)
+pythia2tree: $(PYTHIA2TREE) hendrikshelper.o 
 	$(CXX) -o $@ $+ $(PYTHIA) $(LHAPDF6) -ldl $(ROOT)
 
 # POHWEH showered

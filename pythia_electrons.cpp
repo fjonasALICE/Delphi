@@ -96,6 +96,10 @@ int main(int argc, char **argv) {
   TH1D *h_electron_Wp    = new TH1D("h_electron_Wp","inclusive electrons from W^{+}", ptBins, ptMin, ptMax);
   TH1D *h_electron_Wm    = new TH1D("h_electron_Wm","inclusive electrons from W^{-}", ptBins, ptMin, ptMax);
 
+  TH1D *h_electron_Z_221  = new TH1D("h_electron_Z_221","electrons from Z^{0} from process 221", ptBins, ptMin, ptMax);
+  TH1D *h_electron_Wp_222 = new TH1D("h_electron_Wp_222","inclusive electrons from W^{+} from process 222", ptBins, ptMin, ptMax);
+  TH1D *h_electron_Wm_222 = new TH1D("h_electron_Wm_222","inclusive electrons from W^{-} from process 222", ptBins, ptMin, ptMax);
+
 
 
   //----------------------------------------------------------------------------------------------------
@@ -114,7 +118,10 @@ int main(int argc, char **argv) {
     vec_electron_Pos_bin,
     vec_electron_Z_bin,
     vec_electron_Wp_bin,
-    vec_electron_Wm_bin;
+    vec_electron_Wm_bin,
+    vec_electron_Z_221_bin,
+    vec_electron_Wp_222_bin,
+    vec_electron_Wm_222_bin;
 
   vector <TH1I*> vec_processCodes_bin;
   vector <TH1I*> vec_electron_TopMotherID_bin;
@@ -138,6 +145,9 @@ int main(int argc, char **argv) {
     vec_electron_Z_bin.push_back( (TH1D*)h_electron_Z->Clone(Form("h_electron_Z_bin_%02d",i)) );
     vec_electron_Wp_bin.push_back( (TH1D*)h_electron_Wp->Clone(Form("h_electron_Wp_bin_%02d",i)) );
     vec_electron_Wm_bin.push_back( (TH1D*)h_electron_Wm->Clone(Form("h_electron_Wm_bin_%02d",i)) );
+    vec_electron_Z_221_bin.push_back( (TH1D*)h_electron_Z_221->Clone(Form("h_electron_Z_221_bin_%02d",i)) );
+    vec_electron_Wp_222_bin.push_back( (TH1D*)h_electron_Wp_222->Clone(Form("h_electron_Wp_222_bin_%02d",i)) );
+    vec_electron_Wm_222_bin.push_back( (TH1D*)h_electron_Wm_222->Clone(Form("h_electron_Wm_222_bin_%02d",i)) );
 
     vec_processCodes_bin.push_back( (TH1I*)h_processCodes->Clone(Form("h_processCodes_bin_%02d",i)) );
     vec_electron_TopMotherID_bin.push_back( (TH1I*)h_electron_TopMotherID->Clone(Form("h_electron_TopMotherID_bin_%02d",i)) );
@@ -179,6 +189,14 @@ int main(int argc, char **argv) {
       pyHelp.Fill_Electron_ByTopMotherID(p.event, etaMax, vec_electron_Wm_bin.at(iBin), id_Wm);
 
 
+      if( p.info.code() == 221 )
+	pyHelp.Fill_Electron_ByTopMotherID(p.event, etaMax, vec_electron_Z_221_bin.at(iBin), id_Z);
+      if( p.info.code() == 222 )
+	pyHelp.Fill_Electron_ByTopMotherID(p.event, etaMax, vec_electron_Wp_222_bin.at(iBin), id_Wp);
+      if( p.info.code() == 222 )
+	pyHelp.Fill_Electron_ByTopMotherID(p.event, etaMax, vec_electron_Wm_222_bin.at(iBin), id_Wm);
+
+
       if( p.info.code() >= 111 && p.info.code() <= 116)
 	pyHelp.Fill_Electron_Pt(p.event, etaMax, vec_electron_QCD_bin.at(iBin));
 
@@ -216,9 +234,14 @@ int main(int argc, char **argv) {
 
     vec_electron_Neg_bin.at(iBin)->Scale(sigma);
     vec_electron_Pos_bin.at(iBin)->Scale(sigma);
+
     vec_electron_Z_bin.at(iBin)->Scale(sigma);
     vec_electron_Wp_bin.at(iBin)->Scale(sigma);
     vec_electron_Wm_bin.at(iBin)->Scale(sigma);
+
+    vec_electron_Z_221_bin.at(iBin)->Scale(sigma);
+    vec_electron_Wp_222_bin.at(iBin)->Scale(sigma);
+    vec_electron_Wm_222_bin.at(iBin)->Scale(sigma);
 
     //----------------------------------------------------------------------------------------------------
     vec_pTHat_bin.at(iBin)->Scale(sigma);
@@ -238,9 +261,14 @@ int main(int argc, char **argv) {
 
   pyHelp.Add_Histos_Scale_Write2File( vec_electron_Neg_bin,   h_electron_Neg,   file, 2*etaMax);
   pyHelp.Add_Histos_Scale_Write2File( vec_electron_Pos_bin,   h_electron_Pos,   file, 2*etaMax);
+
   pyHelp.Add_Histos_Scale_Write2File( vec_electron_Z_bin,     h_electron_Z,     file, 2*etaMax);
   pyHelp.Add_Histos_Scale_Write2File( vec_electron_Wp_bin,    h_electron_Wp,    file, 2*etaMax);
   pyHelp.Add_Histos_Scale_Write2File( vec_electron_Wm_bin,    h_electron_Wm,    file, 2*etaMax);
+
+  pyHelp.Add_Histos_Scale_Write2File( vec_electron_Z_221_bin,  h_electron_Z_221,  file, 2*etaMax);
+  pyHelp.Add_Histos_Scale_Write2File( vec_electron_Wp_222_bin, h_electron_Wp_222, file, 2*etaMax);
+  pyHelp.Add_Histos_Scale_Write2File( vec_electron_Wm_222_bin, h_electron_Wm_222, file, 2*etaMax);
 
   //----------------------------------------------------------------------------------------------------
   pyHelp.Add_Histos_Scale_Write2File( vec_pTHat_bin, h_pTHat, file, 1.);
