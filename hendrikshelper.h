@@ -64,11 +64,10 @@ class HendriksHelper{
 
  private:
 
-  const char *electronMotherName[19] = {"all",
+  const char *electronMotherName[17] = {"all",
 					"neg","pos",
 					"Baryons",
 					"B-Mesons"    ,"D-Mesons",
-					"prompt e^{-}","prompt e^{+}",
 					"#tau^{-}"    ,"#tau^{+}",
 					"W^{-}"       ,"W^{+}",
 					"Z^{0}"       ,"#gamma^{*}",

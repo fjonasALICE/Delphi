@@ -108,16 +108,15 @@ int main(int argc, char **argv) {
     etaPHOS = 0.12;
 
   // TH2D electron_pt vs electron_topMotherID
-  TH2D *h2_electron_pt_topMotherID = new TH2D("h2_electron_pt_topMotherID","h2_electron_pt_topMotherID",
-					      19, 0, 19,
+  TH2D *h2_electron_pt_topMotherID = new TH2D("h2_electron_pt_topMotherID","electron_pt_topMotherID (EMCal acceptance |#eta| < 0.66)",
+					      17, 0, 17,
 					      ptBins, ptMin, ptMax);
   h2_electron_pt_topMotherID->SetCanExtend(TH1::kXaxis);
 
-  const char *electronMotherName[19] = {"all",
+  const char *electronMotherName[17] = {"all",
 					"neg","pos",
 					"Baryons",
 					"B-Mesons"    ,"D-Mesons",
-					"prompt e^{-}","prompt e^{+}",
 					"#tau^{-}"    ,"#tau^{+}",
 					"W^{-}"       ,"W^{+}",
 					"Z^{0}"       ,"#gamma^{*}",
@@ -125,7 +124,7 @@ int main(int argc, char **argv) {
 					"#omega"      ,"K^{0}_{s}",
 					"#Phi,#rho,J/#Psi"};
   
-  for(int i = 0; i < 19; i++){
+  for(int i = 0; i < 17; i++){
     h2_electron_pt_topMotherID->GetXaxis()->SetBinLabel(i+1, electronMotherName[i]);
   }
 
@@ -163,7 +162,7 @@ int main(int argc, char **argv) {
   TH1D *h_omega_etaEMCal = new TH1D("h_omega_etaEMCal","omega_etaEMCal", ptBins, ptMin, ptMax);
   TH1D *h_omega_etaPHOS  = new TH1D("h_omega_etaPHOS","omega_etaPHOS", ptBins, ptMin, ptMax);
 
-  // direct photons (consider only non-decay photons)
+  // direct photons (consider only direct photons)
   TH1D *h_direct_photons_etaLarge = new TH1D("h_direct_photons_etaLarge","direct photons_etaLarge", ptBins, ptMin, ptMax);
   TH1D *h_direct_photons_etaTPC   = new TH1D("h_direct_photons_etaTPC","direct photons_etaTPC", ptBins, ptMin, ptMax);
   TH1D *h_direct_photons_etaEMCal = new TH1D("h_direct_photons_etaEMCal","direct photons_etaEMCal", ptBins, ptMin, ptMax);
@@ -180,7 +179,7 @@ int main(int argc, char **argv) {
   TH1D *h_222_photons_etaEMCal = new TH1D("h_222_photons_etaEMCal","photons from ME (aka prompt) in |#eta| < 0.27", ptBins, ptMin, ptMax);
   TH1D *h_222_photons_etaPHOS  = new TH1D("h_222_photons_etaPHOS","photons from ME (aka prompt) in |#eta| < 0.12", ptBins, ptMin, ptMax);
 
-  // isolated photons (considers only non-decay photons)
+  // isolated photons (considers only direct photons)
   TH1D *h_iso_charged2GeV_R03_photons_etaTPC = new TH1D("h_iso_charged2GeV_R03_photons_etaTPC","direct iso (charged pt 2 GeV/c in R=0.3) photons_etaTPC", ptBins, ptMin, ptMax);
   TH1D *h_iso_charged2GeV_R03_photons_etaEMCal = new TH1D("h_iso_charged2GeV_R03_photons_etaEMCal","direct iso (charged pt 2 GeV/c in R=0.3) photons_etaEMCal", ptBins, ptMin, ptMax);
   TH1D *h_iso_charged2GeV_R03_photons_etaPHOS = new TH1D("h_iso_charged2GeV_R03_photons_etaPHOS","direct iso (charged pt 2 GeV/c in R=0.3) photons_etaPHOS", ptBins, ptMin, ptMax);
@@ -263,7 +262,7 @@ int main(int argc, char **argv) {
   TH1D *h_invXsec_omega_etaEMCal = new TH1D("h_invXsec_omega_etaEMCal","omega_etaEMCal", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_omega_etaPHOS = new TH1D("h_invXsec_omega_etaPHOS","omega_etaPHOS", ptBins, ptMin, ptMax);
 
-  // direct photons (consider only non-decay photons)
+  // direct photons (consider only direct photons)
   TH1D *h_invXsec_direct_photons_etaLarge = new TH1D("h_invXsec_direct_photons_etaLarge","direct photons_etaLarge", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_direct_photons_etaTPC = new TH1D("h_invXsec_direct_photons_etaTPC","direct photons_etaTPC", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_direct_photons_etaEMCal = new TH1D("h_invXsec_direct_photons_etaEMCal","direct photons_etaEMCal", ptBins, ptMin, ptMax);
@@ -280,7 +279,7 @@ int main(int argc, char **argv) {
   TH1D *h_invXsec_222_photons_etaEMCal = new TH1D("h_invXsec_222_photons_etaEMCal","photons from ME (aka prompt) in |#eta| < 0.27", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_222_photons_etaPHOS  = new TH1D("h_invXsec_222_photons_etaPHOS","photons from ME (aka prompt) in |#eta| < 0.12", ptBins, ptMin, ptMax);
 
-  // isolated photons (considers only non-decay photons)
+  // isolated photons (considers only direct photons)
   TH1D *h_invXsec_iso_charged2GeV_R03_photons_etaTPC = new TH1D("h_invXsec_iso_charged2GeV_R03_photons_etaTPC","direct iso (charged pt 2 GeV/c in R=0.3) photons_etaTPC", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_iso_charged2GeV_R03_photons_etaEMCal = new TH1D("h_invXsec_iso_charged2GeV_R03_photons_etaEMCal","direct iso (charged pt 2 GeV/c in R=0.3) photons_etaEMCal", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_iso_charged2GeV_R03_photons_etaPHOS = new TH1D("h_invXsec_iso_charged2GeV_R03_photons_etaPHOS","direct iso (charged pt 2 GeV/c in R=0.3) photons_etaPHOS", ptBins, ptMin, ptMax);
@@ -749,7 +748,7 @@ int main(int argc, char **argv) {
         cout << "energy of beam a = " << p.event[1].e() << endl
              << "energy of beam b = " << p.event[2].e() << endl;
 
-      if ( !strcmp(argv[2],"MB") && MB_veto ) {	//---------------------------------------------------------
+      if ( !strcmp(argv[2],"MBVeto") && MB_veto ) {	//---------------------------------------------------------
 	// reject softQCD events in the hardQCD regime
 	if (p.info.pTHat() > pTHatBin[iBin]) continue;
 	/*
@@ -777,7 +776,7 @@ int main(int argc, char **argv) {
 
 
 
-      pyHelp.Fill_TH2_Electron_TopMotherID(p.event, etaLarge, vec_electron_pt_topMotherID_bin.at(iBin));
+      pyHelp.Fill_TH2_Electron_TopMotherID(p.event, etaEMCal, vec_electron_pt_topMotherID_bin.at(iBin));
 
       pyHelp.Fill_Pi0_Pt(p.event, etaLarge, vec_pi0_etaLarge_bin.at(iBin));
       pyHelp.Fill_Pi0_Pt(p.event, etaTPC, vec_pi0_etaTPC_bin.at(iBin));
@@ -815,7 +814,7 @@ int main(int argc, char **argv) {
       pyHelp.Fill_222_Photon_Pt(p.event, etaPHOS, vec_222_photons_etaPHOS_bin.at(iBin));
 
       if(yesIsoGamma){
-	// fill isolated photons: considers only non-decay photons
+	// fill isolated photons: considers only direct photons
 	// arguments = (p.event, etaAcc, vec_histo, bool onlyCharged?, iso cone radius, iso pt)
 	pyHelp.Fill_Direct_Iso_Photon_Pt(p.event, etaTPC, vec_iso_charged2GeV_R03_photons_etaTPC_bin.at(iBin), true, 0.3, 2.);
 	pyHelp.Fill_Direct_Iso_Photon_Pt(p.event, etaTPC, vec_iso_charged2GeV_R04_photons_etaTPC_bin.at(iBin), true, 0.4, 2.);
@@ -909,7 +908,7 @@ int main(int argc, char **argv) {
       pyHelp.Fill_invXsec_Decay_Photon_Pt(p.event, etaPHOS, vec_invXsec_decay_photons_etaPHOS_bin.at(iBin));
 
       if(yesIsoGamma){
-	// fill isolated photons: considers only non-decay photons
+	// fill isolated photons: considers only direct photons
 	// arguments = (p.event, etaAcc, vec_invXsec_histo, bool onlyCharged?, iso cone radius, iso pt)
 	pyHelp.Fill_invXsec_Direct_Iso_Photon_Pt(p.event, etaTPC, vec_invXsec_iso_charged2GeV_R03_photons_etaTPC_bin.at(iBin), true, 0.3, 2.);
 	pyHelp.Fill_invXsec_Direct_Iso_Photon_Pt(p.event, etaTPC, vec_invXsec_iso_charged2GeV_R04_photons_etaTPC_bin.at(iBin), true, 0.4, 2.);
@@ -1162,7 +1161,7 @@ int main(int argc, char **argv) {
   h_weightSum->Write();
 
   TDirectory *dir_electron = file.mkdir("electron");
-  pyHelp.Add_Histos_Scale_Write2File( vec_electron_pt_topMotherID_bin, h2_electron_pt_topMotherID, file, dir_electron, 2*etaLarge);
+  pyHelp.Add_Histos_Scale_Write2File( vec_electron_pt_topMotherID_bin, h2_electron_pt_topMotherID, file, dir_electron, 2*etaEMCal);
 
   TDirectory *dir_pTHat = file.mkdir("pTHat");
   pyHelp.Add_Histos_Scale_Write2File( vec_pTHat_bin, h_pTHat, file, dir_pTHat, 1.);

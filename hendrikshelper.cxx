@@ -1,5 +1,5 @@
 //----------------------------------------------------------------------
-// hendriks_helper.cxx
+// hendrikshelper.cxx
 //----------------------------------------------------------------------
 #include "hendrikshelper.h"
 #include "Pythia8/Pythia.h"
@@ -380,7 +380,6 @@ void HendriksHelper::Fill_TH2_Electron_TopMotherID(Pythia8::Event &event, float 
     if(event[i].isFinal() && TMath::Abs(event[i].id()) == 11 && TMath::Abs(event[i].eta()) < etaMax ) {
 
       int mID = event[event[event[i].iTopCopyId()].mother1()].id();
-      //      std::cout << "MotherID(iTopCopyId): " << mID << std::endl;
 
       h->Fill( electronMotherName[0], event[i].pT(), 1. );
       
@@ -396,45 +395,31 @@ void HendriksHelper::Fill_TH2_Electron_TopMotherID(Pythia8::Event &event, float 
       if( TMath::Abs(mID) > 400 &&
 	  TMath::Abs(mID) < 500 )
 	h->Fill( electronMotherName[5], event[i].pT(), 1. );
-      if( mID == 11 ){
-	// event.list();
-	// std::cout << "electron at index " << i << std::endl;
-	// std::cout << "iTopCopy: " << event[i].iTopCopy() << std::endl;
-	// std::cout << "iTopCopyId: " << event[i].iTopCopyId() << std::endl;
-	h->Fill( electronMotherName[6], event[i].pT(), 1. );
-      }
-      if( mID == -11 ){
-	// event.list();
-	// std::cout << "positron at index " << i << std::endl;
-	// std::cout << "iTopCopy: " << event[i].iTopCopy() << std::endl;
-	// std::cout << "iTopCopyId: " << event[i].iTopCopyId() << std::endl;
-	h->Fill( electronMotherName[7], event[i].pT(), 1. );
-      }
       if( mID == 15 )
-	h->Fill( electronMotherName[8], event[i].pT(), 1. );
+	h->Fill( electronMotherName[6], event[i].pT(), 1. );
       if( mID == -15 )
-	h->Fill( electronMotherName[9], event[i].pT(), 1. );
+	h->Fill( electronMotherName[7], event[i].pT(), 1. );
       if( mID == -24 )
-	h->Fill( electronMotherName[10], event[i].pT(), 1. );
+	h->Fill( electronMotherName[8], event[i].pT(), 1. );
       if( mID == 24 )
-	h->Fill( electronMotherName[11], event[i].pT(), 1. );
+	h->Fill( electronMotherName[9], event[i].pT(), 1. );
       if( mID == 23 )
-	h->Fill( electronMotherName[12], event[i].pT(), 1. );
+	h->Fill( electronMotherName[10], event[i].pT(), 1. );
       if( mID == 22 )
-	h->Fill( electronMotherName[13], event[i].pT(), 1. );
+	h->Fill( electronMotherName[11], event[i].pT(), 1. );
       if( mID == 111 )
-	h->Fill( electronMotherName[14], event[i].pT(), 1. );
+	h->Fill( electronMotherName[12], event[i].pT(), 1. );
       if( mID == 221 )
-	h->Fill( electronMotherName[15], event[i].pT(), 1. );
+	h->Fill( electronMotherName[13], event[i].pT(), 1. );
       if( mID == 223 )
-	h->Fill( electronMotherName[16], event[i].pT(), 1. );
+	h->Fill( electronMotherName[14], event[i].pT(), 1. );
       if( mID == 310 )
-	h->Fill( electronMotherName[17], event[i].pT(), 1. );
+	h->Fill( electronMotherName[15], event[i].pT(), 1. );
       if( mID == 333 ||
 	  mID == 113 ||
 	  mID == 443)
-	h->Fill( electronMotherName[18], event[i].pT(), 1. );
-      
+	h->Fill( electronMotherName[16], event[i].pT(), 1. );
+
     }
   }
   return;
