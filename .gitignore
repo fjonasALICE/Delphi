@@ -7,3 +7,4 @@ Makefile.inc
 *.o
 haddav*
 pythia_photons
+py8events*/*ev_*

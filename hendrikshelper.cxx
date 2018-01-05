@@ -390,10 +390,10 @@ void HendriksHelper::Fill_TH2_Electron_TopMotherID(Pythia8::Event &event, float 
       if( TMath::Abs(mID) > 1000 )
 	h->Fill( electronMotherName[3], event[i].pT(), 1. );
       if( TMath::Abs(mID) > 500 &&
-	  TMath::Abs(mID) < 600 )
+	  TMath::Abs(mID) < 549 )
 	h->Fill( electronMotherName[4], event[i].pT(), 1. );
       if( TMath::Abs(mID) > 400 &&
-	  TMath::Abs(mID) < 500 )
+	  TMath::Abs(mID) < 439)
 	h->Fill( electronMotherName[5], event[i].pT(), 1. );
       if( mID == 15 )
 	h->Fill( electronMotherName[6], event[i].pT(), 1. );

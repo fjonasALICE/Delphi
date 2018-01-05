@@ -171,12 +171,12 @@ int main(int argc, char **argv) {
   // shower/fragmentation photons only (gammas from "q -> q gamma" splitting)
   TH1D *h_shower_photons_etaLarge = new TH1D("h_shower_photons_etaLarge","shower photons (q -> q #gamma) in |#eta| < 3.0", ptBins, ptMin, ptMax);
   TH1D *h_shower_photons_etaTPC   = new TH1D("h_shower_photons_etaTPC","shower photons (q -> q #gamma) in |#eta| < 0.9", ptBins, ptMin, ptMax);
-  TH1D *h_shower_photons_etaEMCal = new TH1D("h_shower_photons_etaEMCal","shower photons (q -> q #gamma) in |#eta| < 0.27", ptBins, ptMin, ptMax);
+  TH1D *h_shower_photons_etaEMCal = new TH1D("h_shower_photons_etaEMCal","shower photons (q -> q #gamma) in |#eta| < 0.66", ptBins, ptMin, ptMax);
   TH1D *h_shower_photons_etaPHOS  = new TH1D("h_shower_photons_etaPHOS","shower photons (q -> q #gamma) in |#eta| < 0.12", ptBins, ptMin, ptMax);
   // photons from ME (aka prompt)
   TH1D *h_222_photons_etaLarge = new TH1D("h_222_photons_etaLarge","photons from ME (aka prompt) in |#eta| < 3.0", ptBins, ptMin, ptMax);
   TH1D *h_222_photons_etaTPC   = new TH1D("h_222_photons_etaTPC","photons from ME (aka prompt) in |#eta| < 0.9", ptBins, ptMin, ptMax);
-  TH1D *h_222_photons_etaEMCal = new TH1D("h_222_photons_etaEMCal","photons from ME (aka prompt) in |#eta| < 0.27", ptBins, ptMin, ptMax);
+  TH1D *h_222_photons_etaEMCal = new TH1D("h_222_photons_etaEMCal","photons from ME (aka prompt) in |#eta| < 0.66", ptBins, ptMin, ptMax);
   TH1D *h_222_photons_etaPHOS  = new TH1D("h_222_photons_etaPHOS","photons from ME (aka prompt) in |#eta| < 0.12", ptBins, ptMin, ptMax);
 
   // isolated photons (considers only direct photons)
@@ -271,12 +271,12 @@ int main(int argc, char **argv) {
   // shower/fragmentation photons only (gammas from "q -> q gamma" splitting)
   TH1D *h_invXsec_shower_photons_etaLarge = new TH1D("h_invXsec_shower_photons_etaLarge","shower photons (q -> q #gamma) in |#eta| < 3.0", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_shower_photons_etaTPC   = new TH1D("h_invXsec_shower_photons_etaTPC","shower photons (q -> q #gamma) in |#eta| < 0.9", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_shower_photons_etaEMCal = new TH1D("h_invXsec_shower_photons_etaEMCal","shower photons (q -> q #gamma) in |#eta| < 0.27", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_shower_photons_etaEMCal = new TH1D("h_invXsec_shower_photons_etaEMCal","shower photons (q -> q #gamma) in |#eta| < 0.66", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_shower_photons_etaPHOS  = new TH1D("h_invXsec_shower_photons_etaPHOS","shower photons (q -> q #gamma) in |#eta| < 0.12", ptBins, ptMin, ptMax);
   // photons from ME (aka prompt)
   TH1D *h_invXsec_222_photons_etaLarge = new TH1D("h_invXsec_222_photons_etaLarge","photons from ME (aka prompt) in |#eta| < 3.0", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_222_photons_etaTPC   = new TH1D("h_invXsec_222_photons_etaTPC","photons from ME (aka prompt) in |#eta| < 0.9", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_222_photons_etaEMCal = new TH1D("h_invXsec_222_photons_etaEMCal","photons from ME (aka prompt) in |#eta| < 0.27", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_222_photons_etaEMCal = new TH1D("h_invXsec_222_photons_etaEMCal","photons from ME (aka prompt) in |#eta| < 0.66", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_222_photons_etaPHOS  = new TH1D("h_invXsec_222_photons_etaPHOS","photons from ME (aka prompt) in |#eta| < 0.12", ptBins, ptMin, ptMax);
 
   // isolated photons (considers only direct photons)
@@ -751,27 +751,19 @@ int main(int argc, char **argv) {
       if ( !strcmp(argv[2],"MBVeto") && MB_veto ) {	//---------------------------------------------------------
 	// reject softQCD events in the hardQCD regime
 	if (p.info.pTHat() > pTHatBin[iBin]) continue;
-	/*
-	// reject softQCD events with super large weight, i.e. pthat << ptgamma
+	
+	// reject softQCD events with super large weight, i.e. pthat << ptparticle
 	bool is_large_weight = false;
 	for (int i = 5; i < p.event.size(); i++) {
-	  if(p.event[i].isFinal() && p.event[i].id() == 22 &&
-	     TMath::Abs(p.event[i].eta()) < etaLarge && p.event[i].status() < 90 ) {
-	    vec_fluctCut.at(0).Fill(p.event[i].pT());
-	    for(unsigned int j = 1; j < vec_fluctCut.size(); j++)
-	      if(p.event[i].pT() > 20. &&
-		 p.event[i].pT() < p.info.pTHat()*(0.9+j*0.1))
-		vec_fluctCut.at(j).Fill(p.event[i].pT());
-
-	    if(p.event[i].pT() > 20. &&
-	       p.event[i].pT() > p.info.pTHat()*2.0){
-	      cout << "softQCD event vetoed with " << "photon pt = " << p.event[i].pT() << "\t and pthat = " << p.info.pTHat() << endl;
+	  if(p.event[i].isFinal() && p.info.pTHat() > 5. ) {
+	    if(p.event[i].pT() > p.info.pTHat()*3.0){
+	      cout << "softQCD event vetoed with " << "final particle pt = " << p.event[i].pT() << "\t and pthat = " << p.info.pTHat() << endl;
 	      is_large_weight = true;
 	    }
 	  }
 	}      
 	if(is_large_weight) continue;
-	*/
+	
       }	//------------------------------------------------------------------------------------------
 
 
