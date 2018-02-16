@@ -28,9 +28,10 @@ void HendriksHelper::Pass_Parameters_To_Pythia(Pythia8::Pythia &p, int argc, cha
 
   p.readString(Form("Beams:eCM = %f", strtof(argv[4], NULL) ));
   if(argc > 6)
-    p.readString(Form("SigmaProcess:renormMultFac = %f", strtof(argv[5],NULL) ));
-  if(argc > 7)
-    p.readString(Form("SigmaProcess:factorMultFac = %f", strtof(argv[6],NULL) ));
+    p.readString(Form("SigmaProcess:renormMultFac = %f", strtof(argv[6],NULL) ));
+  if(argc > 7){
+    p.readString(Form("SigmaProcess:factorMultFac = %f", strtof(argv[7],NULL) ));
+  }
 
   if(argc > 5){
     if( !strcmp(argv[5],"noHadro") ){

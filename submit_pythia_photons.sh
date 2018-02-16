@@ -21,28 +21,37 @@ fi
 #SBATCH --ntasks=1
 #SBATCH --mem-per-cpu=1000
 
+# argv[1]: process switch
+# argv[2]: number of events
+# argv[3]: eCM
+# argv[4]: optional argument to switch off MPI, hadronization or entire shower
+# argv[5]: renormMultFac
+# argv[6]: factorMultFac
+# argv[7]: boost in z direction (beta=v/c)
+# argv[8]: external pdf beam A 
+# argv[9]: external pdf beam B
 
 # Something to execute
 #---------------------------------------------------------------------
 if [ $# == 3 ];
 then
     dirBaseName=py8events_$3GeV/$1_$2ev_$SLURM_ARRAY_JOB_ID
-elif [ $# == 4 ]; # renorm. factor
+elif [ $# == 4 ];
 then
     dirBaseName=py8events_$3GeV/$1_$2ev_$4_$SLURM_ARRAY_JOB_ID
-elif [ $# == 5 ]; # factor. factor
+elif [ $# == 5 ];
 then
     dirBaseName=py8events_$3GeV/$1_$2ev_$4_$5_$SLURM_ARRAY_JOB_ID
-elif [ $# == 6 ]; # pythia switch for noMPI, noHadro, noMPInoHadro, noShower or fullEvents(default)
+elif [ $# == 6 ];
 then
     dirBaseName=py8events_$3GeV/$1_$2ev_$4_$5_$6_$SLURM_ARRAY_JOB_ID
-elif [ $# == 7 ]; # with boost along z axis for asymmetric collision like pPb
+elif [ $# == 7 ];
 then
     dirBaseName=py8events_$3GeV/$1_$2ev_$4_$5_$6_betaZ$7_$SLURM_ARRAY_JOB_ID
-elif [ $# == 8 ]; # with external PDF for beam A + B
+elif [ $# == 8 ];
 then
     dirBaseName=py8events_$3GeV/$1_$2ev_$4_$5_$6_betaZ$7_$8_$SLURM_ARRAY_JOB_ID
-elif [ $# == 9 ]; # with external PDF for beam B only
+elif [ $# == 9 ];
 then
     dirBaseName=py8events_$3GeV/$1_$2ev_$4_$5_$6_betaZ$7_$8_$9_$SLURM_ARRAY_JOB_ID
 fi
