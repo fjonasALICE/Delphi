@@ -1,9 +1,8 @@
-*root
+B1;4205;0c*root
 .#*
 *~
-Makefile.inc
-*/
 *.o
-haddav*
-pythia_photons
-py8events*/*ev_*
+pythia
+output/
+py8events_8000GeV/
+scratch/
