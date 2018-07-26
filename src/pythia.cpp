@@ -54,27 +54,26 @@ int main(int argc, char **argv) {
   // boosted collision system?
   bool yesBoost = false;
   double boost_beta_z = 0.;
-  if (argc == 9){
+  if (argc >= 9){
     yesBoost = true;
     boost_beta_z = strtof(argv[8], NULL);
+    // 0.435 for pPb
   }
 
   //--- choice of external PDF ---
-  // !!! BUGGY AT THE MOMENT !!!
-  // use as argv[9] or argv[10]: "LHAPDF6:nCTEQ15_1_1.LHgrid" etc.
   if (argc == 10){
     string pdfA = argv[9];
     string pdfB = argv[9];
     cout << "using following pdf for beam a (and b if not set):" << pdfA << endl;
-    p.readString("PDF:pSet = " + pdfA);
-    p.readString("PDF:pSetB = " + pdfB);
+    p.readString("PDF:pSet = LHAPDF6:" + pdfA);
+    p.readString("PDF:pSetB = LHAPDF6:" + pdfB);
   }
   if (argc == 11){
     string pdfA = argv[9];
     string pdfB = argv[10];
-    p.readString("PDF:pSet = " + pdfA);
+    p.readString("PDF:pSet = LHAPDF6:" + pdfA);
     cout << "using following pdf for beam b:" << pdfB << endl;
-    p.readString("PDF:pSetB = " + pdfB);
+    p.readString("PDF:pSetB = LHAPDF6:" + pdfB);
   }
 
   int nEvent = strtol(argv[3], NULL, 10); // number of events

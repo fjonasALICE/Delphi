@@ -1,37 +1,27 @@
 # Include the configuration.
 -include Makefile.inc
 
-PYTHIA=$(CXX_COMMON) -I$(PREFIX_INCLUDE) -L$(PREFIX_LIB) -lpythia8
+PYTHIAFLAGS=$(CXX_COMMON) -I$(PREFIX_INCLUDE) -L$(PREFIX_LIB) -lpythia8
 
-ROOT=$(shell root-config --cflags --libs)
+ROOT=$(shell /gluster2/h_popp01/software/root6/bin/root-config --cflags --libs)
 
 LHAPDF6=-I$(LHAPDF6_INCLUDE) $(LHAPDF6_LIB)/libLHAPDF.so
 
-MERGE=haddav.C
+MERGE=macro/haddav.C
 
-PYTHIAPHOTON=pythia_photons.cpp
-PYTHIAELECTRON=pythia_electrons.cpp
-PYTHIA2TREE=pythia2tree.cpp
+PYTHIA=src/pythia.cpp
 
 # PYTHIA standalone
-pythia_photons: $(PYTHIAPHOTON) hendrikshelper.o 
-	$(CXX) -o $@ $+ $(PYTHIA) $(LHAPDF6) -ldl $(ROOT)
-pythia_electrons: $(PYTHIAELECTRON) hendrikshelper.o 
-	$(CXX) -o $@ $+ $(PYTHIA) $(LHAPDF6) -ldl $(ROOT)
-pythia2tree: $(PYTHIA2TREE) hendrikshelper.o 
-	$(CXX) -o $@ $+ $(PYTHIA) $(LHAPDF6) -ldl $(ROOT)
-
-# POHWEH showered
-powheg_direct_photons: $(POWHEG)
-	$(CXX) -o $@  $+  $(PYTHIA) -ldl $(ROOT)
+pythia:	$(PYTHIA) hendrikshelper.o 
+	$(CXX) -o $@ $+ $(PYTHIAFLAGS) $(LHAPDF6) -ldl $(ROOT)
 
 # merge programs
 haddav: $(MERGE)
 	$(CXX) -o $@ $+ -ldl $(ROOT)
 
 haddav_weightCut: $(MERGE2)
-	$(CXX) -o $@ $+ $(PYTHIA) -ldl $(ROOT) -I$(INC) $(FASTJET)
+	$(CXX) -o $@ $+ $(PYTHIAFLAGS) -ldl $(ROOT) -I$(INC) $(FASTJET)
 
 # helpful functions for pythia
-hendrikshelper.o: hendrikshelper.cxx hendrikshelper.h
-	$(CXX) -c hendrikshelper.cxx $(PYTHIA) -ldl $(ROOT)
+hendrikshelper.o: src/hendrikshelper.cxx src/hendrikshelper.h
+	$(CXX) -c src/hendrikshelper.cxx $(PYTHIAFLAGS) -ldl $(ROOT)

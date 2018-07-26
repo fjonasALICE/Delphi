@@ -1,0 +1,1 @@
+time ./pythia test.root JJ 100 8160 noMPI 1.00 1.00 0.435 nCTEQ15np_1_1 nCTEQ15npFullNuc_208_82

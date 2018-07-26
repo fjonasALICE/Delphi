@@ -14,10 +14,8 @@ fi
 ##SBATCH -p long
 ##SBATCH -p test
 ##SBATCH --exclude=node33
-##SBATCH --exclude=node31
-##SBATCH --exclude=node30
  
-####SBATCH --array=1-100
+##SBATCH --array=1-100
 #SBATCH --ntasks=1
 #SBATCH --mem-per-cpu=1000
 
@@ -63,24 +61,24 @@ fi
 
 if [ ! -f $dirBaseName/pythia_photons ];
 then
-    cp pythia_photons $dirBaseName
+    cp pythia $dirBaseName
 fi
 
 if [ ! -f $dirBaseName/pythia_photons.cpp ];
 then
-    cp pythia_photons.cpp $dirBaseName
+    cp src/pythia.cpp $dirBaseName
 fi
 
 if [ ! -f $dirBaseName/hendrikshelper.cxx ];
 then
-    cp hendrikshelper.cxx $dirBaseName
+    cp src/hendrikshelper.cxx $dirBaseName
 fi
 
 sleep 1
 cd $dirBaseName
 sleep 1
 
-STR1="time ./pythia_photons $SLURM_ARRAY_TASK_ID $1 $2 $3 $4 $5 $6 $7 $8 $9"
+STR1="time ./pythia $SLURM_ARRAY_TASK_ID $1 $2 $3 $4 $5 $6 $7 $8 $9"
 
 echo $STR1
 eval $STR1
