@@ -36,16 +36,16 @@ void HendriksHelper::Pass_Parameters_To_Pythia(Pythia8::Pythia &p, int argc, cha
   if(argc > 5){
     if( !strcmp(argv[5],"noHadro") ){
       p.readString("HadronLevel:all = off");
-      printf("---pythia events are generated without Hadronization---\n");
+      printf("\nPythia events are generated without Hadronization\n");
     }
     else if( !strcmp(argv[5],"noMPI") ){
       p.readString("PartonLevel:MPI = off");
-      printf("---pythia events are generated without Multiparton Interaction---\n");
+      printf("\nPythia events are generated without Multiparton Interaction\n");
     }
     else if( !strcmp(argv[5],"noMPInoHadro") ){
       p.readString("PartonLevel:MPI = off");
       p.readString("HadronLevel:all = off");
-      printf("---pythia events are generated without Multiparton Interaction and Hadronization---\n");
+      printf("\nPythia events are generated without Multiparton Interaction and Hadronization\n");
     }
     else if( !strcmp(argv[5],"noShower") ){
       p.readString("Check:event = off");
@@ -54,13 +54,13 @@ void HendriksHelper::Pass_Parameters_To_Pythia(Pythia8::Pythia &p, int argc, cha
       p.readString("PartonLevel:ISR = off");
       p.readString("PartonLevel:Remnants = off");
       p.readString("HadronLevel:all = off");
-      printf("---pythia events are generated without parton shower (only LO scattering)---\n");
+      printf("\nPythia events are generated without parton shower (only LO scattering)\n");
     }
     else if( !strcmp(argv[5],"fullEvents") ){
-      printf("---full pythia events will be generated (default)---\n");
+      printf("\nFull pythia events will be generated (default)\n");
     }
     else
-      printf("---no sensible argument argv[5] is given -> full pythia events will be generated (default)---\n");
+      printf("\nNo sensible argument argv[5] is given -> full pythia events will be generated (default)\n");
   }
   
   return;
@@ -89,7 +89,7 @@ void HendriksHelper::ProcessSwitch(int iBin, double *pTHatBin, char **argv, Pyth
     p.readString("WeakSingleBoson:ffbar2ffbar(s:W) = on");
   }
   else
-    printf("No process switched on. Provide \"MB\" or \"MBVeto\" or \"JJ\" or \"PromptPhoton\" or \"WeakBoson\" as second argument");
+    printf("\nNo process switched on. Provide \"MB\" or \"MBVeto\" or \"JJ\" or \"PromptPhoton\" or \"WeakBoson\" as second argument\n");
   
   p.settings.parm("PhaseSpace:pTHatMin", pTHatBin[iBin]);
   p.settings.parm("PhaseSpace:pTHatMax", pTHatBin[iBin+1]);

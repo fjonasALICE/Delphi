@@ -3,6 +3,7 @@ B1;4205;0c*root
 *~
 *.o
 pythia
+pythiatest
 output/
 py8events_8000GeV/
 py8events_8160GeV/

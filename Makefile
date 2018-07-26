@@ -10,9 +10,12 @@ LHAPDF6=-I$(LHAPDF6_INCLUDE) $(LHAPDF6_LIB)/libLHAPDF.so
 MERGE=macro/haddav.C
 
 PYTHIA=src/pythia.cpp
+PYTHIATEST=src/PythiaAnalysis.cpp
 
 # PYTHIA standalone
 pythia:	$(PYTHIA) hendrikshelper.o 
+	$(CXX) -o $@ $+ $(PYTHIAFLAGS) $(LHAPDF6) -ldl $(ROOT)
+pythiatest:	$(PYTHIATEST) hendrikshelper.o 
 	$(CXX) -o $@ $+ $(PYTHIAFLAGS) $(LHAPDF6) -ldl $(ROOT)
 
 # merge programs

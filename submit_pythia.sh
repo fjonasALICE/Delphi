@@ -61,7 +61,7 @@ fi
 
 if [ ! -f $dirBaseName/pythia_photons ];
 then
-    cp pythia $dirBaseName
+    cp pythiatest $dirBaseName
 fi
 
 if [ ! -f $dirBaseName/pythia_photons.cpp ];
@@ -78,7 +78,7 @@ sleep 1
 cd $dirBaseName
 sleep 1
 
-STR1="time ./pythia $SLURM_ARRAY_TASK_ID $1 $2 $3 $4 $5 $6 $7 $8 $9"
+STR1="time ./pythiatest $SLURM_ARRAY_TASK_ID $1 $2 $3 $4 $5 $6 $7 $8 $9"
 
 echo $STR1
 eval $STR1

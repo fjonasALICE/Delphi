@@ -6,7 +6,7 @@
 #include "TH1.h"
 #include "TH2.h"
 #include "hendrikshelper.h"
-#inlucde "pythia.h"
+#include "PythiaAnalysis.h"
 
 using std::cout;
 using namespace Pythia8;
@@ -14,21 +14,20 @@ using namespace Pythia8;
 int main(int, char **);
 int main(int argc, char **argv) {
 
+  p.readString("Next:numberCount = 100000");
+  p.readString("Next:numberShowLHA = 0");
+  p.readString("Next:numberShowInfo = 0");
+  p.readString("Next:numberShowProcess = 0");
+  p.readString("Next:numberShowEvent = 0");
+  pyHelp.Set_Pythia_Randomseed(p);
+
   //--- read commandline args ----------------------------------------
   if (argc < 5) {
     printf("Need at least first 4 arguments:\n%s [output root file] [\"MB\",\"MBVeto\",\"JJ\",\"PromptPhoton\",\"WeakBoson\"] [number of events per pthatbin] [cm energy in GeV] [\"fullEvents\",\"noMPI\",\"noHadro\",\"noMPInoHadro\",\"noShower\"] [renormScaleFac] [factorMultFac] [beta_boost_z] [pdfA] [pdfB]", argv[0]);
     exit(EXIT_FAILURE);
   }
 
-  Pythia p;
-  HendriksHelper pyHelp;
-
-  const int startBin = 0;
-
-  const bool yesIsoGamma = false;
-
   //--- define output root file --------------------------------------
-  char rootFileName[1024];
   // argv[1]: "abc" in output "abc.root"
   // argv[2]: process switch
   // argv[3]: number of events
@@ -39,95 +38,58 @@ int main(int argc, char **argv) {
   // argv[8]: boost in z direction (beta=v/c)
   // argv[9]: external pdf beam A 
   // argv[10]: external pdf beam B
-  // if (argc == 11) //!!! to be debugged
-  //   snprintf( rootFileName, sizeof(rootFileName), "pythia_%s_%s_%ldGeV_RenS%.2f_FacS%.2f_%s_betaboost%s_%s_%s.root", argv[1], argv[2],
-  //             strtol(argv[4], NULL, 10), strtof(argv[5], NULL), strtof(argv[6], NULL), argv[7], argv[8], argv[9], argv[10]);
+
+  // "abc" -> "abc.root"
   snprintf( rootFileName, sizeof(rootFileName), "%s.root", argv[1]);
 
   // test shower cut-off
   // p.readString("TimeShower:pTminChgQ = 2.0");
 
+  printf("\nThe result will be written into %s\n", rootFileName);
 
-  printf("------------------------------------------------------------------------------------------\n");
-  printf("The result will be written into %s\n", rootFileName);
-  printf("------------------------------------------------------------------------------------------\n");
-
-  // boosted collision system?
-  bool yesBoost = false;
-  double boost_beta_z = 0.;
-  if (argc >= 9){
-    yesBoost = true;
-    boost_beta_z = strtof(argv[8], NULL);
+  if (argc >= 9){ // account for boost in asymmetric collision systems
+    applyBoost = true;
+    boostBetaZ = strtof(argv[8], NULL);
+    printf("\nApplying a boost along z direction with beta_z = %f\n", boostBetaZ);
     // 0.435 for pPb
   }
 
-  //--- choice of external PDF ---
-  if (argc == 10){
+  if (argc >= 10){ // choice of external PDF
     string pdfA = argv[9];
     string pdfB = argv[9];
-    cout << "using following pdf for beam a (and b if not set):" << pdfA << endl;
+    printf("\nUsing PDF %s for beam A\n", pdfA.c_str());
     p.readString("PDF:pSet = LHAPDF6:" + pdfA);
-    p.readString("PDF:pSetB = LHAPDF6:" + pdfB);
-  }
-  if (argc == 11){
-    string pdfA = argv[9];
-    string pdfB = argv[10];
-    p.readString("PDF:pSet = LHAPDF6:" + pdfA);
-    cout << "using following pdf for beam b:" << pdfB << endl;
+    if( argc >= 11)
+      pdfB = argv[10];
+    printf("Using PDF %s for beam B\n", pdfB.c_str());
     p.readString("PDF:pSetB = LHAPDF6:" + pdfB);
   }
 
   int nEvent = strtol(argv[3], NULL, 10); // number of events
+  printf("\nGenerating %d events per pthat bin\n", nEvent);
   
   pyHelp.Pass_Parameters_To_Pythia(p, argc, argv); // which energy, scales, optional master switches
 
-  bool MB_veto = false;
-  if ( !strcmp(argv[2],"MBVeto") )
+  if (!strcmp(argv[2],"MBVeto")) // prevent double sampling of MB events and e.g. JJ events
     MB_veto = true;
 
-  p.readString("Next:NumberCount = 100000");
-  pyHelp.Set_Pythia_Randomseed(p);
+  printf("\nUsing %d pTHat bins:\n", pTHatBins);
+  for(int i=0; i <= pTHatBins; i++){
+    printf("%.0f ", pTHatBin[i]);
+  }
+  printf("\n");
 
-  const int pTHatBins = 18;
-  double pTHatBin[pTHatBins+1] = { 9.  , 12. , 16. , 21. , 28.,
-				   36. , 45. , 57. , 70. , 85.,
-				   99. , 115., 132., 150., 169.,
-				   190., 212., 235 , 10000. }; 
-
-  printf("-----------------------\nusing %d pTHat bins\n-----------------------\n", pTHatBins);
 
   //--- Histograms ---------------------------------------------------
   TH1::SetDefaultSumw2(kTRUE);
   gStyle->SetOptStat(0);
 
-  const double ptMin = 0., ptMax = 300.;
-  const int ptBins = 300;
-  const double etaLarge = 3.,
-    etaTPC = 0.9,
-    etaEMCal = 0.66,
-    etaPHOS = 0.12;
 
   // TH2D electron_pt vs electron_topMotherID
-  TH2D *h2_electron_pt_topMotherID = new TH2D("h2_electron_pt_topMotherID","electron_pt_topMotherID (EMCal acceptance |#eta| < 0.66)",
-					      17, 0, 17,
-					      ptBins, ptMin, ptMax);
+  TH2D *h2_electron_pt_topMotherID = new TH2D("h2_electron_pt_topMotherID","electron_pt_topMotherID (EMCal acceptance |#eta| < 0.66)",17,0,17,ptBins,ptMin,ptMax);
   h2_electron_pt_topMotherID->SetCanExtend(TH1::kXaxis);
-
-  const char *electronMotherName[17] = {"all",
-					"neg","pos",
-					"Baryons",
-					"B-Mesons"    ,"D-Mesons",
-					"#tau^{-}"    ,"#tau^{+}",
-					"W^{-}"       ,"W^{+}",
-					"Z^{0}"       ,"#gamma^{*}",
-					"#pi^{0}"     ,"#eta",
-					"#omega"      ,"K^{0}_{s}",
-					"#Phi,#rho,J/#Psi"};
-  
-  for(int i = 0; i < 17; i++){
+  for(int i = 0; i < 17; i++)
     h2_electron_pt_topMotherID->GetXaxis()->SetBinLabel(i+1, electronMotherName[i]);
-  }
-
 
   // controls plot to see how much is cut away with sQCD fluctuation cut
   vector <TH1D> vec_fluctCut;
@@ -576,7 +538,7 @@ int main(int argc, char **argv) {
     vec_222_photons_etaEMCal_bin.push_back( (TH1D*)h_direct_photons_etaEMCal->Clone(Form("h_222_photons_etaEMCal_bin_%02d",i)) );
     vec_222_photons_etaPHOS_bin.push_back( (TH1D*)h_direct_photons_etaPHOS->Clone(Form("h_222_photons_etaPHOS_bin_%02d",i)) );
 
-    if(yesIsoGamma){
+    if(applyPhotonIso){
       // isolated photon histos TPC
       vec_iso_charged2GeV_R03_photons_etaTPC_bin.push_back( (TH1D*)h_iso_charged2GeV_R03_photons_etaTPC->Clone(Form("h_iso_charged2GeV_R03_photons_etaTPC_bin_%02d",i)) );
       vec_iso_charged2GeV_R04_photons_etaTPC_bin.push_back( (TH1D*)h_iso_charged2GeV_R04_photons_etaTPC->Clone(Form("h_iso_charged2GeV_R04_photons_etaTPC_bin_%02d",i)) );
@@ -672,7 +634,7 @@ int main(int argc, char **argv) {
     vec_invXsec_222_photons_etaEMCal_bin.push_back( (TH1D*)h_invXsec_direct_photons_etaEMCal->Clone(Form("h_invXsec_222_photons_etaEMCal_bin_%02d",i)) );
     vec_invXsec_222_photons_etaPHOS_bin.push_back( (TH1D*)h_invXsec_direct_photons_etaPHOS->Clone(Form("h_invXsec_222_photons_etaPHOS_bin_%02d",i)) );
 
-    if(yesIsoGamma){
+    if(applyPhotonIso){
       // isolated photon histos TPC
       vec_invXsec_iso_charged2GeV_R03_photons_etaTPC_bin.push_back( (TH1D*)h_iso_charged2GeV_R03_photons_etaTPC->Clone(Form("h_invXsec_iso_charged2GeV_R03_photons_etaTPC_bin_%02d",i)) );
       vec_invXsec_iso_charged2GeV_R04_photons_etaTPC_bin.push_back( (TH1D*)h_iso_charged2GeV_R04_photons_etaTPC->Clone(Form("h_invXsec_iso_charged2GeV_R04_photons_etaTPC_bin_%02d",i)) );
@@ -732,7 +694,7 @@ int main(int argc, char **argv) {
   }
 
   //--- begin pTHat bin loop ----------------------------------
-  for (int iBin = startBin; iBin < pTHatBins; ++iBin) {
+  for (int iBin = pTHatStartBin; iBin < pTHatBins; ++iBin) {
 
     pyHelp.ProcessSwitch(iBin, pTHatBin, argv, p);
    
@@ -744,7 +706,7 @@ int main(int argc, char **argv) {
       if (!p.next()) continue;
 
       // boost if pPb
-      if( yesBoost ) p.event.bst(0., 0., boost_beta_z);
+      if( applyBoost ) p.event.bst(0., 0., boostBetaZ);
       if(iEvent == 1)
         cout << "energy of beam a = " << p.event[1].e() << endl
              << "energy of beam b = " << p.event[2].e() << endl;
@@ -806,7 +768,7 @@ int main(int argc, char **argv) {
       pyHelp.Fill_222_Photon_Pt(p.event, etaEMCal, vec_222_photons_etaEMCal_bin.at(iBin));
       pyHelp.Fill_222_Photon_Pt(p.event, etaPHOS, vec_222_photons_etaPHOS_bin.at(iBin));
 
-      if(yesIsoGamma){
+      if(applyPhotonIso){
 	// fill isolated photons: considers only direct photons
 	// arguments = (p.event, etaAcc, vec_histo, bool onlyCharged?, iso cone radius, iso pt)
 	pyHelp.Fill_Direct_Iso_Photon_Pt(p.event, etaTPC, vec_iso_charged2GeV_R03_photons_etaTPC_bin.at(iBin), true, 0.3, 2.);
@@ -900,7 +862,7 @@ int main(int argc, char **argv) {
       pyHelp.Fill_invXsec_Decay_Photon_Pt(p.event, etaEMCal, vec_invXsec_decay_photons_etaEMCal_bin.at(iBin));
       pyHelp.Fill_invXsec_Decay_Photon_Pt(p.event, etaPHOS, vec_invXsec_decay_photons_etaPHOS_bin.at(iBin));
 
-      if(yesIsoGamma){
+      if(applyPhotonIso){
 	// fill isolated photons: considers only direct photons
 	// arguments = (p.event, etaAcc, vec_invXsec_histo, bool onlyCharged?, iso cone radius, iso pt)
 	pyHelp.Fill_invXsec_Direct_Iso_Photon_Pt(p.event, etaTPC, vec_invXsec_iso_charged2GeV_R03_photons_etaTPC_bin.at(iBin), true, 0.3, 2.);
@@ -998,7 +960,7 @@ int main(int argc, char **argv) {
     vec_222_photons_etaPHOS_bin.at(iBin)->Scale(sigma);
 
 
-    if(yesIsoGamma){
+    if(applyPhotonIso){
       vec_iso_charged2GeV_R03_photons_etaTPC_bin.at(iBin)->Scale(sigma);
       vec_iso_charged2GeV_R04_photons_etaTPC_bin.at(iBin)->Scale(sigma);
       vec_iso_charged2GeV_R05_photons_etaTPC_bin.at(iBin)->Scale(sigma);
@@ -1084,7 +1046,7 @@ int main(int argc, char **argv) {
     vec_invXsec_222_photons_etaEMCal_bin.at(iBin)->Scale(sigma);
     vec_invXsec_222_photons_etaPHOS_bin.at(iBin)->Scale(sigma);
 
-    if(yesIsoGamma){
+    if(applyPhotonIso){
       vec_invXsec_iso_charged2GeV_R03_photons_etaTPC_bin.at(iBin)->Scale(sigma);
       vec_invXsec_iso_charged2GeV_R04_photons_etaTPC_bin.at(iBin)->Scale(sigma);
       vec_invXsec_iso_charged2GeV_R05_photons_etaTPC_bin.at(iBin)->Scale(sigma);
@@ -1199,7 +1161,7 @@ int main(int argc, char **argv) {
   pyHelp.Add_Histos_Scale_Write2File( vec_222_photons_etaEMCal_bin, h_222_photons_etaEMCal, file, dir_gamma, 2*etaEMCal);
   pyHelp.Add_Histos_Scale_Write2File( vec_222_photons_etaPHOS_bin, h_222_photons_etaPHOS, file, dir_gamma, 2*etaPHOS);
 
-  if(yesIsoGamma){
+  if(applyPhotonIso){
     TDirectory *dir_isoGamma = file.mkdir("isoGamma");
     pyHelp.Add_Histos_Scale_Write2File( vec_iso_charged2GeV_R03_photons_etaTPC_bin, h_iso_charged2GeV_R03_photons_etaTPC, file, dir_isoGamma, 2*etaTPC);
     pyHelp.Add_Histos_Scale_Write2File( vec_iso_charged2GeV_R04_photons_etaTPC_bin, h_iso_charged2GeV_R04_photons_etaTPC, file, dir_isoGamma, 2*etaTPC);
@@ -1294,7 +1256,7 @@ int main(int argc, char **argv) {
   pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_222_photons_etaEMCal_bin, h_invXsec_222_photons_etaEMCal, file, dir_gamma_invXsec, 2.*etaEMCal);
   pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_222_photons_etaPHOS_bin, h_invXsec_222_photons_etaPHOS, file, dir_gamma_invXsec, 2.*etaPHOS);
 
-  if(yesIsoGamma){
+  if(applyPhotonIso){
     TDirectory *dir_isoGamma_invXsec = file.mkdir("isoGamma_invXsec");
     pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged2GeV_R03_photons_etaTPC_bin, h_invXsec_iso_charged2GeV_R03_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC);
     pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged2GeV_R04_photons_etaTPC_bin, h_invXsec_iso_charged2GeV_R04_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC);

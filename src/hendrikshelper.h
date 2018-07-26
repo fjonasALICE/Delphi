@@ -22,7 +22,6 @@ class HendriksHelper{
   void Pass_Parameters_To_Pythia(Pythia8::Pythia &p, int argc, char **argv); // set stuff with one line; check .cxx for enlightenment
   void ProcessSwitch(int iBin, double *pTHatBin, char **argv, Pythia8::Pythia &p); // set pTHat bin specific stuff
 
-
   // fill "normal" spectra
   void Fill_Pi0_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // fill pt of all pi0
   void Fill_Pi0Primary_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // fill pt of all primary pi0 (i.e. secondary corrected)
