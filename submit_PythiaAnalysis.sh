@@ -50,53 +50,55 @@ PDF2=$9
 
 DATE=$(date +%F)
 
+DIRBASE=py8events_${CMENERGY}GeV
+
 # Something to execute
 #---------------------------------------------------------------------
 if [ $# == 3 ];
 then
-    dirBaseName=py8events_${CMENERGY}GeV/${PROCESS}_${NEVENTS}ev_jobID$SLURM_ARRAY_JOB_ID
+    OUTDIR=${DIRBASE}/${DATE}_${PROCESS}_${NEVENTS}ev_jobID$SLURM_ARRAY_JOB_ID
 elif [ $# == 4 ];
 then
-    dirBaseName=py8events_${CMENERGY}GeV/${PROCESS}_${NEVENTS}ev_${SHOWEROPT}_jobID$SLURM_ARRAY_JOB_ID
+    OUTDIR=${DIRBASE}/${DATE}_${PROCESS}_${NEVENTS}ev_${SHOWEROPT}_jobID$SLURM_ARRAY_JOB_ID
 elif [ $# == 5 ];
 then
-    dirBaseName=py8events_${CMENERGY}GeV/${PROCESS}_${NEVENTS}ev_${SHOWEROPT}_${RENSCALE}_jobID$SLURM_ARRAY_JOB_ID
+    OUTDIR=${DIRBASE}/${DATE}_${PROCESS}_${NEVENTS}ev_${SHOWEROPT}_${RENSCALE}_jobID$SLURM_ARRAY_JOB_ID
 elif [ $# == 6 ];
 then
-    dirBaseName=py8events_${CMENERGY}GeV/${PROCESS}_${NEVENTS}ev_${SHOWEROPT}_${RENSCALE}_${FACSCALE}_jobID$SLURM_ARRAY_JOB_ID
+    OUTDIR=${DIRBASE}/${DATE}_${PROCESS}_${NEVENTS}ev_${SHOWEROPT}_${RENSCALE}_${FACSCALE}_jobID$SLURM_ARRAY_JOB_ID
 elif [ $# == 7 ];
 then
-    dirBaseName=py8events_${CMENERGY}GeV/${PROCESS}_${NEVENTS}ev_${SHOWEROPT}_${RENSCALE}_${FACSCALE}_betaZ${BOOSTZ}_jobID$SLURM_ARRAY_JOB_ID
+    OUTDIR=${DIRBASE}/${DATE}_${PROCESS}_${NEVENTS}ev_${SHOWEROPT}_${RENSCALE}_${FACSCALE}_betaZ${BOOSTZ}_jobID$SLURM_ARRAY_JOB_ID
 elif [ $# == 8 ];
 then
-    dirBaseName=py8events_${CMENERGY}GeV/${PROCESS}_${NEVENTS}ev_${SHOWEROPT}_${RENSCALE}_${FACSCALE}_betaZ${BOOSTZ}_${PDF1}_jobID$SLURM_ARRAY_JOB_ID
+    OUTDIR=${DIRBASE}/${DATE}_${PROCESS}_${NEVENTS}ev_${SHOWEROPT}_${RENSCALE}_${FACSCALE}_betaZ${BOOSTZ}_${PDF1}_jobID$SLURM_ARRAY_JOB_ID
 elif [ $# == 9 ];
 then
-    dirBaseName=py8events_${CMENERGY}GeV/${PROCESS}_${NEVENTS}ev_${SHOWEROPT}_${RENSCALE}_${FACSCALE}_betaZ${BOOSTZ}_${PDF1}_${PDF2}_jobID$SLURM_ARRAY_JOB_ID
+    OUTDIR=${DIRBASE}/${DATE}_${PROCESS}_${NEVENTS}ev_${SHOWEROPT}_${RENSCALE}_${FACSCALE}_betaZ${BOOSTZ}_${PDF1}_${PDF2}_jobID$SLURM_ARRAY_JOB_ID
 fi
 
-if [ ! -d $dirBaseName ];
+if [ ! -d $OUTDIR ];
 then
-    mkdir -p $dirBaseName
+    mkdir -p $OUTDIR
 fi
 
-if [ ! -f $dirBaseName/PythiaAnalysis ];
+if [ ! -f $OUTDIR/PythiaAnalysis ];
 then
-    cp PythiaAnalysis $dirBaseName
+    cp PythiaAnalysis $OUTDIR
 fi
 
-if [ ! -f $dirBaseName/PythiaAnalysis.cpp ];
+if [ ! -f $OUTDIR/PythiaAnalysis.cpp ];
 then
-    cp src/PythiaAnalysis.cpp $dirBaseName
+    cp src/PythiaAnalysis.cpp $OUTDIR
 fi
 
-if [ ! -f $dirBaseName/PythiaAnalysisHelper.cxx ];
+if [ ! -f $OUTDIR/PythiaAnalysisHelper.cxx ];
 then
-    cp src/PythiaAnalysisHelper.cxx $dirBaseName
+    cp src/PythiaAnalysisHelper.cxx $OUTDIR
 fi
 
 sleep 1
-cd $dirBaseName
+cd $OUTDIR
 sleep 1
 
 STR1="time ./PythiaAnalysis $SLURM_ARRAY_TASK_ID ${PROCESS} ${NEVENTS} ${CMENERGY} ${SHOWEROPT} ${RENSCALE} ${FACSCALE} ${BOOSTZ} ${PDF1} ${PDF2}"
@@ -104,4 +106,14 @@ STR1="time ./PythiaAnalysis $SLURM_ARRAY_TASK_ID ${PROCESS} ${NEVENTS} ${CMENERG
 echo $STR1
 eval $STR1
 
+# create a merge script for the produced root files and to normalize histos per event                                                                                                                                             
+if [[ ! -f do_merge_normalize.sh ]]; then
+    touch do_merge_normalize.sh
+    cat << EOF >do_merge_normalize.sh
+hadd merged.root *.root
+wait
+root -l '/gluster2/h_popp01/Delphi/macros/normalize_weightSum.C("merged.root")'
+EOF
+fi
+ 
 exit $?

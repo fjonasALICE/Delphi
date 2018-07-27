@@ -73,12 +73,13 @@ int main(int argc, char **argv) {
   if (!strcmp(argv[2],"MBVeto")) // prevent double sampling of MB events and e.g. JJ events
     MB_veto = true;
 
-  printf("\nUsing %d pTHat bins:\n", pTHatBins);
-  for(int i=0; i <= pTHatBins; i++){
-    printf("%.0f ", pTHatBin[i]);
+  if( !strcmp(argv[2],"JJ") || !strcmp(argv[2],"PromptPhoton")){
+    printf("\nUsing %d pTHat bins:\n", pTHatBins);
+    for(int i=0; i <= pTHatBins; i++){
+      printf("%.0f ", pTHatBin[i]);
+    }
+    printf("\n");
   }
-  printf("\n");
-
 
   //--- Histograms ---------------------------------------------------
   TH1::SetDefaultSumw2(kTRUE);
