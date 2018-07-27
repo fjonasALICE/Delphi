@@ -1,9 +1,8 @@
-B1;4205;0c*root
+*root
 .#*
 *~
 *.o
-pythia
-pythiatest
+PythiaAnalysis
 output/
 py8events_8000GeV/
 py8events_8160GeV/

@@ -1,7 +1,4 @@
-//----------------------------------------------------------------------
-// hendrikshelper.cxx
-//----------------------------------------------------------------------
-#include "hendrikshelper.h"
+#include "PythiaAnalysisHelper.h"
 #include "Pythia8/Pythia.h"
 #include "TH1.h"
 #include "TH2.h"
@@ -14,7 +11,7 @@
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
-void HendriksHelper::Set_Pythia_Randomseed(Pythia8::Pythia &p){
+void PythiaAnalysisHelper::Set_Pythia_Randomseed(Pythia8::Pythia &p){
 
   TRandom3 *rand = new TRandom3(0);
   p.readString("Random:setSeed = on");
@@ -24,7 +21,7 @@ void HendriksHelper::Set_Pythia_Randomseed(Pythia8::Pythia &p){
 }
 
 //----------------------------------------------------------------------
-void HendriksHelper::Pass_Parameters_To_Pythia(Pythia8::Pythia &p, int argc, char **argv){
+void PythiaAnalysisHelper::Pass_Parameters_To_Pythia(Pythia8::Pythia &p, int argc, char **argv){
 
   p.readString(Form("Beams:eCM = %f", strtof(argv[4], NULL) ));
   if(argc > 6)
@@ -67,7 +64,7 @@ void HendriksHelper::Pass_Parameters_To_Pythia(Pythia8::Pythia &p, int argc, cha
 }
 
 //----------------------------------------------------------------------
-void HendriksHelper::ProcessSwitch(int iBin, double *pTHatBin, char **argv, Pythia8::Pythia &p){
+void PythiaAnalysisHelper::ProcessSwitch(int iBin, double *pTHatBin, char **argv, Pythia8::Pythia &p){
 
   if( !strcmp(argv[2],"MB") || !strcmp(argv[2],"MBVeto")){
     p.readString("SoftQCD:inelastic= on");
@@ -99,7 +96,7 @@ void HendriksHelper::ProcessSwitch(int iBin, double *pTHatBin, char **argv, Pyth
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
-void HendriksHelper::Fill_Pi0_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
+void PythiaAnalysisHelper::Fill_Pi0_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
   for (int i = 5; i < event.size(); i++) {
     if(event[i].id() == 111 && TMath::Abs(event[i].eta()) < etaMax ) {
       h->Fill(event[i].pT());
@@ -108,7 +105,7 @@ void HendriksHelper::Fill_Pi0_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
   return;
 }
 //----------------------------------------------------------------------
-void HendriksHelper::Fill_Pi0Primary_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
+void PythiaAnalysisHelper::Fill_Pi0Primary_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
   for (int i = 5; i < event.size(); i++) {
     if(event[i].id() == 111 && TMath::Abs(event[i].eta()) < etaMax ) {
       int mI = event[i].mother1();
@@ -128,7 +125,7 @@ void HendriksHelper::Fill_Pi0Primary_Pt(Pythia8::Event &event, float etaMax, TH1
   return;
 }
 //----------------------------------------------------------------------
-void HendriksHelper::Fill_Eta_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
+void PythiaAnalysisHelper::Fill_Eta_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
   for (int i = 5; i < event.size(); i++) {
     if(event[i].id() == 221 && TMath::Abs(event[i].eta()) < etaMax ) {
       h->Fill(event[i].pT());
@@ -137,7 +134,7 @@ void HendriksHelper::Fill_Eta_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
   return;
 }
 //----------------------------------------------------------------------
-void HendriksHelper::Fill_Omega_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
+void PythiaAnalysisHelper::Fill_Omega_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
   for (int i = 5; i < event.size(); i++) {
     if(event[i].id() == 223 && TMath::Abs(event[i].eta()) < etaMax ) {
       h->Fill(event[i].pT());
@@ -146,7 +143,7 @@ void HendriksHelper::Fill_Omega_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
   return;
 }
 //----------------------------------------------------------------------
-void HendriksHelper::Fill_Direct_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
+void PythiaAnalysisHelper::Fill_Direct_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
   for (int i = 5; i < event.size(); i++) {
     if(event[i].isFinal() && event[i].id() == 22 && TMath::Abs(event[i].eta()) < etaMax ) {
       if(event[i].status() < 90) h->Fill(event[i].pT());
@@ -155,7 +152,7 @@ void HendriksHelper::Fill_Direct_Photon_Pt(Pythia8::Event &event, float etaMax, 
   return;
 }
 //----------------------------------------------------------------------
-void HendriksHelper::Fill_Shower_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
+void PythiaAnalysisHelper::Fill_Shower_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
   for (int i = 5; i < event.size(); i++) {
     if(event[i].isFinal() && event[i].id() == 22 && TMath::Abs(event[i].eta()) < etaMax ) {
       if(event[i].status() < 90)
@@ -166,7 +163,7 @@ void HendriksHelper::Fill_Shower_Photon_Pt(Pythia8::Event &event, float etaMax, 
   return;
 }
 //----------------------------------------------------------------------
-void HendriksHelper::Fill_222_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
+void PythiaAnalysisHelper::Fill_222_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
   for (int i = 5; i < event.size(); i++) {
     if(event[i].isFinal() && event[i].id() == 22 && TMath::Abs(event[i].eta()) < etaMax ) {
       if(event[i].status() < 90)
@@ -177,7 +174,7 @@ void HendriksHelper::Fill_222_Photon_Pt(Pythia8::Event &event, float etaMax, TH1
   return;
 }
 //----------------------------------------------------------------------
-void HendriksHelper::Fill_Electron_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
+void PythiaAnalysisHelper::Fill_Electron_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
   for (int i = 5; i < event.size(); i++) {
     if(event[i].isFinal() && TMath::Abs(event[i].id()) == 11 && TMath::Abs(event[i].eta()) < etaMax ) {
       h->Fill(event[i].pT());
@@ -186,7 +183,7 @@ void HendriksHelper::Fill_Electron_Pt(Pythia8::Event &event, float etaMax, TH1 *
   return;
 }
 //----------------------------------------------------------------------
-void HendriksHelper::Fill_ElectronNeg_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
+void PythiaAnalysisHelper::Fill_ElectronNeg_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
   for (int i = 5; i < event.size(); i++) {
     if(event[i].isFinal() && event[i].id() == 11 && TMath::Abs(event[i].eta()) < etaMax ) {
       h->Fill(event[i].pT());
@@ -195,7 +192,7 @@ void HendriksHelper::Fill_ElectronNeg_Pt(Pythia8::Event &event, float etaMax, TH
   return;
 }
 //----------------------------------------------------------------------
-void HendriksHelper::Fill_ElectronPos_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
+void PythiaAnalysisHelper::Fill_ElectronPos_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
   for (int i = 5; i < event.size(); i++) {
     if(event[i].isFinal() && event[i].id() == -11 && TMath::Abs(event[i].eta()) < etaMax ) {
       h->Fill(event[i].pT());
@@ -204,7 +201,7 @@ void HendriksHelper::Fill_ElectronPos_Pt(Pythia8::Event &event, float etaMax, TH
   return;
 }
 //----------------------------------------------------------------------
-void HendriksHelper::Fill_Direct_Iso_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h,
+void PythiaAnalysisHelper::Fill_Direct_Iso_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h,
                                                   bool isoCharged, double iso_cone_radius, double iso_pt){
   for (int i = 5; i < event.size(); i++) {
     if(event[i].isFinal() && event[i].id() == 22 && TMath::Abs(event[i].eta()) < etaMax ) {
@@ -241,7 +238,7 @@ void HendriksHelper::Fill_Direct_Iso_Photon_Pt(Pythia8::Event &event, float etaM
   return;
 }
 //----------------------------------------------------------------------
-void HendriksHelper::Fill_Decay_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
+void PythiaAnalysisHelper::Fill_Decay_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
   for (int i = 5; i < event.size(); i++) {
     if(event[i].isFinal() && event[i].id() == 22 && TMath::Abs(event[i].eta()) < etaMax ) {
       if(event[i].status() > 90) h->Fill(event[i].pT());
@@ -252,7 +249,7 @@ void HendriksHelper::Fill_Decay_Photon_Pt(Pythia8::Event &event, float etaMax, T
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
-void HendriksHelper::Fill_invXsec_Pi0_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
+void PythiaAnalysisHelper::Fill_invXsec_Pi0_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
   for (int i = 5; i < event.size(); i++) {
     if(event[i].id() == 111 && TMath::Abs(event[i].eta()) < etaMax ) {
       h->Fill( event[i].pT(), 1./event[i].pT()/(2*TMath::Pi()) );
@@ -261,7 +258,7 @@ void HendriksHelper::Fill_invXsec_Pi0_Pt(Pythia8::Event &event, float etaMax, TH
   return;
 }
 //----------------------------------------------------------------------
-void HendriksHelper::Fill_invXsec_Pi0Primary_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
+void PythiaAnalysisHelper::Fill_invXsec_Pi0Primary_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
   for (int i = 5; i < event.size(); i++) {
     if(event[i].id() == 111 && TMath::Abs(event[i].eta()) < etaMax ) {
       int mI = event[i].mother1();
@@ -281,7 +278,7 @@ void HendriksHelper::Fill_invXsec_Pi0Primary_Pt(Pythia8::Event &event, float eta
   return;
 }
 //----------------------------------------------------------------------
-void HendriksHelper::Fill_invXsec_Eta_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
+void PythiaAnalysisHelper::Fill_invXsec_Eta_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
   for (int i = 5; i < event.size(); i++) {
     if(event[i].id() == 221 && TMath::Abs(event[i].eta()) < etaMax ) {
       h->Fill( event[i].pT(), 1./event[i].pT()/(2*TMath::Pi()) );
@@ -290,7 +287,7 @@ void HendriksHelper::Fill_invXsec_Eta_Pt(Pythia8::Event &event, float etaMax, TH
   return;
 }
 //----------------------------------------------------------------------
-void HendriksHelper::Fill_invXsec_Omega_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
+void PythiaAnalysisHelper::Fill_invXsec_Omega_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
   for (int i = 5; i < event.size(); i++) {
     if(event[i].id() == 223 && TMath::Abs(event[i].eta()) < etaMax ) {
       h->Fill( event[i].pT(), 1./event[i].pT()/(2*TMath::Pi()) );
@@ -299,7 +296,7 @@ void HendriksHelper::Fill_invXsec_Omega_Pt(Pythia8::Event &event, float etaMax, 
   return;
 }
 //----------------------------------------------------------------------
-void HendriksHelper::Fill_invXsec_Direct_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
+void PythiaAnalysisHelper::Fill_invXsec_Direct_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
   for (int i = 5; i < event.size(); i++) {
     if(event[i].isFinal() && event[i].id() == 22 && TMath::Abs(event[i].eta()) < etaMax ) {
       if(event[i].status() < 90) h->Fill( event[i].pT(), 1./event[i].pT()/(2*TMath::Pi()) );
@@ -308,7 +305,7 @@ void HendriksHelper::Fill_invXsec_Direct_Photon_Pt(Pythia8::Event &event, float 
   return;
 }
 //----------------------------------------------------------------------
-void HendriksHelper::Fill_invXsec_Shower_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
+void PythiaAnalysisHelper::Fill_invXsec_Shower_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
   for (int i = 5; i < event.size(); i++) {
     if(event[i].isFinal() && event[i].id() == 22 && TMath::Abs(event[i].eta()) < etaMax ) {
       if(event[i].status() < 90)
@@ -319,7 +316,7 @@ void HendriksHelper::Fill_invXsec_Shower_Photon_Pt(Pythia8::Event &event, float 
   return;
 }
 //----------------------------------------------------------------------
-void HendriksHelper::Fill_invXsec_222_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
+void PythiaAnalysisHelper::Fill_invXsec_222_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
   for (int i = 5; i < event.size(); i++) {
     if(event[i].isFinal() && event[i].id() == 22 && TMath::Abs(event[i].eta()) < etaMax ) {
       if(event[i].status() < 90)
@@ -330,7 +327,7 @@ void HendriksHelper::Fill_invXsec_222_Photon_Pt(Pythia8::Event &event, float eta
   return;
 }
 //----------------------------------------------------------------------
-void HendriksHelper::Fill_invXsec_Direct_Iso_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h,
+void PythiaAnalysisHelper::Fill_invXsec_Direct_Iso_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h,
                                                            bool isoCharged, double iso_cone_radius, double iso_pt){
   for (int i = 5; i < event.size(); i++) {
     if(event[i].isFinal() && event[i].id() == 22 && TMath::Abs(event[i].eta()) < etaMax ) {
@@ -367,7 +364,7 @@ void HendriksHelper::Fill_invXsec_Direct_Iso_Photon_Pt(Pythia8::Event &event, fl
   return;
 }
 //----------------------------------------------------------------------
-void HendriksHelper::Fill_invXsec_Decay_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
+void PythiaAnalysisHelper::Fill_invXsec_Decay_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
   for (int i = 5; i < event.size(); i++) {
     if(event[i].isFinal() && event[i].id() == 22 && TMath::Abs(event[i].eta()) < etaMax ) {
       if(event[i].status() > 90) h->Fill(event[i].pT(), 1./event[i].pT()/(2*TMath::Pi()) );
@@ -378,7 +375,7 @@ void HendriksHelper::Fill_invXsec_Decay_Photon_Pt(Pythia8::Event &event, float e
 
 
 //----------------------------------------------------------------------
-void HendriksHelper::Fill_TH2_Electron_TopMotherID(Pythia8::Event &event, float etaMax, TH2 *h){
+void PythiaAnalysisHelper::Fill_TH2_Electron_TopMotherID(Pythia8::Event &event, float etaMax, TH2 *h){
   for (int i = 5; i < event.size(); i++) {
     if(event[i].isFinal() && TMath::Abs(event[i].id()) == 11 && TMath::Abs(event[i].eta()) < etaMax ) {
 
@@ -428,7 +425,7 @@ void HendriksHelper::Fill_TH2_Electron_TopMotherID(Pythia8::Event &event, float 
   return;
 }
 //----------------------------------------------------------------------
-void HendriksHelper::Fill_Electron_TopMotherID(Pythia8::Event &event, float etaMax, TH1 *h){
+void PythiaAnalysisHelper::Fill_Electron_TopMotherID(Pythia8::Event &event, float etaMax, TH1 *h){
   for (int i = 5; i < event.size(); i++) {
     if(event[i].isFinal() && TMath::Abs(event[i].id()) == 11 && TMath::Abs(event[i].eta()) < etaMax ) {
       h->Fill( event[event[event[i].iTopCopy()].mother1()].id() );
@@ -438,7 +435,7 @@ void HendriksHelper::Fill_Electron_TopMotherID(Pythia8::Event &event, float etaM
 }
 
 //----------------------------------------------------------------------
-void HendriksHelper::Fill_Electron_Pt_ByTopMotherID(Pythia8::Event &event, float etaMax, TH1 *h, std::vector <int> vec_id){
+void PythiaAnalysisHelper::Fill_Electron_Pt_ByTopMotherID(Pythia8::Event &event, float etaMax, TH1 *h, std::vector <int> vec_id){
   for (int i = 5; i < event.size(); i++) {
     if(event[i].isFinal() && TMath::Abs(event[i].id()) == 11 && TMath::Abs(event[i].eta()) < etaMax) {
       int x = event[event[event[i].iTopCopy()].mother1()].id();
@@ -452,7 +449,7 @@ void HendriksHelper::Fill_Electron_Pt_ByTopMotherID(Pythia8::Event &event, float
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
-void HendriksHelper::Add_Histos_Scale_Write2File( std::vector <TH1D*>& vec, TH1* final_histo, TFile &file, double etaRange){
+void PythiaAnalysisHelper::Add_Histos_Scale_Write2File( std::vector <TH1D*>& vec, TH1* final_histo, TFile &file, double etaRange){
 
   file.cd();
 
@@ -474,7 +471,7 @@ void HendriksHelper::Add_Histos_Scale_Write2File( std::vector <TH1D*>& vec, TH1*
 }
 
 //----------------------------------------------------------------------
-void HendriksHelper::Add_Histos_Scale_Write2File( std::vector <TH1D*>& vec, TH1* final_histo, TFile &file, TDirectory *dir, double etaRange){
+void PythiaAnalysisHelper::Add_Histos_Scale_Write2File( std::vector <TH1D*>& vec, TH1* final_histo, TFile &file, TDirectory *dir, double etaRange){
 
   file.cd();
   dir->cd();
@@ -498,7 +495,7 @@ void HendriksHelper::Add_Histos_Scale_Write2File( std::vector <TH1D*>& vec, TH1*
 }
 
 //----------------------------------------------------------------------
-void HendriksHelper::Add_Histos_Scale_Write2File( std::vector <TH2D*>& vec, TH2* final_histo, TFile &file, TDirectory *dir, double etaRange){
+void PythiaAnalysisHelper::Add_Histos_Scale_Write2File( std::vector <TH2D*>& vec, TH2* final_histo, TFile &file, TDirectory *dir, double etaRange){
 
   file.cd();
   dir->cd();

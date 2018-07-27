@@ -9,13 +9,12 @@ LHAPDF6=-I$(LHAPDF6_INCLUDE) $(LHAPDF6_LIB)/libLHAPDF.so
 
 MERGE=macro/haddav.C
 
-PYTHIA=src/pythia.cpp
+PYTHIA=src/PythiaAnalysis.cpp
 PYTHIATEST=src/PythiaAnalysis.cpp
+HELPER=PythiaAnalysisHelper
 
 # PYTHIA standalone
-pythia:	$(PYTHIA) hendrikshelper.o 
-	$(CXX) -o $@ $+ $(PYTHIAFLAGS) $(LHAPDF6) -ldl $(ROOT)
-pythiatest:	$(PYTHIATEST) hendrikshelper.o 
+PythiaAnalysis:	$(PYTHIA) $(HELPER).o 
 	$(CXX) -o $@ $+ $(PYTHIAFLAGS) $(LHAPDF6) -ldl $(ROOT)
 
 # merge programs
@@ -26,5 +25,5 @@ haddav_weightCut: $(MERGE2)
 	$(CXX) -o $@ $+ $(PYTHIAFLAGS) -ldl $(ROOT) -I$(INC) $(FASTJET)
 
 # helpful functions for pythia
-hendrikshelper.o: src/hendrikshelper.cxx src/hendrikshelper.h
-	$(CXX) -c src/hendrikshelper.cxx $(PYTHIAFLAGS) -ldl $(ROOT)
+PythiaAnalysisHelper.o: src/PythiaAnalysisHelper.cxx src/PythiaAnalysisHelper.h
+	$(CXX) -c src/PythiaAnalysisHelper.cxx $(PYTHIAFLAGS) -ldl $(ROOT)

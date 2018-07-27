@@ -1,9 +1,5 @@
-//----------------------------------------------------------------------
-// hendrikshelper.h : helpful functions for standard pythia stuff
-//----------------------------------------------------------------------
-
-#ifndef _HENDRIKSHELPER_h_included_
-#define _HENDRIKSHELPER_h_included_
+#ifndef _PYTHIAANALYSISHELPER_h_included_
+#define _PYTHIAANALYSISHELPER_h_included_
 
 #include "Pythia8/Pythia.h"
 #include "TH1.h"
@@ -11,12 +7,12 @@
 #include "TFile.h"
 #include <vector>
 
-class HendriksHelper{
+class PythiaAnalysisHelper{
 
  public:
 
-  HendriksHelper(){};
-  //  ~HendriksHelper(){} // destructor not needed, if no member variables
+  PythiaAnalysisHelper(){};
+  //  ~PythiaAnalysisHelper(){} // destructor not needed, if no member variables
 
   void Set_Pythia_Randomseed(Pythia8::Pythia &p); // set seed with ROOT's TRandom3
   void Pass_Parameters_To_Pythia(Pythia8::Pythia &p, int argc, char **argv); // set stuff with one line; check .cxx for enlightenment

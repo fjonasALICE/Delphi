@@ -5,7 +5,7 @@
 #include "TFile.h"
 #include "TH1.h"
 #include "TH2.h"
-#include "hendrikshelper.h"
+#include "PythiaAnalysisHelper.h"
 #include "PythiaAnalysis.h"
 
 using std::cout;

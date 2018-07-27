@@ -8,21 +8,21 @@
 #include "TFile.h"
 #include "TH1.h"
 #include "TH2.h"
-#include "hendrikshelper.h"
+#include "PythiaAnalysisHelper.h"
 
 Pythia8::Pythia p;
 
-HendriksHelper pyHelp;
+PythiaAnalysisHelper pyHelp;
 
-int pTHatStartBin = 0;
+int pTHatStartBin = 0; // option to skip the first pthat bins
 bool applyPhotonIso = false;
 
-char rootFileName[1024];
+char rootFileName[1024]; // output file name
 
 bool applyBoost = false;
-double boostBetaZ = 0.;
+double boostBetaZ = 0.; // boost in z direction, needed for asymmetric collision systems
 
-bool MB_veto = false;  
+bool MB_veto = false; // true -> omit double counting between pthatbins and MB generation
 
 // pthat bin definition from ALICE JJ production at 8 TeV
 const int pTHatBins = 18;
@@ -31,14 +31,13 @@ double pTHatBin[pTHatBins+1] = { 9.  , 12. , 16. , 21. , 28.,
 				 99. , 115., 132., 150., 169.,
 				 190., 212., 235 , 10000. }; 
 
+// kinematic range
 const double ptMin = 0., ptMax = 300.;
 const int ptBins = 300;
 const double etaLarge = 3.,
   etaTPC = 0.9,
   etaEMCal = 0.66,
   etaPHOS = 0.12;
-
-
 
 const char *electronMotherName[17] = {"all",
 				      "neg","pos",
