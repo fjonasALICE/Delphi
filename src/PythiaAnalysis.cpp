@@ -14,6 +14,7 @@ using namespace Pythia8;
 int main(int, char **);
 int main(int argc, char **argv) {
 
+  // not so much output at the beginning
   p.readString("Next:numberCount = 100000");
   p.readString("Next:numberShowLHA = 0");
   p.readString("Next:numberShowInfo = 0");
@@ -23,7 +24,7 @@ int main(int argc, char **argv) {
 
   //--- read commandline args ----------------------------------------
   if (argc < 5) {
-    printf("Need at least first 4 arguments:\n%s [output root file] [\"MB\",\"MBVeto\",\"JJ\",\"PromptPhoton\",\"WeakBoson\"] [number of events per pthatbin] [cm energy in GeV] [\"fullEvents\",\"noMPI\",\"noHadro\",\"noMPInoHadro\",\"noShower\"] [renormScaleFac] [factorMultFac] [beta_boost_z] [pdfA] [pdfB]", argv[0]);
+    printf("Need at least first 4 arguments:\n%s [output root file] [\"MB\",\"MBVeto\",\"JJ\",\"GJ\",\"WeakBoson\"] [number of events per pthatbin] [cm energy in GeV] [\"fullEvents\",\"noMPI\",\"noHadro\",\"noMPInoHadro\",\"noShower\"] [renormScaleFac] [factorMultFac] [beta_boost_z] [pdfA] [pdfB]", argv[0]);
     exit(EXIT_FAILURE);
   }
 
@@ -39,22 +40,18 @@ int main(int argc, char **argv) {
   // argv[9]: external pdf beam A 
   // argv[10]: external pdf beam B
 
-  // "abc" -> "abc.root"
-  snprintf( rootFileName, sizeof(rootFileName), "%s.root", argv[1]);
-
-  // test shower cut-off
-  // p.readString("TimeShower:pTminChgQ = 2.0");
-
+  snprintf( rootFileName, sizeof(rootFileName), "%s.root", argv[1]);  // "abc" -> "abc.root"
   printf("\nThe result will be written into %s\n", rootFileName);
+
+  // p.readString("TimeShower:pTminChgQ = 2.0");  // test shower cut-off
 
   if (argc >= 9){ // account for boost in asymmetric collision systems
     applyBoost = true;
     boostBetaZ = strtof(argv[8], NULL);
-    printf("\nApplying a boost along z direction with beta_z = %f\n", boostBetaZ);
-    // 0.435 for pPb
+    printf("\nApplying a boost along z direction with beta_z = %f\n", boostBetaZ); // 0.435 for pPb
   }
 
-  if (argc >= 10){ // choice of external PDF
+  if (argc >= 10){ // choice of external PDF (using LHAPDF6)
     string pdfA = argv[9];
     string pdfB = argv[9];
     printf("\nUsing PDF %s for beam A\n", pdfA.c_str());
@@ -73,7 +70,7 @@ int main(int argc, char **argv) {
   if (!strcmp(argv[2],"MBVeto")) // prevent double sampling of MB events and e.g. JJ events
     MB_veto = true;
 
-  if( !strcmp(argv[2],"JJ") || !strcmp(argv[2],"PromptPhoton")){
+  if( !strcmp(argv[2],"JJ") || !strcmp(argv[2],"GJ") || !strcmp(argv[2],"WeakBoson") ){
     printf("\nUsing %d pTHat bins:\n", pTHatBins);
     for(int i=0; i <= pTHatBins; i++){
       printf("%.0f ", pTHatBin[i]);
@@ -81,10 +78,11 @@ int main(int argc, char **argv) {
     printf("\n");
   }
 
+  //----------------------------------------------------------------------------------------------------
+  //----------------------------------------------------------------------------------------------------
   //--- Histograms ---------------------------------------------------
-  TH1::SetDefaultSumw2(kTRUE);
-  gStyle->SetOptStat(0);
-
+  TH1::SetDefaultSumw2(kTRUE); // histograms shall carry sum of weights by default for proper error propagation
+  gStyle->SetOptStat(0); // no legend by default
 
   // TH2D electron_pt vs electron_topMotherID
   TH2D *h2_electron_pt_topMotherID = new TH2D("h2_electron_pt_topMotherID","electron_pt_topMotherID (EMCal acceptance |#eta| < 0.66)",17,0,17,ptBins,ptMin,ptMax);
@@ -92,15 +90,6 @@ int main(int argc, char **argv) {
   for(int i = 0; i < 17; i++)
     h2_electron_pt_topMotherID->GetXaxis()->SetBinLabel(i+1, electronMotherName[i]);
 
-  // controls plot to see how much is cut away with sQCD fluctuation cut
-  vector <TH1D> vec_fluctCut;
-  vec_fluctCut.push_back( TH1D("h_fluctCut00", "h_fluctCut00", ptBins, ptMin, ptMax) );
-  for( int i = 10; i <= 30; i++ ){
-    vec_fluctCut.push_back( TH1D(Form("h_fluctCut%02d",i), Form("h_fluctCut%02d",i), ptBins, ptMin, ptMax) );
-  }
-
-  //----------------------------------------------------------------------------------------------------
-  //----------------------------------------------------------------------------------------------------
   // all pions without secondary correction
   TH1D *h_pi0_etaLarge = new TH1D("h_pi0_etaLarge","pi0_etaLarge", ptBins, ptMin, ptMax);
   TH1D *h_pi0_etaTPC   = new TH1D("h_pi0_etaTPC","pi0_etaTPC", ptBins, ptMin, ptMax);
@@ -1161,9 +1150,6 @@ int main(int argc, char **argv) {
   //--- write to root file ---------------------------------------
   TFile file(rootFileName, "RECREATE");
   
-  // for( unsigned int i = 0; i < vec_fluctCut.size(); i++){
-  //   vec_fluctCut.at(i).Write();
-  // }
   //----------------------------------------------------------------------------------------------------
   for(int iBin=0; iBin < pTHatBins; iBin++){
     vec_weightSum_bin.at(iBin)->Write();

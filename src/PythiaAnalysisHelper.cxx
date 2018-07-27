@@ -75,18 +75,22 @@ void PythiaAnalysisHelper::ProcessSwitch(int iBin, double *pTHatBin, char **argv
     p.readString("HardQCD:hardccbar = on");
     p.readString("HardQCD:hardbbbar = on");
   }
-  else if( !strcmp(argv[2],"PromptPhoton") ){
+  else if( !strcmp(argv[2],"GJ") ){
     p.readString("PromptPhoton:all = on");
   }
   else if( !strcmp(argv[2],"WeakBoson") ){
+    // the two commented processes cannot be used with pthat bins
     // p.readString("WeakBosonExchange:all = on");
     // p.readString("WeakSingleBoson:all = on");
-    // p.readString("WeakDoubleBoson:all = on");
+    // instead, use the following
+    // note that there are more weak boson processes, e.g. double boson production
+    // or fermion production via t-channel weak boson exchange
+    // but the cross section is very small compared to single boson production
     p.readString("WeakSingleBoson:ffbar2ffbar(s:gmZ) = on");
     p.readString("WeakSingleBoson:ffbar2ffbar(s:W) = on");
   }
   else
-    printf("\nNo process switched on. Provide \"MB\" or \"MBVeto\" or \"JJ\" or \"PromptPhoton\" or \"WeakBoson\" as second argument\n");
+    printf("\nNo process switched on. Provide \"MB\" or \"MBVeto\" or \"JJ\" or \"GJ\" or \"WeakBoson\" as second argument\n");
   
   p.settings.parm("PhaseSpace:pTHatMin", pTHatBin[iBin]);
   p.settings.parm("PhaseSpace:pTHatMax", pTHatBin[iBin+1]);

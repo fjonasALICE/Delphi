@@ -7,7 +7,7 @@
 if [ "$#" -lt "3" ];
 then
     echo -e "Need at least first 3 arguments of:\n\
-[\"MB\",\"MBVeto\",\"JJ\",\"PromptPhoton\",\"WeakBoson\"]\n\
+[\"MB\",\"MBVeto\",\"JJ\",\"GJ\",\"WeakBoson\"]\n\
 [number of events per pthatbin]\n\
 [cm energy in GeV]\n\
 [\"fullEvents\",\"noMPI\",\"noHadro\",\"noMPInoHadro\",\"noShower\"]\n\
@@ -106,13 +106,15 @@ STR1="time ./PythiaAnalysis $SLURM_ARRAY_TASK_ID ${PROCESS} ${NEVENTS} ${CMENERG
 echo $STR1
 eval $STR1
 
-# create a merge script for the produced root files and to normalize histos per event                                                                                                                                             
+# create a merge script for the produced root files and to normalize histos per event
+ROOTFILENAME="merged_${PROCESS}.root"
+
 if [[ ! -f do_merge_normalize.sh ]]; then
     touch do_merge_normalize.sh
     cat << EOF >do_merge_normalize.sh
-hadd merged.root *.root
+hadd ${ROOTFILENAME} *.root
 wait
-root -l '/gluster2/h_popp01/Delphi/macros/normalize_weightSum.C("merged.root")'
+root -l -q -b -x '/gluster2/h_popp01/Delphi/macros/normalize_weightSum.C("${ROOTFILENAME}")'
 EOF
 fi
  
