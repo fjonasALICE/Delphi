@@ -134,6 +134,15 @@ void PythiaAnalysisHelper::Fill_Eta_Pt(Pythia8::Event &event, float etaMax, TH1 
   return;
 }
 //----------------------------------------------------------------------
+void PythiaAnalysisHelper::Fill_EtaPrime_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
+  for (int i = 5; i < event.size(); i++) {
+    if(event[i].id() == 331 && TMath::Abs(event[i].eta()) < etaMax ) {
+      h->Fill(event[i].pT());
+    }
+  }
+  return;
+}
+//----------------------------------------------------------------------
 void PythiaAnalysisHelper::Fill_Omega_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
   for (int i = 5; i < event.size(); i++) {
     if(event[i].id() == 223 && TMath::Abs(event[i].eta()) < etaMax ) {
@@ -281,6 +290,15 @@ void PythiaAnalysisHelper::Fill_invXsec_Pi0Primary_Pt(Pythia8::Event &event, flo
 void PythiaAnalysisHelper::Fill_invXsec_Eta_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
   for (int i = 5; i < event.size(); i++) {
     if(event[i].id() == 221 && TMath::Abs(event[i].eta()) < etaMax ) {
+      h->Fill( event[i].pT(), 1./event[i].pT()/(2*TMath::Pi()) );
+    }
+  }
+  return;
+}
+//----------------------------------------------------------------------
+void PythiaAnalysisHelper::Fill_invXsec_EtaPrime_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
+  for (int i = 5; i < event.size(); i++) {
+    if(event[i].id() == 331 && TMath::Abs(event[i].eta()) < etaMax ) {
       h->Fill( event[i].pT(), 1./event[i].pT()/(2*TMath::Pi()) );
     }
   }

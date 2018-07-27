@@ -19,13 +19,14 @@ class PythiaAnalysisHelper{
   void ProcessSwitch(int iBin, double *pTHatBin, char **argv, Pythia8::Pythia &p); // set pTHat bin specific stuff
 
   // fill "normal" spectra
-  void Fill_Pi0_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // fill pt of all pi0
+  void Fill_Pi0_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // fill pt of all pi0 in the event within eta range
   void Fill_Pi0Primary_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // fill pt of all primary pi0 (i.e. secondary corrected)
   void Fill_Eta_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // fill pt of all eta
+  void Fill_EtaPrime_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // fill pt of all eta prime
   void Fill_Omega_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // fill pt of all omega
-  void Fill_Direct_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // fill pt of all direct photons in the event within eta range
-  void Fill_Shower_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // fill pt of all shower photons in the event within eta range
-  void Fill_222_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // fill pt of all LO photons in the event within eta range
+  void Fill_Direct_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // fill pt of all direct photons
+  void Fill_Shower_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // fill pt of all shower photons
+  void Fill_222_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // fill pt of all LO photons
   void Fill_Direct_Iso_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h,
                                     bool isoCharged, double iso_cone_radius, double iso_pt); // fill pt of isolated direct photons
   void Fill_Decay_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // same with decay photons
@@ -37,6 +38,7 @@ class PythiaAnalysisHelper{
   void Fill_invXsec_Pi0_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // ...if you want to apply 1/(pt*2pi) as weight
   void Fill_invXsec_Pi0Primary_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // ...if you want to apply 1/(pt*2pi) as weight
   void Fill_invXsec_Eta_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // ...if you want to apply 1/(pt*2pi) as weight
+  void Fill_invXsec_EtaPrime_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // ...if you want to apply 1/(pt*2pi) as weight
   void Fill_invXsec_Omega_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // ...if you want to apply 1/(pt*2pi) as weight
   void Fill_invXsec_Direct_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // ...if you want to apply 1/(pt*2pi) as weight
   void Fill_invXsec_Shower_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // ...if you want to apply 1/(pt*2pi) as weight

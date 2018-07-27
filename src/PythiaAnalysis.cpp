@@ -113,13 +113,19 @@ int main(int argc, char **argv) {
   TH1D *h_pi0primary_etaEMCal = new TH1D("h_pi0primary_etaEMCal","pi0primary_etaEMCal", ptBins, ptMin, ptMax);
   TH1D *h_pi0primary_etaPHOS  = new TH1D("h_pi0primary_etaPHOS","pi0primary_etaPHOS", ptBins, ptMin, ptMax);
 
-  // all etas without secondary correction
+  // eta meson
   TH1D *h_eta_etaLarge = new TH1D("h_eta_etaLarge","eta_etaLarge", ptBins, ptMin, ptMax);
   TH1D *h_eta_etaTPC   = new TH1D("h_eta_etaTPC","eta_etaTPC", ptBins, ptMin, ptMax);
   TH1D *h_eta_etaEMCal = new TH1D("h_eta_etaEMCal","eta_etaEMCal", ptBins, ptMin, ptMax);
   TH1D *h_eta_etaPHOS  = new TH1D("h_eta_etaPHOS","eta_etaPHOS", ptBins, ptMin, ptMax);
 
-  // all omega mesons without secondary correction
+  // eta prime meson
+  TH1D *h_etaprime_etaLarge = new TH1D("h_etaprime_etaLarge","etaprime_etaLarge", ptBins, ptMin, ptMax);
+  TH1D *h_etaprime_etaTPC   = new TH1D("h_etaprime_etaTPC","etaprime_etaTPC", ptBins, ptMin, ptMax);
+  TH1D *h_etaprime_etaEMCal = new TH1D("h_etaprime_etaEMCal","etaprime_etaEMCal", ptBins, ptMin, ptMax);
+  TH1D *h_etaprime_etaPHOS  = new TH1D("h_etaprime_etaPHOS","etaprime_etaPHOS", ptBins, ptMin, ptMax);
+
+  // omega meson
   TH1D *h_omega_etaLarge = new TH1D("h_omega_etaLarge","omega_etaLarge", ptBins, ptMin, ptMax);
   TH1D *h_omega_etaTPC   = new TH1D("h_omega_etaTPC","omega_etaTPC", ptBins, ptMin, ptMax);
   TH1D *h_omega_etaEMCal = new TH1D("h_omega_etaEMCal","omega_etaEMCal", ptBins, ptMin, ptMax);
@@ -213,13 +219,19 @@ int main(int argc, char **argv) {
   TH1D *h_invXsec_pi0primary_etaEMCal = new TH1D("h_invXsec_pi0primary_etaEMCal","pi0primary_etaEMCal", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_pi0primary_etaPHOS = new TH1D("h_invXsec_pi0primary_etaPHOS","pi0primary_etaPHOS", ptBins, ptMin, ptMax);
 
-  // all etas without secondary correction
+  // eta meson
   TH1D *h_invXsec_eta_etaLarge = new TH1D("h_invXsec_eta_etaLarge","eta_etaLarge", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_eta_etaTPC = new TH1D("h_invXsec_eta_etaTPC","eta_etaTPC", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_eta_etaEMCal = new TH1D("h_invXsec_eta_etaEMCal","eta_etaEMCal", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_eta_etaPHOS = new TH1D("h_invXsec_eta_etaPHOS","eta_etaPHOS", ptBins, ptMin, ptMax);
 
-  // all omega mesons without secondary correction
+  // eta prime meson
+  TH1D *h_invXsec_etaprime_etaLarge = new TH1D("h_invXsec_etaprime_etaLarge","etaprime_etaLarge", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_etaprime_etaTPC = new TH1D("h_invXsec_etaprime_etaTPC","etaprime_etaTPC", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_etaprime_etaEMCal = new TH1D("h_invXsec_etaprime_etaEMCal","etaprime_etaEMCal", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_etaprime_etaPHOS = new TH1D("h_invXsec_etaprime_etaPHOS","etaprime_etaPHOS", ptBins, ptMin, ptMax);
+
+  // omega meson
   TH1D *h_invXsec_omega_etaLarge = new TH1D("h_invXsec_omega_etaLarge","omega_etaLarge", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_omega_etaTPC = new TH1D("h_invXsec_omega_etaTPC","omega_etaTPC", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_omega_etaEMCal = new TH1D("h_invXsec_omega_etaEMCal","omega_etaEMCal", ptBins, ptMin, ptMax);
@@ -323,6 +335,11 @@ int main(int argc, char **argv) {
   vector <TH1D*> vec_eta_etaEMCal_bin;
   vector <TH1D*> vec_eta_etaPHOS_bin;
 
+  vector <TH1D*> vec_etaprime_etaLarge_bin;
+  vector <TH1D*> vec_etaprime_etaTPC_bin;
+  vector <TH1D*> vec_etaprime_etaEMCal_bin;
+  vector <TH1D*> vec_etaprime_etaPHOS_bin;
+
   vector <TH1D*> vec_omega_etaLarge_bin;
   vector <TH1D*> vec_omega_etaTPC_bin;
   vector <TH1D*> vec_omega_etaEMCal_bin;
@@ -413,6 +430,11 @@ int main(int argc, char **argv) {
   vector <TH1D*> vec_invXsec_eta_etaTPC_bin;
   vector <TH1D*> vec_invXsec_eta_etaEMCal_bin;
   vector <TH1D*> vec_invXsec_eta_etaPHOS_bin;
+
+  vector <TH1D*> vec_invXsec_etaprime_etaLarge_bin;
+  vector <TH1D*> vec_invXsec_etaprime_etaTPC_bin;
+  vector <TH1D*> vec_invXsec_etaprime_etaEMCal_bin;
+  vector <TH1D*> vec_invXsec_etaprime_etaPHOS_bin;
 
   vector <TH1D*> vec_invXsec_omega_etaLarge_bin;
   vector <TH1D*> vec_invXsec_omega_etaTPC_bin;
@@ -516,6 +538,12 @@ int main(int argc, char **argv) {
     vec_eta_etaEMCal_bin.push_back( (TH1D*)h_eta_etaEMCal->Clone(Form("h_eta_etaEMCal_bin_%02d",i)) );
     vec_eta_etaPHOS_bin.push_back( (TH1D*)h_eta_etaPHOS->Clone(Form("h_eta_etaPHOS_bin_%02d",i)) );
 
+    // eta prime histos
+    vec_etaprime_etaLarge_bin.push_back( (TH1D*)h_etaprime_etaLarge->Clone(Form("h_etaprime_etaLarge_bin_%02d",i)) );
+    vec_etaprime_etaTPC_bin.push_back( (TH1D*)h_etaprime_etaTPC->Clone(Form("h_etaprime_etaTPC_bin_%02d",i)) );
+    vec_etaprime_etaEMCal_bin.push_back( (TH1D*)h_etaprime_etaEMCal->Clone(Form("h_etaprime_etaEMCal_bin_%02d",i)) );
+    vec_etaprime_etaPHOS_bin.push_back( (TH1D*)h_etaprime_etaPHOS->Clone(Form("h_etaprime_etaPHOS_bin_%02d",i)) );
+
     // omega histos
     vec_omega_etaLarge_bin.push_back( (TH1D*)h_omega_etaLarge->Clone(Form("h_omega_etaLarge_bin_%02d",i)) );
     vec_omega_etaTPC_bin.push_back( (TH1D*)h_omega_etaTPC->Clone(Form("h_omega_etaTPC_bin_%02d",i)) );
@@ -611,6 +639,12 @@ int main(int argc, char **argv) {
     vec_invXsec_eta_etaTPC_bin.push_back( (TH1D*)h_invXsec_eta_etaTPC->Clone(Form("h_invXsec_eta_etaTPC_bin_%02d",i)) );
     vec_invXsec_eta_etaEMCal_bin.push_back( (TH1D*)h_invXsec_eta_etaEMCal->Clone(Form("h_invXsec_eta_etaEMCal_bin_%02d",i)) );
     vec_invXsec_eta_etaPHOS_bin.push_back( (TH1D*)h_invXsec_eta_etaPHOS->Clone(Form("h_invXsec_eta_etaPHOS_bin_%02d",i)) );
+
+    // eta prime histos
+    vec_invXsec_etaprime_etaLarge_bin.push_back( (TH1D*)h_invXsec_etaprime_etaLarge->Clone(Form("h_invXsec_etaprime_etaLarge_bin_%02d",i)) );
+    vec_invXsec_etaprime_etaTPC_bin.push_back( (TH1D*)h_invXsec_etaprime_etaTPC->Clone(Form("h_invXsec_etaprime_etaTPC_bin_%02d",i)) );
+    vec_invXsec_etaprime_etaEMCal_bin.push_back( (TH1D*)h_invXsec_etaprime_etaEMCal->Clone(Form("h_invXsec_etaprime_etaEMCal_bin_%02d",i)) );
+    vec_invXsec_etaprime_etaPHOS_bin.push_back( (TH1D*)h_invXsec_etaprime_etaPHOS->Clone(Form("h_invXsec_etaprime_etaPHOS_bin_%02d",i)) );
 
     // omega histos
     vec_invXsec_omega_etaLarge_bin.push_back( (TH1D*)h_invXsec_omega_etaLarge->Clone(Form("h_invXsec_omega_etaLarge_bin_%02d",i)) );
@@ -749,6 +783,11 @@ int main(int argc, char **argv) {
       pyHelp.Fill_Eta_Pt(p.event, etaEMCal, vec_eta_etaEMCal_bin.at(iBin));
       pyHelp.Fill_Eta_Pt(p.event, etaPHOS, vec_eta_etaPHOS_bin.at(iBin));
 
+      pyHelp.Fill_EtaPrime_Pt(p.event, etaLarge, vec_etaprime_etaLarge_bin.at(iBin));
+      pyHelp.Fill_EtaPrime_Pt(p.event, etaTPC, vec_etaprime_etaTPC_bin.at(iBin));
+      pyHelp.Fill_EtaPrime_Pt(p.event, etaEMCal, vec_etaprime_etaEMCal_bin.at(iBin));
+      pyHelp.Fill_EtaPrime_Pt(p.event, etaPHOS, vec_etaprime_etaPHOS_bin.at(iBin));
+
       pyHelp.Fill_Omega_Pt(p.event, etaLarge, vec_omega_etaLarge_bin.at(iBin));
       pyHelp.Fill_Omega_Pt(p.event, etaTPC, vec_omega_etaTPC_bin.at(iBin));
       pyHelp.Fill_Omega_Pt(p.event, etaEMCal, vec_omega_etaEMCal_bin.at(iBin));
@@ -837,6 +876,11 @@ int main(int argc, char **argv) {
       pyHelp.Fill_invXsec_Eta_Pt(p.event, etaTPC, vec_invXsec_eta_etaTPC_bin.at(iBin));
       pyHelp.Fill_invXsec_Eta_Pt(p.event, etaEMCal, vec_invXsec_eta_etaEMCal_bin.at(iBin));
       pyHelp.Fill_invXsec_Eta_Pt(p.event, etaPHOS, vec_invXsec_eta_etaPHOS_bin.at(iBin));
+
+      pyHelp.Fill_invXsec_EtaPrime_Pt(p.event, etaLarge, vec_invXsec_etaprime_etaLarge_bin.at(iBin));
+      pyHelp.Fill_invXsec_EtaPrime_Pt(p.event, etaTPC, vec_invXsec_etaprime_etaTPC_bin.at(iBin));
+      pyHelp.Fill_invXsec_EtaPrime_Pt(p.event, etaEMCal, vec_invXsec_etaprime_etaEMCal_bin.at(iBin));
+      pyHelp.Fill_invXsec_EtaPrime_Pt(p.event, etaPHOS, vec_invXsec_etaprime_etaPHOS_bin.at(iBin));
 
       pyHelp.Fill_invXsec_Omega_Pt(p.event, etaLarge, vec_invXsec_omega_etaLarge_bin.at(iBin));
       pyHelp.Fill_invXsec_Omega_Pt(p.event, etaTPC, vec_invXsec_omega_etaTPC_bin.at(iBin));
@@ -940,6 +984,11 @@ int main(int argc, char **argv) {
     vec_eta_etaEMCal_bin.at(iBin)->Scale(sigma);
     vec_eta_etaPHOS_bin.at(iBin)->Scale(sigma);
 
+    vec_etaprime_etaLarge_bin.at(iBin)->Scale(sigma);
+    vec_etaprime_etaTPC_bin.at(iBin)->Scale(sigma);
+    vec_etaprime_etaEMCal_bin.at(iBin)->Scale(sigma);
+    vec_etaprime_etaPHOS_bin.at(iBin)->Scale(sigma);
+
     vec_omega_etaLarge_bin.at(iBin)->Scale(sigma);
     vec_omega_etaTPC_bin.at(iBin)->Scale(sigma);
     vec_omega_etaEMCal_bin.at(iBin)->Scale(sigma);
@@ -1026,6 +1075,11 @@ int main(int argc, char **argv) {
     vec_invXsec_eta_etaTPC_bin.at(iBin)->Scale(sigma);
     vec_invXsec_eta_etaEMCal_bin.at(iBin)->Scale(sigma);
     vec_invXsec_eta_etaPHOS_bin.at(iBin)->Scale(sigma);
+
+    vec_invXsec_etaprime_etaLarge_bin.at(iBin)->Scale(sigma);
+    vec_invXsec_etaprime_etaTPC_bin.at(iBin)->Scale(sigma);
+    vec_invXsec_etaprime_etaEMCal_bin.at(iBin)->Scale(sigma);
+    vec_invXsec_etaprime_etaPHOS_bin.at(iBin)->Scale(sigma);
 
     vec_invXsec_omega_etaLarge_bin.at(iBin)->Scale(sigma);
     vec_invXsec_omega_etaTPC_bin.at(iBin)->Scale(sigma);
@@ -1140,6 +1194,12 @@ int main(int argc, char **argv) {
   pyHelp.Add_Histos_Scale_Write2File( vec_eta_etaEMCal_bin, h_eta_etaEMCal, file, dir_eta, 2*etaEMCal);
   pyHelp.Add_Histos_Scale_Write2File( vec_eta_etaPHOS_bin, h_eta_etaPHOS, file, dir_eta, 2*etaPHOS);
 
+  TDirectory *dir_etaprime = file.mkdir("etaprime");
+  pyHelp.Add_Histos_Scale_Write2File( vec_etaprime_etaLarge_bin, h_etaprime_etaLarge, file, dir_etaprime, 2*etaLarge);
+  pyHelp.Add_Histos_Scale_Write2File( vec_etaprime_etaTPC_bin, h_etaprime_etaTPC, file, dir_etaprime, 2*etaTPC);
+  pyHelp.Add_Histos_Scale_Write2File( vec_etaprime_etaEMCal_bin, h_etaprime_etaEMCal, file, dir_etaprime, 2*etaEMCal);
+  pyHelp.Add_Histos_Scale_Write2File( vec_etaprime_etaPHOS_bin, h_etaprime_etaPHOS, file, dir_etaprime, 2*etaPHOS);
+
   TDirectory *dir_omega = file.mkdir("omega");
   pyHelp.Add_Histos_Scale_Write2File( vec_omega_etaLarge_bin, h_omega_etaLarge, file, dir_omega, 2*etaLarge);
   pyHelp.Add_Histos_Scale_Write2File( vec_omega_etaTPC_bin, h_omega_etaTPC, file, dir_omega, 2*etaTPC);
@@ -1234,6 +1294,12 @@ int main(int argc, char **argv) {
   pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_eta_etaTPC_bin, h_invXsec_eta_etaTPC, file, dir_eta_invXsec, 2.*etaTPC);
   pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_eta_etaEMCal_bin, h_invXsec_eta_etaEMCal, file, dir_eta_invXsec, 2.*etaEMCal);
   pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_eta_etaPHOS_bin, h_invXsec_eta_etaPHOS, file, dir_eta_invXsec, 2.*etaPHOS);
+
+  TDirectory *dir_etaprime_invXsec = file.mkdir("etaprime_invXsec");
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_etaprime_etaLarge_bin, h_invXsec_etaprime_etaLarge, file, dir_etaprime_invXsec, 2.*etaLarge);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_etaprime_etaTPC_bin, h_invXsec_etaprime_etaTPC, file, dir_etaprime_invXsec, 2.*etaTPC);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_etaprime_etaEMCal_bin, h_invXsec_etaprime_etaEMCal, file, dir_etaprime_invXsec, 2.*etaEMCal);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_etaprime_etaPHOS_bin, h_invXsec_etaprime_etaPHOS, file, dir_etaprime_invXsec, 2.*etaPHOS);
 
   TDirectory *dir_omega_invXsec = file.mkdir("omega_invXsec");
   pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_omega_etaLarge_bin, h_invXsec_omega_etaLarge, file, dir_omega_invXsec, 2.*etaLarge);
