@@ -1,0 +1,4 @@
+1M MB events take 90 min
+4M MB events take 340 min
+100k JJ events per pthat bin (noMPI) take 100 min
+20k JJ events per pthat bin (fullEvents) take 110 min
