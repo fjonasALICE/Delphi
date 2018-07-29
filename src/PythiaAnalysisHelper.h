@@ -19,11 +19,11 @@ class PythiaAnalysisHelper{
   void ProcessSwitch(int iBin, double *pTHatBin, char **argv, Pythia8::Pythia &p); // set pTHat bin specific stuff
 
   // fill "normal" spectra
-  void Fill_Pi0_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // fill pt of all pi0 in the event within eta range
-  void Fill_Pi0Primary_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // fill pt of all primary pi0 (i.e. secondary corrected)
-  void Fill_Eta_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // fill pt of all eta
-  void Fill_EtaPrime_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // fill pt of all eta prime
-  void Fill_Omega_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // fill pt of all omega
+  void Fill_Pi0_Pt(Pythia8::Event &event, float etaMax, bool useRap, TH1 *h); // fill pt of all pi0 in the event within eta range
+  void Fill_Pi0Primary_Pt(Pythia8::Event &event, float etaMax, bool useRap, TH1 *h); // fill pt of all primary pi0 (i.e. secondary corrected)
+  void Fill_Eta_Pt(Pythia8::Event &event, float etaMax, bool useRap, TH1 *h); // fill pt of all eta
+  void Fill_EtaPrime_Pt(Pythia8::Event &event, float etaMax, bool useRap, TH1 *h); // fill pt of all eta prime
+  void Fill_Omega_Pt(Pythia8::Event &event, float etaMax, bool useRap, TH1 *h); // fill pt of all omega
   void Fill_Direct_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // fill pt of all direct photons
   void Fill_Shower_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // fill pt of all shower photons
   void Fill_222_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // fill pt of all LO photons
@@ -35,11 +35,11 @@ class PythiaAnalysisHelper{
   void Fill_ElectronPos_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // fill pt of all positive electrons = positrons
 
   // fill invXsec spectra
-  void Fill_invXsec_Pi0_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // ...if you want to apply 1/(pt*2pi) as weight
-  void Fill_invXsec_Pi0Primary_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // ...if you want to apply 1/(pt*2pi) as weight
-  void Fill_invXsec_Eta_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // ...if you want to apply 1/(pt*2pi) as weight
-  void Fill_invXsec_EtaPrime_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // ...if you want to apply 1/(pt*2pi) as weight
-  void Fill_invXsec_Omega_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // ...if you want to apply 1/(pt*2pi) as weight
+  void Fill_invXsec_Pi0_Pt(Pythia8::Event &event, float etaMax, bool useRap, TH1 *h); // ...if you want to apply 1/(pt*2pi) as weight
+  void Fill_invXsec_Pi0Primary_Pt(Pythia8::Event &event, float etaMax, bool useRap, TH1 *h); // ...if you want to apply 1/(pt*2pi) as weight
+  void Fill_invXsec_Eta_Pt(Pythia8::Event &event, float etaMax, bool useRap, TH1 *h); // ...if you want to apply 1/(pt*2pi) as weight
+  void Fill_invXsec_EtaPrime_Pt(Pythia8::Event &event, float etaMax, bool useRap, TH1 *h); // ...if you want to apply 1/(pt*2pi) as weight
+  void Fill_invXsec_Omega_Pt(Pythia8::Event &event, float etaMax, bool useRap, TH1 *h); // ...if you want to apply 1/(pt*2pi) as weight
   void Fill_invXsec_Direct_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // ...if you want to apply 1/(pt*2pi) as weight
   void Fill_invXsec_Shower_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // ...if you want to apply 1/(pt*2pi) as weight
   void Fill_invXsec_222_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // ...if you want to apply 1/(pt*2pi) as weight
@@ -55,9 +55,9 @@ class PythiaAnalysisHelper{
 
 
   // post-processing
-  void Add_Histos_Scale_Write2File( std::vector <TH1D*> &vec_temp_histo, TH1* final_histo, TFile &file, double etaRange); //
-  void Add_Histos_Scale_Write2File( std::vector <TH1D*> &vec_temp_histo, TH1* final_histo, TFile &file, TDirectory *dir, double etaRange); // adds temp. histos from pTHat bins to final; normalize for pt bin width and eta range (= no 2*Pi applied here!)
-  void Add_Histos_Scale_Write2File( std::vector <TH2D*> &vec_temp_histo, TH2* final_histo, TFile &file, TDirectory *dir, double etaRange); // adds temp. histos from pTHat bins to final; normalize for pt bin width and eta range (= no 2*Pi applied here!)
+  void Add_Histos_Scale_Write2File( std::vector <TH1D*> &vec_temp_histo, TH1* final_histo, TFile &file, double etaRange, bool useRap); //
+  void Add_Histos_Scale_Write2File( std::vector <TH1D*> &vec_temp_histo, TH1* final_histo, TFile &file, TDirectory *dir, double etaRange, bool useRap); // adds temp. histos from pTHat bins to final; normalize for pt bin width and eta range (= no 2*Pi applied here!)
+  void Add_Histos_Scale_Write2File( std::vector <TH2D*> &vec_temp_histo, TH2* final_histo, TFile &file, TDirectory *dir, double etaRange, bool useRap); // adds temp. histos from pTHat bins to final; normalize for pt bin width and eta range (= no 2*Pi applied here!)
 
  private:
 

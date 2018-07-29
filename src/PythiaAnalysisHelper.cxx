@@ -100,78 +100,101 @@ void PythiaAnalysisHelper::ProcessSwitch(int iBin, double *pTHatBin, char **argv
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
-void PythiaAnalysisHelper::Fill_Pi0_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
+void PythiaAnalysisHelper::Fill_Pi0_Pt(Pythia8::Event &event, float etaMax, bool useRap, TH1 *h){
   for (int i = 5; i < event.size(); i++) {
-    if(event[i].id() == 111 && TMath::Abs(event[i].eta()) < etaMax ) {
-      h->Fill(event[i].pT());
+    if(useRap){
+      if(event[i].id() == 111 && TMath::Abs(event[i].y()) < etaMax ) h->Fill(event[i].pT());
+    }else{
+      if(event[i].id() == 111 && TMath::Abs(event[i].eta()) < etaMax ) h->Fill(event[i].pT());      
     }
   }
   return;
 }
 //----------------------------------------------------------------------
-void PythiaAnalysisHelper::Fill_Pi0Primary_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
+void PythiaAnalysisHelper::Fill_Pi0Primary_Pt(Pythia8::Event &event, float etaMax, bool useRap, TH1 *h){
   for (int i = 5; i < event.size(); i++) {
-    if(event[i].id() == 111 && TMath::Abs(event[i].eta()) < etaMax ) {
-      int mI = event[i].mother1();
-      if ( !(TMath::Abs(event[mI].id()) == 310   || // K0_s, K0_l
-	     TMath::Abs(event[mI].id()) == 321   || // K+,K-
-	     TMath::Abs(event[mI].id()) == 3122  || // Lambda, Anti-Lambda
-	     TMath::Abs(event[mI].id()) == 3212  || // Sigma0
-	     TMath::Abs(event[mI].id()) == 3222  || // Sigmas
-	     TMath::Abs(event[mI].id()) == 3112  || // Sigmas
-	     TMath::Abs(event[mI].id()) == 3322  || // Cascades
-	     TMath::Abs(event[mI].id()) == 3312)  ) // Cascades
-	{
-	  h->Fill(event[i].pT());
-	}
+    if(useRap){
+      if(event[i].id() == 111 && TMath::Abs(event[i].y()) < etaMax ) {
+	int mI = event[i].mother1();
+	if ( !(TMath::Abs(event[mI].id()) == 310   || // K0_s, K0_l
+	       TMath::Abs(event[mI].id()) == 321   || // K+,K-
+	       TMath::Abs(event[mI].id()) == 3122  || // Lambda, Anti-Lambda
+	       TMath::Abs(event[mI].id()) == 3212  || // Sigma0
+	       TMath::Abs(event[mI].id()) == 3222  || // Sigmas
+	       TMath::Abs(event[mI].id()) == 3112  || // Sigmas
+	       TMath::Abs(event[mI].id()) == 3322  || // Cascades
+	       TMath::Abs(event[mI].id()) == 3312)  ) // Cascades
+	  {
+	    h->Fill(event[i].pT());
+	  }
+      }
+    }else{
+      if(event[i].id() == 111 && TMath::Abs(event[i].eta()) < etaMax ) {
+	int mI = event[i].mother1();
+	if ( !(TMath::Abs(event[mI].id()) == 310   || // K0_s, K0_l
+	       TMath::Abs(event[mI].id()) == 321   || // K+,K-
+	       TMath::Abs(event[mI].id()) == 3122  || // Lambda, Anti-Lambda
+	       TMath::Abs(event[mI].id()) == 3212  || // Sigma0
+	       TMath::Abs(event[mI].id()) == 3222  || // Sigmas
+	       TMath::Abs(event[mI].id()) == 3112  || // Sigmas
+	       TMath::Abs(event[mI].id()) == 3322  || // Cascades
+	       TMath::Abs(event[mI].id()) == 3312)  ) // Cascades
+	  {
+	    h->Fill(event[i].pT());
+	  }
+      }
     }
   }
   return;
 }
 //----------------------------------------------------------------------
-void PythiaAnalysisHelper::Fill_Eta_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
+void PythiaAnalysisHelper::Fill_Eta_Pt(Pythia8::Event &event, float etaMax, bool useRap, TH1 *h){
   for (int i = 5; i < event.size(); i++) {
-    if(event[i].id() == 221 && TMath::Abs(event[i].eta()) < etaMax ) {
-      h->Fill(event[i].pT());
+    if(useRap){
+      if(event[i].id() == 221 && TMath::Abs(event[i].y()) < etaMax ) h->Fill(event[i].pT());
+    }else{
+      if(event[i].id() == 221 && TMath::Abs(event[i].eta()) < etaMax ) h->Fill(event[i].pT());      
     }
   }
   return;
 }
 //----------------------------------------------------------------------
-void PythiaAnalysisHelper::Fill_EtaPrime_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
+void PythiaAnalysisHelper::Fill_EtaPrime_Pt(Pythia8::Event &event, float etaMax, bool useRap, TH1 *h){
   for (int i = 5; i < event.size(); i++) {
-    if(event[i].id() == 331 && TMath::Abs(event[i].eta()) < etaMax ) {
-      h->Fill(event[i].pT());
+    if(useRap){
+      if(event[i].id() == 331 && TMath::Abs(event[i].y()) < etaMax ) h->Fill(event[i].pT());
+    }else{
+      if(event[i].id() == 331 && TMath::Abs(event[i].eta()) < etaMax ) h->Fill(event[i].pT());      
     }
   }
   return;
 }
 //----------------------------------------------------------------------
-void PythiaAnalysisHelper::Fill_Omega_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
+void PythiaAnalysisHelper::Fill_Omega_Pt(Pythia8::Event &event, float etaMax, bool useRap, TH1 *h){
   for (int i = 5; i < event.size(); i++) {
-    if(event[i].id() == 223 && TMath::Abs(event[i].eta()) < etaMax ) {
-      h->Fill(event[i].pT());
-    }
+    if(useRap){
+      if(event[i].id() == 223 && TMath::Abs(event[i].y()) < etaMax ) h->Fill(event[i].pT());
+    }else{
+      if(event[i].id() == 223 && TMath::Abs(event[i].eta()) < etaMax ) h->Fill(event[i].pT());      
+    } 
   }
   return;
 }
 //----------------------------------------------------------------------
 void PythiaAnalysisHelper::Fill_Direct_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
   for (int i = 5; i < event.size(); i++) {
-    if(event[i].isFinal() && event[i].id() == 22 && TMath::Abs(event[i].eta()) < etaMax ) {
-      if(event[i].status() < 90) h->Fill(event[i].pT());
-    }
+    if(event[i].isFinal() && event[i].id() == 22 && TMath::Abs(event[i].y()) < etaMax && event[i].status() < 90 )
+      h->Fill(event[i].pT()); 
   }
   return;
 }
 //----------------------------------------------------------------------
 void PythiaAnalysisHelper::Fill_Shower_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
   for (int i = 5; i < event.size(); i++) {
-    if(event[i].isFinal() && event[i].id() == 22 && TMath::Abs(event[i].eta()) < etaMax ) {
-      if(event[i].status() < 90)
+    if(event[i].isFinal() && event[i].id() == 22 && TMath::Abs(event[i].eta()) < etaMax && event[i].status() < 90){
 	if( TMath::Abs(event[event[i].iTopCopy()].status() ) > 40 )
 	  h->Fill(event[i].pT());
-    }
+      }
   }
   return;
 }
@@ -262,58 +285,83 @@ void PythiaAnalysisHelper::Fill_Decay_Photon_Pt(Pythia8::Event &event, float eta
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
-void PythiaAnalysisHelper::Fill_invXsec_Pi0_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
+void PythiaAnalysisHelper::Fill_invXsec_Pi0_Pt(Pythia8::Event &event, float etaMax, bool useRap, TH1 *h){
   for (int i = 5; i < event.size(); i++) {
-    if(event[i].id() == 111 && TMath::Abs(event[i].eta()) < etaMax ) {
-      h->Fill( event[i].pT(), 1./event[i].pT()/(2*TMath::Pi()) );
+    if(useRap){
+      if(event[i].id() == 111 && TMath::Abs(event[i].y()) < etaMax ) h->Fill( event[i].pT(), 1./event[i].pT()/(2*TMath::Pi()) );
+    }else{
+      if(event[i].id() == 111 && TMath::Abs(event[i].eta()) < etaMax ) h->Fill( event[i].pT(), 1./event[i].pT()/(2*TMath::Pi()) );
     }
   }
   return;
 }
 //----------------------------------------------------------------------
-void PythiaAnalysisHelper::Fill_invXsec_Pi0Primary_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
+void PythiaAnalysisHelper::Fill_invXsec_Pi0Primary_Pt(Pythia8::Event &event, float etaMax, bool useRap, TH1 *h){
   for (int i = 5; i < event.size(); i++) {
-    if(event[i].id() == 111 && TMath::Abs(event[i].eta()) < etaMax ) {
-      int mI = event[i].mother1();
-      if ( !(TMath::Abs(event[mI].id()) == 310   || // K0_s, K0_l
-	     TMath::Abs(event[mI].id()) == 321   || // K+,K-
-	     TMath::Abs(event[mI].id()) == 3122  || // Lambda, Anti-Lambda
-	     TMath::Abs(event[mI].id()) == 3212  || // Sigma0
-	     TMath::Abs(event[mI].id()) == 3222  || // Sigmas
-	     TMath::Abs(event[mI].id()) == 3112  || // Sigmas
-	     TMath::Abs(event[mI].id()) == 3322  || // Cascades
-	     TMath::Abs(event[mI].id()) == 3312)  ) // Cascades
-	{
-      h->Fill( event[i].pT(), 1./event[i].pT()/(2*TMath::Pi()) );
-	}
+    if(useRap){
+      if(event[i].id() == 111 && TMath::Abs(event[i].y()) < etaMax ) {
+	int mI = event[i].mother1();
+	if ( !(TMath::Abs(event[mI].id()) == 310   || // K0_s, K0_l
+	       TMath::Abs(event[mI].id()) == 321   || // K+,K-
+	       TMath::Abs(event[mI].id()) == 3122  || // Lambda, Anti-Lambda
+	       TMath::Abs(event[mI].id()) == 3212  || // Sigma0
+	       TMath::Abs(event[mI].id()) == 3222  || // Sigmas
+	       TMath::Abs(event[mI].id()) == 3112  || // Sigmas
+	       TMath::Abs(event[mI].id()) == 3322  || // Cascades
+	       TMath::Abs(event[mI].id()) == 3312)  ) // Cascades
+	  {
+	    h->Fill(event[i].pT(), 1./event[i].pT()/(2*TMath::Pi()));
+	  }
+      }
+    }else{
+      if(event[i].id() == 111 && TMath::Abs(event[i].eta()) < etaMax ) {
+	int mI = event[i].mother1();
+	if ( !(TMath::Abs(event[mI].id()) == 310   || // K0_s, K0_l
+	       TMath::Abs(event[mI].id()) == 321   || // K+,K-
+	       TMath::Abs(event[mI].id()) == 3122  || // Lambda, Anti-Lambda
+	       TMath::Abs(event[mI].id()) == 3212  || // Sigma0
+	       TMath::Abs(event[mI].id()) == 3222  || // Sigmas
+	       TMath::Abs(event[mI].id()) == 3112  || // Sigmas
+	       TMath::Abs(event[mI].id()) == 3322  || // Cascades
+	       TMath::Abs(event[mI].id()) == 3312)  ) // Cascades
+	  {
+	    h->Fill(event[i].pT(), 1./event[i].pT()/(2*TMath::Pi()));
+	  }
+      }
     }
   }
   return;
 }
 //----------------------------------------------------------------------
-void PythiaAnalysisHelper::Fill_invXsec_Eta_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
+void PythiaAnalysisHelper::Fill_invXsec_Eta_Pt(Pythia8::Event &event, float etaMax, bool useRap, TH1 *h){
   for (int i = 5; i < event.size(); i++) {
-    if(event[i].id() == 221 && TMath::Abs(event[i].eta()) < etaMax ) {
-      h->Fill( event[i].pT(), 1./event[i].pT()/(2*TMath::Pi()) );
+    if(useRap){
+      if(event[i].id() == 221 && TMath::Abs(event[i].y()) < etaMax ) h->Fill(event[i].pT(), 1./event[i].pT()/(2*TMath::Pi()));
+    }else{
+      if(event[i].id() == 221 && TMath::Abs(event[i].eta()) < etaMax ) h->Fill(event[i].pT(), 1./event[i].pT()/(2*TMath::Pi()));      
     }
   }
   return;
 }
 //----------------------------------------------------------------------
-void PythiaAnalysisHelper::Fill_invXsec_EtaPrime_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
+void PythiaAnalysisHelper::Fill_invXsec_EtaPrime_Pt(Pythia8::Event &event, float etaMax, bool useRap, TH1 *h){
   for (int i = 5; i < event.size(); i++) {
-    if(event[i].id() == 331 && TMath::Abs(event[i].eta()) < etaMax ) {
-      h->Fill( event[i].pT(), 1./event[i].pT()/(2*TMath::Pi()) );
+    if(useRap){
+      if(event[i].id() == 331 && TMath::Abs(event[i].y()) < etaMax ) h->Fill(event[i].pT(), 1./event[i].pT()/(2*TMath::Pi()));
+    }else{
+      if(event[i].id() == 331 && TMath::Abs(event[i].eta()) < etaMax ) h->Fill(event[i].pT(), 1./event[i].pT()/(2*TMath::Pi()));
     }
   }
   return;
 }
 //----------------------------------------------------------------------
-void PythiaAnalysisHelper::Fill_invXsec_Omega_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
+void PythiaAnalysisHelper::Fill_invXsec_Omega_Pt(Pythia8::Event &event, float etaMax, bool useRap, TH1 *h){
   for (int i = 5; i < event.size(); i++) {
-    if(event[i].id() == 223 && TMath::Abs(event[i].eta()) < etaMax ) {
-      h->Fill( event[i].pT(), 1./event[i].pT()/(2*TMath::Pi()) );
-    }
+    if(useRap){
+      if(event[i].id() == 223 && TMath::Abs(event[i].y()) < etaMax ) h->Fill(event[i].pT(), 1./event[i].pT()/(2*TMath::Pi()));
+    }else{
+      if(event[i].id() == 223 && TMath::Abs(event[i].eta()) < etaMax ) h->Fill(event[i].pT(), 1./event[i].pT()/(2*TMath::Pi()));      
+    } 
   }
   return;
 }
@@ -471,7 +519,7 @@ void PythiaAnalysisHelper::Fill_Electron_Pt_ByTopMotherID(Pythia8::Event &event,
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
-void PythiaAnalysisHelper::Add_Histos_Scale_Write2File( std::vector <TH1D*>& vec, TH1* final_histo, TFile &file, double etaRange){
+void PythiaAnalysisHelper::Add_Histos_Scale_Write2File( std::vector <TH1D*>& vec, TH1* final_histo, TFile &file, double etaRange, bool useRap){
 
   file.cd();
 
@@ -479,12 +527,14 @@ void PythiaAnalysisHelper::Add_Histos_Scale_Write2File( std::vector <TH1D*>& vec
     final_histo->Add(vec.at(i));
     vec.at(i)->Scale(1./etaRange, "width");
     vec.at(i)->SetXTitle("p_{T} (GeV/#it{c})");
-    vec.at(i)->SetYTitle("#frac{d#sigma}{dp_{T}d#eta}");
+    if(useRap) vec.at(i)->SetYTitle("#frac{d#sigma}{dp_{T}dy}");
+    else vec.at(i)->SetYTitle("#frac{d#sigma}{dp_{T}d#eta}");
     vec.at(i)->Write();
   }
 
   final_histo->SetXTitle("p_{T} (GeV/#it{c})");
-  final_histo->SetYTitle("#frac{d#sigma}{dp_{T}d#eta}");
+  if(useRap) final_histo->SetYTitle("#frac{d#sigma}{dp_{T}dy}");
+  else final_histo->SetYTitle("#frac{d#sigma}{dp_{T}d#eta}");
   final_histo->Scale(1./etaRange, "width");
   final_histo->Write();
 
@@ -493,7 +543,7 @@ void PythiaAnalysisHelper::Add_Histos_Scale_Write2File( std::vector <TH1D*>& vec
 }
 
 //----------------------------------------------------------------------
-void PythiaAnalysisHelper::Add_Histos_Scale_Write2File( std::vector <TH1D*>& vec, TH1* final_histo, TFile &file, TDirectory *dir, double etaRange){
+void PythiaAnalysisHelper::Add_Histos_Scale_Write2File( std::vector <TH1D*>& vec, TH1* final_histo, TFile &file, TDirectory *dir, double etaRange, bool useRap){
 
   file.cd();
   dir->cd();
@@ -502,12 +552,14 @@ void PythiaAnalysisHelper::Add_Histos_Scale_Write2File( std::vector <TH1D*>& vec
     final_histo->Add(vec.at(i));
     vec.at(i)->Scale(1./etaRange, "width");
     vec.at(i)->SetXTitle("p_{T} (GeV/#it{c})");
-    vec.at(i)->SetYTitle("#frac{d#sigma}{dp_{T}d#eta}");
+    if(useRap) vec.at(i)->SetYTitle("#frac{d#sigma}{dp_{T}dy}");
+    else vec.at(i)->SetYTitle("#frac{d#sigma}{dp_{T}d#eta}");
     vec.at(i)->Write();
   }
 
   final_histo->SetXTitle("p_{T} (GeV/#it{c})");
-  final_histo->SetYTitle("#frac{d#sigma}{dp_{T}d#eta}");
+  if(useRap) final_histo->SetYTitle("#frac{d#sigma}{dp_{T}dy}");
+  else final_histo->SetYTitle("#frac{d#sigma}{dp_{T}d#eta}");
   final_histo->Scale(1./etaRange, "width");
   final_histo->Write();
 
@@ -517,7 +569,7 @@ void PythiaAnalysisHelper::Add_Histos_Scale_Write2File( std::vector <TH1D*>& vec
 }
 
 //----------------------------------------------------------------------
-void PythiaAnalysisHelper::Add_Histos_Scale_Write2File( std::vector <TH2D*>& vec, TH2* final_histo, TFile &file, TDirectory *dir, double etaRange){
+void PythiaAnalysisHelper::Add_Histos_Scale_Write2File( std::vector <TH2D*>& vec, TH2* final_histo, TFile &file, TDirectory *dir, double etaRange, bool useRap){
 
   file.cd();
   dir->cd();
@@ -527,13 +579,15 @@ void PythiaAnalysisHelper::Add_Histos_Scale_Write2File( std::vector <TH2D*>& vec
     vec.at(i)->Scale(1./etaRange, "width");
     vec.at(i)->SetXTitle("electron Mother");
     vec.at(i)->SetYTitle("p_{T} (GeV/#it{c})");
-    vec.at(i)->SetZTitle("#frac{d#sigma}{dp_{T}d#eta}");
+    if(useRap) vec.at(i)->SetZTitle("#frac{d#sigma}{dp_{T}dy}");
+    else vec.at(i)->SetZTitle("#frac{d#sigma}{dp_{T}d#eta}");
     vec.at(i)->Write();
   }
 
   final_histo->SetXTitle("electron Mother");
   final_histo->SetYTitle("p_{T} (GeV/#it{c})");
-  final_histo->SetZTitle("#frac{d#sigma}{dp_{T}d#eta}");
+  if(useRap) final_histo->SetZTitle("#frac{d#sigma}{dp_{T}dy}");
+  else final_histo->SetZTitle("#frac{d#sigma}{dp_{T}d#eta}");
   final_histo->Write();
 
   gROOT->cd();

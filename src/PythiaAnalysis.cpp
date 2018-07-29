@@ -67,8 +67,10 @@ int main(int argc, char **argv) {
   
   pyHelp.Pass_Parameters_To_Pythia(p, argc, argv); // which energy, scales, optional master switches
 
-  if (!strcmp(argv[2],"MBVeto")) // prevent double sampling of MB events and e.g. JJ events
+  if (!strcmp(argv[2],"MBVeto")){ // prevent double sampling of MB events and e.g. JJ events
     MB_veto = true;
+    printf("\n Applying MBVeto, i.e. generating MB events with restriction pthat < pTHatBin[0] = %f\n(in order to prevent double sampling with events generated in pthatbins)\n", pTHatBin[0]); 
+  }
 
   if( !strcmp(argv[2],"JJ") || !strcmp(argv[2],"GJ") || !strcmp(argv[2],"WeakBoson") ){
     printf("\nUsing %d pTHat bins:\n", pTHatBins);
@@ -91,30 +93,35 @@ int main(int argc, char **argv) {
     h2_electron_pt_topMotherID->GetXaxis()->SetBinLabel(i+1, electronMotherName[i]);
 
   // all pions without secondary correction
+  TH1D *h_pi0_yDefault = new TH1D("h_pi0_yDefault","pi0_yDefault", ptBins, ptMin, ptMax);
   TH1D *h_pi0_etaLarge = new TH1D("h_pi0_etaLarge","pi0_etaLarge", ptBins, ptMin, ptMax);
   TH1D *h_pi0_etaTPC   = new TH1D("h_pi0_etaTPC","pi0_etaTPC", ptBins, ptMin, ptMax);
   TH1D *h_pi0_etaEMCal = new TH1D("h_pi0_etaEMCal","pi0_etaEMCal", ptBins, ptMin, ptMax);
   TH1D *h_pi0_etaPHOS  = new TH1D("h_pi0_etaPHOS","pi0_etaPHOS", ptBins, ptMin, ptMax);
 
   // primary pions (with secondary correction)
+  TH1D *h_pi0primary_yDefault = new TH1D("h_pi0primary_yDefault","pi0primary_yDefault", ptBins, ptMin, ptMax);
   TH1D *h_pi0primary_etaLarge = new TH1D("h_pi0primary_etaLarge","pi0primary_etaLarge", ptBins, ptMin, ptMax);
   TH1D *h_pi0primary_etaTPC   = new TH1D("h_pi0primary_etaTPC","pi0primary_etaTPC", ptBins, ptMin, ptMax);
   TH1D *h_pi0primary_etaEMCal = new TH1D("h_pi0primary_etaEMCal","pi0primary_etaEMCal", ptBins, ptMin, ptMax);
   TH1D *h_pi0primary_etaPHOS  = new TH1D("h_pi0primary_etaPHOS","pi0primary_etaPHOS", ptBins, ptMin, ptMax);
 
   // eta meson
+  TH1D *h_eta_yDefault = new TH1D("h_eta_yDefault","eta_yDefault", ptBins, ptMin, ptMax);
   TH1D *h_eta_etaLarge = new TH1D("h_eta_etaLarge","eta_etaLarge", ptBins, ptMin, ptMax);
   TH1D *h_eta_etaTPC   = new TH1D("h_eta_etaTPC","eta_etaTPC", ptBins, ptMin, ptMax);
   TH1D *h_eta_etaEMCal = new TH1D("h_eta_etaEMCal","eta_etaEMCal", ptBins, ptMin, ptMax);
   TH1D *h_eta_etaPHOS  = new TH1D("h_eta_etaPHOS","eta_etaPHOS", ptBins, ptMin, ptMax);
 
   // eta prime meson
+  TH1D *h_etaprime_yDefault = new TH1D("h_etaprime_yDefault","etaprime_yDefault", ptBins, ptMin, ptMax);
   TH1D *h_etaprime_etaLarge = new TH1D("h_etaprime_etaLarge","etaprime_etaLarge", ptBins, ptMin, ptMax);
   TH1D *h_etaprime_etaTPC   = new TH1D("h_etaprime_etaTPC","etaprime_etaTPC", ptBins, ptMin, ptMax);
   TH1D *h_etaprime_etaEMCal = new TH1D("h_etaprime_etaEMCal","etaprime_etaEMCal", ptBins, ptMin, ptMax);
   TH1D *h_etaprime_etaPHOS  = new TH1D("h_etaprime_etaPHOS","etaprime_etaPHOS", ptBins, ptMin, ptMax);
 
   // omega meson
+  TH1D *h_omega_yDefault = new TH1D("h_omega_yDefault","omega_yDefault", ptBins, ptMin, ptMax);
   TH1D *h_omega_etaLarge = new TH1D("h_omega_etaLarge","omega_etaLarge", ptBins, ptMin, ptMax);
   TH1D *h_omega_etaTPC   = new TH1D("h_omega_etaTPC","omega_etaTPC", ptBins, ptMin, ptMax);
   TH1D *h_omega_etaEMCal = new TH1D("h_omega_etaEMCal","omega_etaEMCal", ptBins, ptMin, ptMax);
@@ -197,30 +204,35 @@ int main(int argc, char **argv) {
   // do the same jazz for invariant cross section histos ------------------------------------------
   //------------------------------------------------------------------------------------------
   // all pions without secondary correction
+  TH1D *h_invXsec_pi0_yDefault = new TH1D("h_invXsec_pi0_yDefault","pi0_yDefault", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_pi0_etaLarge = new TH1D("h_invXsec_pi0_etaLarge","pi0_etaLarge", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_pi0_etaTPC = new TH1D("h_invXsec_pi0_etaTPC","pi0_etaTPC", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_pi0_etaEMCal = new TH1D("h_invXsec_pi0_etaEMCal","pi0_etaEMCal", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_pi0_etaPHOS = new TH1D("h_invXsec_pi0_etaPHOS","pi0_etaPHOS", ptBins, ptMin, ptMax);
 
   // primary pions (with secondary correction)
+  TH1D *h_invXsec_pi0primary_yDefault = new TH1D("h_invXsec_pi0primary_yDefault","pi0primary_yDefault", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_pi0primary_etaLarge = new TH1D("h_invXsec_pi0primary_etaLarge","pi0primary_etaLarge", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_pi0primary_etaTPC = new TH1D("h_invXsec_pi0primary_etaTPC","pi0primary_etaTPC", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_pi0primary_etaEMCal = new TH1D("h_invXsec_pi0primary_etaEMCal","pi0primary_etaEMCal", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_pi0primary_etaPHOS = new TH1D("h_invXsec_pi0primary_etaPHOS","pi0primary_etaPHOS", ptBins, ptMin, ptMax);
 
   // eta meson
+  TH1D *h_invXsec_eta_yDefault = new TH1D("h_invXsec_eta_yDefault","eta_yDefault", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_eta_etaLarge = new TH1D("h_invXsec_eta_etaLarge","eta_etaLarge", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_eta_etaTPC = new TH1D("h_invXsec_eta_etaTPC","eta_etaTPC", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_eta_etaEMCal = new TH1D("h_invXsec_eta_etaEMCal","eta_etaEMCal", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_eta_etaPHOS = new TH1D("h_invXsec_eta_etaPHOS","eta_etaPHOS", ptBins, ptMin, ptMax);
 
   // eta prime meson
+  TH1D *h_invXsec_etaprime_yDefault = new TH1D("h_invXsec_etaprime_yDefault","etaprime_yDefault", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_etaprime_etaLarge = new TH1D("h_invXsec_etaprime_etaLarge","etaprime_etaLarge", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_etaprime_etaTPC = new TH1D("h_invXsec_etaprime_etaTPC","etaprime_etaTPC", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_etaprime_etaEMCal = new TH1D("h_invXsec_etaprime_etaEMCal","etaprime_etaEMCal", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_etaprime_etaPHOS = new TH1D("h_invXsec_etaprime_etaPHOS","etaprime_etaPHOS", ptBins, ptMin, ptMax);
 
   // omega meson
+  TH1D *h_invXsec_omega_yDefault = new TH1D("h_invXsec_omega_yDefault","omega_yDefault", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_omega_etaLarge = new TH1D("h_invXsec_omega_etaLarge","omega_etaLarge", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_omega_etaTPC = new TH1D("h_invXsec_omega_etaTPC","omega_etaTPC", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_omega_etaEMCal = new TH1D("h_invXsec_omega_etaEMCal","omega_etaEMCal", ptBins, ptMin, ptMax);
@@ -309,26 +321,31 @@ int main(int argc, char **argv) {
   // organise pTHat wise histograms in vectors
   vector <TH2D*> vec_electron_pt_topMotherID_bin;
 
+  vector <TH1D*> vec_pi0_yDefault_bin;
   vector <TH1D*> vec_pi0_etaLarge_bin;
   vector <TH1D*> vec_pi0_etaTPC_bin;
   vector <TH1D*> vec_pi0_etaEMCal_bin;
   vector <TH1D*> vec_pi0_etaPHOS_bin;
 
+  vector <TH1D*> vec_pi0primary_yDefault_bin;
   vector <TH1D*> vec_pi0primary_etaLarge_bin;
   vector <TH1D*> vec_pi0primary_etaTPC_bin;
   vector <TH1D*> vec_pi0primary_etaEMCal_bin;
   vector <TH1D*> vec_pi0primary_etaPHOS_bin;
 
+  vector <TH1D*> vec_eta_yDefault_bin;
   vector <TH1D*> vec_eta_etaLarge_bin;
   vector <TH1D*> vec_eta_etaTPC_bin;
   vector <TH1D*> vec_eta_etaEMCal_bin;
   vector <TH1D*> vec_eta_etaPHOS_bin;
 
+  vector <TH1D*> vec_etaprime_yDefault_bin;
   vector <TH1D*> vec_etaprime_etaLarge_bin;
   vector <TH1D*> vec_etaprime_etaTPC_bin;
   vector <TH1D*> vec_etaprime_etaEMCal_bin;
   vector <TH1D*> vec_etaprime_etaPHOS_bin;
 
+  vector <TH1D*> vec_omega_yDefault_bin;
   vector <TH1D*> vec_omega_etaLarge_bin;
   vector <TH1D*> vec_omega_etaTPC_bin;
   vector <TH1D*> vec_omega_etaEMCal_bin;
@@ -405,26 +422,31 @@ int main(int argc, char **argv) {
   //----------------------------------------------------------------------------------------------------
   // do the same jazz for invariant cross section histos ------------------------------------------
   //------------------------------------------------------------------------------------------
+  vector <TH1D*> vec_invXsec_pi0_yDefault_bin;
   vector <TH1D*> vec_invXsec_pi0_etaLarge_bin;
   vector <TH1D*> vec_invXsec_pi0_etaTPC_bin;
   vector <TH1D*> vec_invXsec_pi0_etaEMCal_bin;
   vector <TH1D*> vec_invXsec_pi0_etaPHOS_bin;
 
+  vector <TH1D*> vec_invXsec_pi0primary_yDefault_bin;
   vector <TH1D*> vec_invXsec_pi0primary_etaLarge_bin;
   vector <TH1D*> vec_invXsec_pi0primary_etaTPC_bin;
   vector <TH1D*> vec_invXsec_pi0primary_etaEMCal_bin;
   vector <TH1D*> vec_invXsec_pi0primary_etaPHOS_bin;
 
+  vector <TH1D*> vec_invXsec_eta_yDefault_bin;
   vector <TH1D*> vec_invXsec_eta_etaLarge_bin;
   vector <TH1D*> vec_invXsec_eta_etaTPC_bin;
   vector <TH1D*> vec_invXsec_eta_etaEMCal_bin;
   vector <TH1D*> vec_invXsec_eta_etaPHOS_bin;
 
+  vector <TH1D*> vec_invXsec_etaprime_yDefault_bin;
   vector <TH1D*> vec_invXsec_etaprime_etaLarge_bin;
   vector <TH1D*> vec_invXsec_etaprime_etaTPC_bin;
   vector <TH1D*> vec_invXsec_etaprime_etaEMCal_bin;
   vector <TH1D*> vec_invXsec_etaprime_etaPHOS_bin;
 
+  vector <TH1D*> vec_invXsec_omega_yDefault_bin;
   vector <TH1D*> vec_invXsec_omega_etaLarge_bin;
   vector <TH1D*> vec_invXsec_omega_etaTPC_bin;
   vector <TH1D*> vec_invXsec_omega_etaEMCal_bin;
@@ -510,36 +532,42 @@ int main(int argc, char **argv) {
     vec_weightSum_bin.push_back( (TH1D*)h_weightSum->Clone(Form( "h_weightSum_bin_%02d", i )) );
 
     // pi0 histos
+    vec_pi0_yDefault_bin.push_back( (TH1D*)h_pi0_yDefault->Clone(Form("h_pi0_yDefault_bin_%02d",i)) );
     vec_pi0_etaLarge_bin.push_back( (TH1D*)h_pi0_etaLarge->Clone(Form("h_pi0_etaLarge_bin_%02d",i)) );
     vec_pi0_etaTPC_bin.push_back( (TH1D*)h_pi0_etaTPC->Clone(Form("h_pi0_etaTPC_bin_%02d",i)) );
     vec_pi0_etaEMCal_bin.push_back( (TH1D*)h_pi0_etaEMCal->Clone(Form("h_pi0_etaEMCal_bin_%02d",i)) );
     vec_pi0_etaPHOS_bin.push_back( (TH1D*)h_pi0_etaPHOS->Clone(Form("h_pi0_etaPHOS_bin_%02d",i)) );
 
     // primary pi0 histos
+    vec_pi0primary_yDefault_bin.push_back( (TH1D*)h_pi0primary_yDefault->Clone(Form("h_pi0primary_yDefault_bin_%02d",i)) );
     vec_pi0primary_etaLarge_bin.push_back( (TH1D*)h_pi0primary_etaLarge->Clone(Form("h_pi0primary_etaLarge_bin_%02d",i)) );
     vec_pi0primary_etaTPC_bin.push_back( (TH1D*)h_pi0primary_etaTPC->Clone(Form("h_pi0primary_etaTPC_bin_%02d",i)) );
     vec_pi0primary_etaEMCal_bin.push_back( (TH1D*)h_pi0primary_etaEMCal->Clone(Form("h_pi0primary_etaEMCal_bin_%02d",i)) );
     vec_pi0primary_etaPHOS_bin.push_back( (TH1D*)h_pi0primary_etaPHOS->Clone(Form("h_pi0primary_etaPHOS_bin_%02d",i)) );
 
     // eta histos
+    vec_eta_yDefault_bin.push_back( (TH1D*)h_eta_yDefault->Clone(Form("h_eta_yDefault_bin_%02d",i)) );
     vec_eta_etaLarge_bin.push_back( (TH1D*)h_eta_etaLarge->Clone(Form("h_eta_etaLarge_bin_%02d",i)) );
     vec_eta_etaTPC_bin.push_back( (TH1D*)h_eta_etaTPC->Clone(Form("h_eta_etaTPC_bin_%02d",i)) );
     vec_eta_etaEMCal_bin.push_back( (TH1D*)h_eta_etaEMCal->Clone(Form("h_eta_etaEMCal_bin_%02d",i)) );
     vec_eta_etaPHOS_bin.push_back( (TH1D*)h_eta_etaPHOS->Clone(Form("h_eta_etaPHOS_bin_%02d",i)) );
 
     // eta prime histos
+    vec_etaprime_yDefault_bin.push_back( (TH1D*)h_etaprime_yDefault->Clone(Form("h_etaprime_yDefault_bin_%02d",i)) );
     vec_etaprime_etaLarge_bin.push_back( (TH1D*)h_etaprime_etaLarge->Clone(Form("h_etaprime_etaLarge_bin_%02d",i)) );
     vec_etaprime_etaTPC_bin.push_back( (TH1D*)h_etaprime_etaTPC->Clone(Form("h_etaprime_etaTPC_bin_%02d",i)) );
     vec_etaprime_etaEMCal_bin.push_back( (TH1D*)h_etaprime_etaEMCal->Clone(Form("h_etaprime_etaEMCal_bin_%02d",i)) );
     vec_etaprime_etaPHOS_bin.push_back( (TH1D*)h_etaprime_etaPHOS->Clone(Form("h_etaprime_etaPHOS_bin_%02d",i)) );
 
     // omega histos
+    vec_omega_yDefault_bin.push_back( (TH1D*)h_omega_yDefault->Clone(Form("h_omega_yDefault_bin_%02d",i)) );
     vec_omega_etaLarge_bin.push_back( (TH1D*)h_omega_etaLarge->Clone(Form("h_omega_etaLarge_bin_%02d",i)) );
     vec_omega_etaTPC_bin.push_back( (TH1D*)h_omega_etaTPC->Clone(Form("h_omega_etaTPC_bin_%02d",i)) );
     vec_omega_etaEMCal_bin.push_back( (TH1D*)h_omega_etaEMCal->Clone(Form("h_omega_etaEMCal_bin_%02d",i)) );
     vec_omega_etaPHOS_bin.push_back( (TH1D*)h_omega_etaPHOS->Clone(Form("h_omega_etaPHOS_bin_%02d",i)) );
 
     // direct photon histos
+    vec_direct_photons_etaLarge_bin.push_back( (TH1D*)h_direct_photons_etaLarge->Clone(Form("h_direct_photons_etaLarge_bin_%02d",i)) );
     vec_direct_photons_etaLarge_bin.push_back( (TH1D*)h_direct_photons_etaLarge->Clone(Form("h_direct_photons_etaLarge_bin_%02d",i)) );
     vec_direct_photons_etaTPC_bin.push_back( (TH1D*)h_direct_photons_etaTPC->Clone(Form("h_direct_photons_etaTPC_bin_%02d",i)) );
     vec_direct_photons_etaEMCal_bin.push_back( (TH1D*)h_direct_photons_etaEMCal->Clone(Form("h_direct_photons_etaEMCal_bin_%02d",i)) );
@@ -612,30 +640,35 @@ int main(int argc, char **argv) {
     // do the same jazz for invariant cross section histos ------------------------------------------
     //------------------------------------------------------------------------------------------
     // pi0 histos
+    vec_invXsec_pi0_yDefault_bin.push_back( (TH1D*)h_invXsec_pi0_yDefault->Clone(Form("h_invXsec_pi0_yDefault_bin_%02d",i)) );
     vec_invXsec_pi0_etaLarge_bin.push_back( (TH1D*)h_invXsec_pi0_etaLarge->Clone(Form("h_invXsec_pi0_etaLarge_bin_%02d",i)) );
     vec_invXsec_pi0_etaTPC_bin.push_back( (TH1D*)h_invXsec_pi0_etaTPC->Clone(Form("h_invXsec_pi0_etaTPC_bin_%02d",i)) );
     vec_invXsec_pi0_etaEMCal_bin.push_back( (TH1D*)h_invXsec_pi0_etaEMCal->Clone(Form("h_invXsec_pi0_etaEMCal_bin_%02d",i)) );
     vec_invXsec_pi0_etaPHOS_bin.push_back( (TH1D*)h_invXsec_pi0_etaPHOS->Clone(Form("h_invXsec_pi0_etaPHOS_bin_%02d",i)) );
 
     // primary pi0 histos
+    vec_invXsec_pi0primary_yDefault_bin.push_back( (TH1D*)h_invXsec_pi0primary_yDefault->Clone(Form("h_invXsec_pi0primary_yDefault_bin_%02d",i)) );
     vec_invXsec_pi0primary_etaLarge_bin.push_back( (TH1D*)h_invXsec_pi0primary_etaLarge->Clone(Form("h_invXsec_pi0primary_etaLarge_bin_%02d",i)) );
     vec_invXsec_pi0primary_etaTPC_bin.push_back( (TH1D*)h_invXsec_pi0primary_etaTPC->Clone(Form("h_invXsec_pi0primary_etaTPC_bin_%02d",i)) );
     vec_invXsec_pi0primary_etaEMCal_bin.push_back( (TH1D*)h_invXsec_pi0primary_etaEMCal->Clone(Form("h_invXsec_pi0primary_etaEMCal_bin_%02d",i)) );
     vec_invXsec_pi0primary_etaPHOS_bin.push_back( (TH1D*)h_invXsec_pi0primary_etaPHOS->Clone(Form("h_invXsec_pi0primary_etaPHOS_bin_%02d",i)) );
 
     // eta histos
+    vec_invXsec_eta_yDefault_bin.push_back( (TH1D*)h_invXsec_eta_yDefault->Clone(Form("h_invXsec_eta_yDefault_bin_%02d",i)) );
     vec_invXsec_eta_etaLarge_bin.push_back( (TH1D*)h_invXsec_eta_etaLarge->Clone(Form("h_invXsec_eta_etaLarge_bin_%02d",i)) );
     vec_invXsec_eta_etaTPC_bin.push_back( (TH1D*)h_invXsec_eta_etaTPC->Clone(Form("h_invXsec_eta_etaTPC_bin_%02d",i)) );
     vec_invXsec_eta_etaEMCal_bin.push_back( (TH1D*)h_invXsec_eta_etaEMCal->Clone(Form("h_invXsec_eta_etaEMCal_bin_%02d",i)) );
     vec_invXsec_eta_etaPHOS_bin.push_back( (TH1D*)h_invXsec_eta_etaPHOS->Clone(Form("h_invXsec_eta_etaPHOS_bin_%02d",i)) );
 
     // eta prime histos
+    vec_invXsec_etaprime_yDefault_bin.push_back( (TH1D*)h_invXsec_etaprime_yDefault->Clone(Form("h_invXsec_etaprime_yDefault_bin_%02d",i)) );
     vec_invXsec_etaprime_etaLarge_bin.push_back( (TH1D*)h_invXsec_etaprime_etaLarge->Clone(Form("h_invXsec_etaprime_etaLarge_bin_%02d",i)) );
     vec_invXsec_etaprime_etaTPC_bin.push_back( (TH1D*)h_invXsec_etaprime_etaTPC->Clone(Form("h_invXsec_etaprime_etaTPC_bin_%02d",i)) );
     vec_invXsec_etaprime_etaEMCal_bin.push_back( (TH1D*)h_invXsec_etaprime_etaEMCal->Clone(Form("h_invXsec_etaprime_etaEMCal_bin_%02d",i)) );
     vec_invXsec_etaprime_etaPHOS_bin.push_back( (TH1D*)h_invXsec_etaprime_etaPHOS->Clone(Form("h_invXsec_etaprime_etaPHOS_bin_%02d",i)) );
 
     // omega histos
+    vec_invXsec_omega_yDefault_bin.push_back( (TH1D*)h_invXsec_omega_yDefault->Clone(Form("h_invXsec_omega_yDefault_bin_%02d",i)) );
     vec_invXsec_omega_etaLarge_bin.push_back( (TH1D*)h_invXsec_omega_etaLarge->Clone(Form("h_invXsec_omega_etaLarge_bin_%02d",i)) );
     vec_invXsec_omega_etaTPC_bin.push_back( (TH1D*)h_invXsec_omega_etaTPC->Clone(Form("h_invXsec_omega_etaTPC_bin_%02d",i)) );
     vec_invXsec_omega_etaEMCal_bin.push_back( (TH1D*)h_invXsec_omega_etaEMCal->Clone(Form("h_invXsec_omega_etaEMCal_bin_%02d",i)) );
@@ -759,30 +792,35 @@ int main(int argc, char **argv) {
 
       pyHelp.Fill_TH2_Electron_TopMotherID(p.event, etaEMCal, vec_electron_pt_topMotherID_bin.at(iBin));
 
-      pyHelp.Fill_Pi0_Pt(p.event, etaLarge, vec_pi0_etaLarge_bin.at(iBin));
-      pyHelp.Fill_Pi0_Pt(p.event, etaTPC, vec_pi0_etaTPC_bin.at(iBin));
-      pyHelp.Fill_Pi0_Pt(p.event, etaEMCal, vec_pi0_etaEMCal_bin.at(iBin));
-      pyHelp.Fill_Pi0_Pt(p.event, etaPHOS, vec_pi0_etaPHOS_bin.at(iBin));
+      pyHelp.Fill_Pi0_Pt(p.event, yDefault, true, vec_pi0_yDefault_bin.at(iBin));
+      pyHelp.Fill_Pi0_Pt(p.event, etaLarge, false, vec_pi0_etaLarge_bin.at(iBin));
+      pyHelp.Fill_Pi0_Pt(p.event, etaTPC, false, vec_pi0_etaTPC_bin.at(iBin));
+      pyHelp.Fill_Pi0_Pt(p.event, etaEMCal, false, vec_pi0_etaEMCal_bin.at(iBin));
+      pyHelp.Fill_Pi0_Pt(p.event, etaPHOS, false, vec_pi0_etaPHOS_bin.at(iBin));
 
-      pyHelp.Fill_Pi0Primary_Pt(p.event, etaLarge, vec_pi0primary_etaLarge_bin.at(iBin));
-      pyHelp.Fill_Pi0Primary_Pt(p.event, etaTPC, vec_pi0primary_etaTPC_bin.at(iBin));
-      pyHelp.Fill_Pi0Primary_Pt(p.event, etaEMCal, vec_pi0primary_etaEMCal_bin.at(iBin));
-      pyHelp.Fill_Pi0Primary_Pt(p.event, etaPHOS, vec_pi0primary_etaPHOS_bin.at(iBin));
+      pyHelp.Fill_Pi0Primary_Pt(p.event, yDefault, true, vec_pi0primary_yDefault_bin.at(iBin));
+      pyHelp.Fill_Pi0Primary_Pt(p.event, etaLarge, false, vec_pi0primary_etaLarge_bin.at(iBin));
+      pyHelp.Fill_Pi0Primary_Pt(p.event, etaTPC, false, vec_pi0primary_etaTPC_bin.at(iBin));
+      pyHelp.Fill_Pi0Primary_Pt(p.event, etaEMCal, false, vec_pi0primary_etaEMCal_bin.at(iBin));
+      pyHelp.Fill_Pi0Primary_Pt(p.event, etaPHOS, false, vec_pi0primary_etaPHOS_bin.at(iBin));
 
-      pyHelp.Fill_Eta_Pt(p.event, etaLarge, vec_eta_etaLarge_bin.at(iBin));
-      pyHelp.Fill_Eta_Pt(p.event, etaTPC, vec_eta_etaTPC_bin.at(iBin));
-      pyHelp.Fill_Eta_Pt(p.event, etaEMCal, vec_eta_etaEMCal_bin.at(iBin));
-      pyHelp.Fill_Eta_Pt(p.event, etaPHOS, vec_eta_etaPHOS_bin.at(iBin));
+      pyHelp.Fill_Eta_Pt(p.event, yDefault, true, vec_eta_yDefault_bin.at(iBin));
+      pyHelp.Fill_Eta_Pt(p.event, etaLarge, false, vec_eta_etaLarge_bin.at(iBin));
+      pyHelp.Fill_Eta_Pt(p.event, etaTPC, false, vec_eta_etaTPC_bin.at(iBin));
+      pyHelp.Fill_Eta_Pt(p.event, etaEMCal, false, vec_eta_etaEMCal_bin.at(iBin));
+      pyHelp.Fill_Eta_Pt(p.event, etaPHOS, false, vec_eta_etaPHOS_bin.at(iBin));
 
-      pyHelp.Fill_EtaPrime_Pt(p.event, etaLarge, vec_etaprime_etaLarge_bin.at(iBin));
-      pyHelp.Fill_EtaPrime_Pt(p.event, etaTPC, vec_etaprime_etaTPC_bin.at(iBin));
-      pyHelp.Fill_EtaPrime_Pt(p.event, etaEMCal, vec_etaprime_etaEMCal_bin.at(iBin));
-      pyHelp.Fill_EtaPrime_Pt(p.event, etaPHOS, vec_etaprime_etaPHOS_bin.at(iBin));
+      pyHelp.Fill_EtaPrime_Pt(p.event, yDefault, true, vec_etaprime_yDefault_bin.at(iBin));
+      pyHelp.Fill_EtaPrime_Pt(p.event, etaLarge, false, vec_etaprime_etaLarge_bin.at(iBin));
+      pyHelp.Fill_EtaPrime_Pt(p.event, etaTPC, false, vec_etaprime_etaTPC_bin.at(iBin));
+      pyHelp.Fill_EtaPrime_Pt(p.event, etaEMCal, false, vec_etaprime_etaEMCal_bin.at(iBin));
+      pyHelp.Fill_EtaPrime_Pt(p.event, etaPHOS, false, vec_etaprime_etaPHOS_bin.at(iBin));
 
-      pyHelp.Fill_Omega_Pt(p.event, etaLarge, vec_omega_etaLarge_bin.at(iBin));
-      pyHelp.Fill_Omega_Pt(p.event, etaTPC, vec_omega_etaTPC_bin.at(iBin));
-      pyHelp.Fill_Omega_Pt(p.event, etaEMCal, vec_omega_etaEMCal_bin.at(iBin));
-      pyHelp.Fill_Omega_Pt(p.event, etaPHOS, vec_omega_etaPHOS_bin.at(iBin));
+      pyHelp.Fill_Omega_Pt(p.event, yDefault, true, vec_omega_yDefault_bin.at(iBin));
+      pyHelp.Fill_Omega_Pt(p.event, etaLarge, false, vec_omega_etaLarge_bin.at(iBin));
+      pyHelp.Fill_Omega_Pt(p.event, etaTPC, false, vec_omega_etaTPC_bin.at(iBin));
+      pyHelp.Fill_Omega_Pt(p.event, etaEMCal, false, vec_omega_etaEMCal_bin.at(iBin));
+      pyHelp.Fill_Omega_Pt(p.event, etaPHOS, false, vec_omega_etaPHOS_bin.at(iBin));
 
       pyHelp.Fill_Direct_Photon_Pt(p.event, etaLarge, vec_direct_photons_etaLarge_bin.at(iBin));
       pyHelp.Fill_Direct_Photon_Pt(p.event, etaTPC, vec_direct_photons_etaTPC_bin.at(iBin));
@@ -853,30 +891,35 @@ int main(int argc, char **argv) {
       // do the same jazz for invariant cross section histos ------------------------------------------
       //------------------------------------------------------------------------------------------
 
-      pyHelp.Fill_invXsec_Pi0_Pt(p.event, etaLarge, vec_invXsec_pi0_etaLarge_bin.at(iBin));
-      pyHelp.Fill_invXsec_Pi0_Pt(p.event, etaTPC, vec_invXsec_pi0_etaTPC_bin.at(iBin));
-      pyHelp.Fill_invXsec_Pi0_Pt(p.event, etaEMCal, vec_invXsec_pi0_etaEMCal_bin.at(iBin));
-      pyHelp.Fill_invXsec_Pi0_Pt(p.event, etaPHOS, vec_invXsec_pi0_etaPHOS_bin.at(iBin));
+      pyHelp.Fill_invXsec_Pi0_Pt(p.event, yDefault, true, vec_invXsec_pi0_yDefault_bin.at(iBin));
+      pyHelp.Fill_invXsec_Pi0_Pt(p.event, etaLarge, false, vec_invXsec_pi0_etaLarge_bin.at(iBin));
+      pyHelp.Fill_invXsec_Pi0_Pt(p.event, etaTPC, false, vec_invXsec_pi0_etaTPC_bin.at(iBin));
+      pyHelp.Fill_invXsec_Pi0_Pt(p.event, etaEMCal, false, vec_invXsec_pi0_etaEMCal_bin.at(iBin));
+      pyHelp.Fill_invXsec_Pi0_Pt(p.event, etaPHOS, false, vec_invXsec_pi0_etaPHOS_bin.at(iBin));
 
-      pyHelp.Fill_invXsec_Pi0Primary_Pt(p.event, etaLarge, vec_invXsec_pi0primary_etaLarge_bin.at(iBin));
-      pyHelp.Fill_invXsec_Pi0Primary_Pt(p.event, etaTPC, vec_invXsec_pi0primary_etaTPC_bin.at(iBin));
-      pyHelp.Fill_invXsec_Pi0Primary_Pt(p.event, etaEMCal, vec_invXsec_pi0primary_etaEMCal_bin.at(iBin));
-      pyHelp.Fill_invXsec_Pi0Primary_Pt(p.event, etaPHOS, vec_invXsec_pi0primary_etaPHOS_bin.at(iBin));
+      pyHelp.Fill_invXsec_Pi0Primary_Pt(p.event, yDefault, true, vec_invXsec_pi0primary_yDefault_bin.at(iBin));
+      pyHelp.Fill_invXsec_Pi0Primary_Pt(p.event, etaLarge, false, vec_invXsec_pi0primary_etaLarge_bin.at(iBin));
+      pyHelp.Fill_invXsec_Pi0Primary_Pt(p.event, etaTPC, false, vec_invXsec_pi0primary_etaTPC_bin.at(iBin));
+      pyHelp.Fill_invXsec_Pi0Primary_Pt(p.event, etaEMCal, false, vec_invXsec_pi0primary_etaEMCal_bin.at(iBin));
+      pyHelp.Fill_invXsec_Pi0Primary_Pt(p.event, etaPHOS, false, vec_invXsec_pi0primary_etaPHOS_bin.at(iBin));
 
-      pyHelp.Fill_invXsec_Eta_Pt(p.event, etaLarge, vec_invXsec_eta_etaLarge_bin.at(iBin));
-      pyHelp.Fill_invXsec_Eta_Pt(p.event, etaTPC, vec_invXsec_eta_etaTPC_bin.at(iBin));
-      pyHelp.Fill_invXsec_Eta_Pt(p.event, etaEMCal, vec_invXsec_eta_etaEMCal_bin.at(iBin));
-      pyHelp.Fill_invXsec_Eta_Pt(p.event, etaPHOS, vec_invXsec_eta_etaPHOS_bin.at(iBin));
+      pyHelp.Fill_invXsec_Eta_Pt(p.event, yDefault, true, vec_invXsec_eta_yDefault_bin.at(iBin));
+      pyHelp.Fill_invXsec_Eta_Pt(p.event, etaLarge, false, vec_invXsec_eta_etaLarge_bin.at(iBin));
+      pyHelp.Fill_invXsec_Eta_Pt(p.event, etaTPC, false, vec_invXsec_eta_etaTPC_bin.at(iBin));
+      pyHelp.Fill_invXsec_Eta_Pt(p.event, etaEMCal, false, vec_invXsec_eta_etaEMCal_bin.at(iBin));
+      pyHelp.Fill_invXsec_Eta_Pt(p.event, etaPHOS, false, vec_invXsec_eta_etaPHOS_bin.at(iBin));
 
-      pyHelp.Fill_invXsec_EtaPrime_Pt(p.event, etaLarge, vec_invXsec_etaprime_etaLarge_bin.at(iBin));
-      pyHelp.Fill_invXsec_EtaPrime_Pt(p.event, etaTPC, vec_invXsec_etaprime_etaTPC_bin.at(iBin));
-      pyHelp.Fill_invXsec_EtaPrime_Pt(p.event, etaEMCal, vec_invXsec_etaprime_etaEMCal_bin.at(iBin));
-      pyHelp.Fill_invXsec_EtaPrime_Pt(p.event, etaPHOS, vec_invXsec_etaprime_etaPHOS_bin.at(iBin));
+      pyHelp.Fill_invXsec_EtaPrime_Pt(p.event, yDefault, true, vec_invXsec_etaprime_yDefault_bin.at(iBin));
+      pyHelp.Fill_invXsec_EtaPrime_Pt(p.event, etaLarge, false, vec_invXsec_etaprime_etaLarge_bin.at(iBin));
+      pyHelp.Fill_invXsec_EtaPrime_Pt(p.event, etaTPC, false, vec_invXsec_etaprime_etaTPC_bin.at(iBin));
+      pyHelp.Fill_invXsec_EtaPrime_Pt(p.event, etaEMCal, false, vec_invXsec_etaprime_etaEMCal_bin.at(iBin));
+      pyHelp.Fill_invXsec_EtaPrime_Pt(p.event, etaPHOS, false, vec_invXsec_etaprime_etaPHOS_bin.at(iBin));
 
-      pyHelp.Fill_invXsec_Omega_Pt(p.event, etaLarge, vec_invXsec_omega_etaLarge_bin.at(iBin));
-      pyHelp.Fill_invXsec_Omega_Pt(p.event, etaTPC, vec_invXsec_omega_etaTPC_bin.at(iBin));
-      pyHelp.Fill_invXsec_Omega_Pt(p.event, etaEMCal, vec_invXsec_omega_etaEMCal_bin.at(iBin));
-      pyHelp.Fill_invXsec_Omega_Pt(p.event, etaPHOS, vec_invXsec_omega_etaPHOS_bin.at(iBin));
+      pyHelp.Fill_invXsec_Omega_Pt(p.event, yDefault, true, vec_invXsec_omega_yDefault_bin.at(iBin));
+      pyHelp.Fill_invXsec_Omega_Pt(p.event, etaLarge, false, vec_invXsec_omega_etaLarge_bin.at(iBin));
+      pyHelp.Fill_invXsec_Omega_Pt(p.event, etaTPC, false, vec_invXsec_omega_etaTPC_bin.at(iBin));
+      pyHelp.Fill_invXsec_Omega_Pt(p.event, etaEMCal, false, vec_invXsec_omega_etaEMCal_bin.at(iBin));
+      pyHelp.Fill_invXsec_Omega_Pt(p.event, etaPHOS, false, vec_invXsec_omega_etaPHOS_bin.at(iBin));
 
       pyHelp.Fill_invXsec_Direct_Photon_Pt(p.event, etaLarge, vec_invXsec_direct_photons_etaLarge_bin.at(iBin));
       pyHelp.Fill_invXsec_Direct_Photon_Pt(p.event, etaTPC, vec_invXsec_direct_photons_etaTPC_bin.at(iBin));
@@ -960,26 +1003,31 @@ int main(int argc, char **argv) {
 
     vec_electron_pt_topMotherID_bin.at(iBin)->Scale(sigma);
 
+    vec_pi0_yDefault_bin.at(iBin)->Scale(sigma);
     vec_pi0_etaLarge_bin.at(iBin)->Scale(sigma);
     vec_pi0_etaTPC_bin.at(iBin)->Scale(sigma);
     vec_pi0_etaEMCal_bin.at(iBin)->Scale(sigma);
     vec_pi0_etaPHOS_bin.at(iBin)->Scale(sigma);
 
+    vec_pi0primary_yDefault_bin.at(iBin)->Scale(sigma);
     vec_pi0primary_etaLarge_bin.at(iBin)->Scale(sigma);
     vec_pi0primary_etaTPC_bin.at(iBin)->Scale(sigma);
     vec_pi0primary_etaEMCal_bin.at(iBin)->Scale(sigma);
     vec_pi0primary_etaPHOS_bin.at(iBin)->Scale(sigma);
 
+    vec_eta_yDefault_bin.at(iBin)->Scale(sigma);
     vec_eta_etaLarge_bin.at(iBin)->Scale(sigma);
     vec_eta_etaTPC_bin.at(iBin)->Scale(sigma);
     vec_eta_etaEMCal_bin.at(iBin)->Scale(sigma);
     vec_eta_etaPHOS_bin.at(iBin)->Scale(sigma);
 
+    vec_etaprime_yDefault_bin.at(iBin)->Scale(sigma);
     vec_etaprime_etaLarge_bin.at(iBin)->Scale(sigma);
     vec_etaprime_etaTPC_bin.at(iBin)->Scale(sigma);
     vec_etaprime_etaEMCal_bin.at(iBin)->Scale(sigma);
     vec_etaprime_etaPHOS_bin.at(iBin)->Scale(sigma);
 
+    vec_omega_yDefault_bin.at(iBin)->Scale(sigma);
     vec_omega_etaLarge_bin.at(iBin)->Scale(sigma);
     vec_omega_etaTPC_bin.at(iBin)->Scale(sigma);
     vec_omega_etaEMCal_bin.at(iBin)->Scale(sigma);
@@ -1052,26 +1100,31 @@ int main(int argc, char **argv) {
     // do the same jazz for invariant cross section histos ------------------------------------------
     //------------------------------------------------------------------------------------------
 
+    vec_invXsec_pi0_yDefault_bin.at(iBin)->Scale(sigma);
     vec_invXsec_pi0_etaLarge_bin.at(iBin)->Scale(sigma);
     vec_invXsec_pi0_etaTPC_bin.at(iBin)->Scale(sigma);
     vec_invXsec_pi0_etaEMCal_bin.at(iBin)->Scale(sigma);
     vec_invXsec_pi0_etaPHOS_bin.at(iBin)->Scale(sigma);
 
+    vec_invXsec_pi0primary_yDefault_bin.at(iBin)->Scale(sigma);
     vec_invXsec_pi0primary_etaLarge_bin.at(iBin)->Scale(sigma);
     vec_invXsec_pi0primary_etaTPC_bin.at(iBin)->Scale(sigma);
     vec_invXsec_pi0primary_etaEMCal_bin.at(iBin)->Scale(sigma);
     vec_invXsec_pi0primary_etaPHOS_bin.at(iBin)->Scale(sigma);
 
+    vec_invXsec_eta_yDefault_bin.at(iBin)->Scale(sigma);
     vec_invXsec_eta_etaLarge_bin.at(iBin)->Scale(sigma);
     vec_invXsec_eta_etaTPC_bin.at(iBin)->Scale(sigma);
     vec_invXsec_eta_etaEMCal_bin.at(iBin)->Scale(sigma);
     vec_invXsec_eta_etaPHOS_bin.at(iBin)->Scale(sigma);
 
+    vec_invXsec_etaprime_yDefault_bin.at(iBin)->Scale(sigma);
     vec_invXsec_etaprime_etaLarge_bin.at(iBin)->Scale(sigma);
     vec_invXsec_etaprime_etaTPC_bin.at(iBin)->Scale(sigma);
     vec_invXsec_etaprime_etaEMCal_bin.at(iBin)->Scale(sigma);
     vec_invXsec_etaprime_etaPHOS_bin.at(iBin)->Scale(sigma);
 
+    vec_invXsec_omega_yDefault_bin.at(iBin)->Scale(sigma);
     vec_invXsec_omega_etaLarge_bin.at(iBin)->Scale(sigma);
     vec_invXsec_omega_etaTPC_bin.at(iBin)->Scale(sigma);
     vec_invXsec_omega_etaEMCal_bin.at(iBin)->Scale(sigma);
@@ -1159,106 +1212,111 @@ int main(int argc, char **argv) {
   h_weightSum->Write();
 
   TDirectory *dir_electron = file.mkdir("electron");
-  pyHelp.Add_Histos_Scale_Write2File( vec_electron_pt_topMotherID_bin, h2_electron_pt_topMotherID, file, dir_electron, 2*etaEMCal);
+  pyHelp.Add_Histos_Scale_Write2File( vec_electron_pt_topMotherID_bin, h2_electron_pt_topMotherID, file, dir_electron, 2*etaEMCal, false);
 
   TDirectory *dir_pTHat = file.mkdir("pTHat");
-  pyHelp.Add_Histos_Scale_Write2File( vec_pTHat_bin, h_pTHat, file, dir_pTHat, 1.);
+  pyHelp.Add_Histos_Scale_Write2File( vec_pTHat_bin, h_pTHat, file, dir_pTHat, 1., false);
 
   TDirectory *dir_pi0 = file.mkdir("pi0");
-  pyHelp.Add_Histos_Scale_Write2File( vec_pi0_etaLarge_bin, h_pi0_etaLarge, file, dir_pi0, 2*etaLarge);
-  pyHelp.Add_Histos_Scale_Write2File( vec_pi0_etaTPC_bin, h_pi0_etaTPC, file, dir_pi0, 2*etaTPC);
-  pyHelp.Add_Histos_Scale_Write2File( vec_pi0_etaEMCal_bin, h_pi0_etaEMCal, file, dir_pi0, 2*etaEMCal);
-  pyHelp.Add_Histos_Scale_Write2File( vec_pi0_etaPHOS_bin, h_pi0_etaPHOS, file, dir_pi0, 2*etaPHOS);
+  pyHelp.Add_Histos_Scale_Write2File( vec_pi0_yDefault_bin, h_pi0_yDefault, file, dir_pi0, 2*yDefault, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_pi0_etaLarge_bin, h_pi0_etaLarge, file, dir_pi0, 2*etaLarge, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_pi0_etaTPC_bin, h_pi0_etaTPC, file, dir_pi0, 2*etaTPC, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_pi0_etaEMCal_bin, h_pi0_etaEMCal, file, dir_pi0, 2*etaEMCal, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_pi0_etaPHOS_bin, h_pi0_etaPHOS, file, dir_pi0, 2*etaPHOS, false);
 
   TDirectory *dir_pi0primary = file.mkdir("pi0primary");
-  pyHelp.Add_Histos_Scale_Write2File( vec_pi0primary_etaLarge_bin, h_pi0primary_etaLarge, file, dir_pi0primary, 2*etaLarge);
-  pyHelp.Add_Histos_Scale_Write2File( vec_pi0primary_etaTPC_bin, h_pi0primary_etaTPC, file, dir_pi0primary, 2*etaTPC);
-  pyHelp.Add_Histos_Scale_Write2File( vec_pi0primary_etaEMCal_bin, h_pi0primary_etaEMCal, file, dir_pi0primary, 2*etaEMCal);
-  pyHelp.Add_Histos_Scale_Write2File( vec_pi0primary_etaPHOS_bin, h_pi0primary_etaPHOS, file, dir_pi0primary, 2*etaPHOS);
+  pyHelp.Add_Histos_Scale_Write2File( vec_pi0primary_yDefault_bin, h_pi0primary_yDefault, file, dir_pi0primary, 2*yDefault, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_pi0primary_etaLarge_bin, h_pi0primary_etaLarge, file, dir_pi0primary, 2*etaLarge, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_pi0primary_etaTPC_bin, h_pi0primary_etaTPC, file, dir_pi0primary, 2*etaTPC, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_pi0primary_etaEMCal_bin, h_pi0primary_etaEMCal, file, dir_pi0primary, 2*etaEMCal, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_pi0primary_etaPHOS_bin, h_pi0primary_etaPHOS, file, dir_pi0primary, 2*etaPHOS, false);
 
   TDirectory *dir_eta = file.mkdir("eta");
-  pyHelp.Add_Histos_Scale_Write2File( vec_eta_etaLarge_bin, h_eta_etaLarge, file, dir_eta, 2*etaLarge);
-  pyHelp.Add_Histos_Scale_Write2File( vec_eta_etaTPC_bin, h_eta_etaTPC, file, dir_eta, 2*etaTPC);
-  pyHelp.Add_Histos_Scale_Write2File( vec_eta_etaEMCal_bin, h_eta_etaEMCal, file, dir_eta, 2*etaEMCal);
-  pyHelp.Add_Histos_Scale_Write2File( vec_eta_etaPHOS_bin, h_eta_etaPHOS, file, dir_eta, 2*etaPHOS);
+  pyHelp.Add_Histos_Scale_Write2File( vec_eta_yDefault_bin, h_eta_yDefault, file, dir_eta, 2*yDefault, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_eta_etaLarge_bin, h_eta_etaLarge, file, dir_eta, 2*etaLarge, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_eta_etaTPC_bin, h_eta_etaTPC, file, dir_eta, 2*etaTPC, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_eta_etaEMCal_bin, h_eta_etaEMCal, file, dir_eta, 2*etaEMCal, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_eta_etaPHOS_bin, h_eta_etaPHOS, file, dir_eta, 2*etaPHOS, false);
 
   TDirectory *dir_etaprime = file.mkdir("etaprime");
-  pyHelp.Add_Histos_Scale_Write2File( vec_etaprime_etaLarge_bin, h_etaprime_etaLarge, file, dir_etaprime, 2*etaLarge);
-  pyHelp.Add_Histos_Scale_Write2File( vec_etaprime_etaTPC_bin, h_etaprime_etaTPC, file, dir_etaprime, 2*etaTPC);
-  pyHelp.Add_Histos_Scale_Write2File( vec_etaprime_etaEMCal_bin, h_etaprime_etaEMCal, file, dir_etaprime, 2*etaEMCal);
-  pyHelp.Add_Histos_Scale_Write2File( vec_etaprime_etaPHOS_bin, h_etaprime_etaPHOS, file, dir_etaprime, 2*etaPHOS);
+  pyHelp.Add_Histos_Scale_Write2File( vec_etaprime_yDefault_bin, h_etaprime_yDefault, file, dir_etaprime, 2*yDefault, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_etaprime_etaLarge_bin, h_etaprime_etaLarge, file, dir_etaprime, 2*etaLarge, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_etaprime_etaTPC_bin, h_etaprime_etaTPC, file, dir_etaprime, 2*etaTPC, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_etaprime_etaEMCal_bin, h_etaprime_etaEMCal, file, dir_etaprime, 2*etaEMCal, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_etaprime_etaPHOS_bin, h_etaprime_etaPHOS, file, dir_etaprime, 2*etaPHOS, false);
 
   TDirectory *dir_omega = file.mkdir("omega");
-  pyHelp.Add_Histos_Scale_Write2File( vec_omega_etaLarge_bin, h_omega_etaLarge, file, dir_omega, 2*etaLarge);
-  pyHelp.Add_Histos_Scale_Write2File( vec_omega_etaTPC_bin, h_omega_etaTPC, file, dir_omega, 2*etaTPC);
-  pyHelp.Add_Histos_Scale_Write2File( vec_omega_etaEMCal_bin, h_omega_etaEMCal, file, dir_omega, 2*etaEMCal);
-  pyHelp.Add_Histos_Scale_Write2File( vec_omega_etaPHOS_bin, h_omega_etaPHOS, file, dir_omega, 2*etaPHOS);
+  pyHelp.Add_Histos_Scale_Write2File( vec_omega_yDefault_bin, h_omega_yDefault, file, dir_omega, 2*yDefault, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_omega_etaLarge_bin, h_omega_etaLarge, file, dir_omega, 2*etaLarge, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_omega_etaTPC_bin, h_omega_etaTPC, file, dir_omega, 2*etaTPC, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_omega_etaEMCal_bin, h_omega_etaEMCal, file, dir_omega, 2*etaEMCal, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_omega_etaPHOS_bin, h_omega_etaPHOS, file, dir_omega, 2*etaPHOS, false);
 
   TDirectory *dir_gamma = file.mkdir("gamma");
-  pyHelp.Add_Histos_Scale_Write2File( vec_direct_photons_etaLarge_bin, h_direct_photons_etaLarge, file, dir_gamma, 2.*etaLarge);
-  pyHelp.Add_Histos_Scale_Write2File( vec_direct_photons_etaTPC_bin, h_direct_photons_etaTPC, file, dir_gamma, 2*etaTPC);
-  pyHelp.Add_Histos_Scale_Write2File( vec_direct_photons_etaEMCal_bin, h_direct_photons_etaEMCal, file, dir_gamma, 2*etaEMCal);
-  pyHelp.Add_Histos_Scale_Write2File( vec_direct_photons_etaPHOS_bin, h_direct_photons_etaPHOS, file, dir_gamma, 2*etaPHOS);
+  pyHelp.Add_Histos_Scale_Write2File( vec_direct_photons_etaLarge_bin, h_direct_photons_etaLarge, file, dir_gamma, 2*etaLarge, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_direct_photons_etaTPC_bin, h_direct_photons_etaTPC, file, dir_gamma, 2*etaTPC, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_direct_photons_etaEMCal_bin, h_direct_photons_etaEMCal, file, dir_gamma, 2*etaEMCal, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_direct_photons_etaPHOS_bin, h_direct_photons_etaPHOS, file, dir_gamma, 2*etaPHOS, false);
 
-  pyHelp.Add_Histos_Scale_Write2File( vec_shower_photons_etaLarge_bin, h_shower_photons_etaLarge, file, dir_gamma, 2.*etaLarge);
-  pyHelp.Add_Histos_Scale_Write2File( vec_shower_photons_etaTPC_bin, h_shower_photons_etaTPC, file, dir_gamma, 2*etaTPC);
-  pyHelp.Add_Histos_Scale_Write2File( vec_shower_photons_etaEMCal_bin, h_shower_photons_etaEMCal, file, dir_gamma, 2*etaEMCal);
-  pyHelp.Add_Histos_Scale_Write2File( vec_shower_photons_etaPHOS_bin, h_shower_photons_etaPHOS, file, dir_gamma, 2*etaPHOS);
+  pyHelp.Add_Histos_Scale_Write2File( vec_shower_photons_etaLarge_bin, h_shower_photons_etaLarge, file, dir_gamma, 2*etaLarge, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_shower_photons_etaTPC_bin, h_shower_photons_etaTPC, file, dir_gamma, 2*etaTPC, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_shower_photons_etaEMCal_bin, h_shower_photons_etaEMCal, file, dir_gamma, 2*etaEMCal, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_shower_photons_etaPHOS_bin, h_shower_photons_etaPHOS, file, dir_gamma, 2*etaPHOS, false);
 
-  pyHelp.Add_Histos_Scale_Write2File( vec_222_photons_etaLarge_bin, h_222_photons_etaLarge, file, dir_gamma, 2.*etaLarge);
-  pyHelp.Add_Histos_Scale_Write2File( vec_222_photons_etaTPC_bin, h_222_photons_etaTPC, file, dir_gamma, 2*etaTPC);
-  pyHelp.Add_Histos_Scale_Write2File( vec_222_photons_etaEMCal_bin, h_222_photons_etaEMCal, file, dir_gamma, 2*etaEMCal);
-  pyHelp.Add_Histos_Scale_Write2File( vec_222_photons_etaPHOS_bin, h_222_photons_etaPHOS, file, dir_gamma, 2*etaPHOS);
+  pyHelp.Add_Histos_Scale_Write2File( vec_222_photons_etaLarge_bin, h_222_photons_etaLarge, file, dir_gamma, 2*etaLarge, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_222_photons_etaTPC_bin, h_222_photons_etaTPC, file, dir_gamma, 2*etaTPC, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_222_photons_etaEMCal_bin, h_222_photons_etaEMCal, file, dir_gamma, 2*etaEMCal, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_222_photons_etaPHOS_bin, h_222_photons_etaPHOS, file, dir_gamma, 2*etaPHOS, false);
 
   if(applyPhotonIso){
     TDirectory *dir_isoGamma = file.mkdir("isoGamma");
-    pyHelp.Add_Histos_Scale_Write2File( vec_iso_charged2GeV_R03_photons_etaTPC_bin, h_iso_charged2GeV_R03_photons_etaTPC, file, dir_isoGamma, 2*etaTPC);
-    pyHelp.Add_Histos_Scale_Write2File( vec_iso_charged2GeV_R04_photons_etaTPC_bin, h_iso_charged2GeV_R04_photons_etaTPC, file, dir_isoGamma, 2*etaTPC);
-    pyHelp.Add_Histos_Scale_Write2File( vec_iso_charged2GeV_R05_photons_etaTPC_bin, h_iso_charged2GeV_R05_photons_etaTPC, file, dir_isoGamma, 2*etaTPC);
-    pyHelp.Add_Histos_Scale_Write2File( vec_iso_charged2GeV_R03_photons_etaEMCal_bin, h_iso_charged2GeV_R03_photons_etaEMCal, file, dir_isoGamma, 2*etaEMCal);
-    pyHelp.Add_Histos_Scale_Write2File( vec_iso_charged2GeV_R04_photons_etaEMCal_bin, h_iso_charged2GeV_R04_photons_etaEMCal, file, dir_isoGamma, 2*etaEMCal);
-    pyHelp.Add_Histos_Scale_Write2File( vec_iso_charged2GeV_R05_photons_etaEMCal_bin, h_iso_charged2GeV_R05_photons_etaEMCal, file, dir_isoGamma, 2*etaEMCal);
-    pyHelp.Add_Histos_Scale_Write2File( vec_iso_charged2GeV_R03_photons_etaPHOS_bin, h_iso_charged2GeV_R03_photons_etaPHOS, file, dir_isoGamma, 2*etaPHOS);
-    pyHelp.Add_Histos_Scale_Write2File( vec_iso_charged2GeV_R04_photons_etaPHOS_bin, h_iso_charged2GeV_R04_photons_etaPHOS, file, dir_isoGamma, 2*etaPHOS);
-    pyHelp.Add_Histos_Scale_Write2File( vec_iso_charged2GeV_R05_photons_etaPHOS_bin, h_iso_charged2GeV_R05_photons_etaPHOS, file, dir_isoGamma, 2*etaPHOS);
+    pyHelp.Add_Histos_Scale_Write2File( vec_iso_charged2GeV_R03_photons_etaTPC_bin, h_iso_charged2GeV_R03_photons_etaTPC, file, dir_isoGamma, 2*etaTPC, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_iso_charged2GeV_R04_photons_etaTPC_bin, h_iso_charged2GeV_R04_photons_etaTPC, file, dir_isoGamma, 2*etaTPC, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_iso_charged2GeV_R05_photons_etaTPC_bin, h_iso_charged2GeV_R05_photons_etaTPC, file, dir_isoGamma, 2*etaTPC, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_iso_charged2GeV_R03_photons_etaEMCal_bin, h_iso_charged2GeV_R03_photons_etaEMCal, file, dir_isoGamma, 2*etaEMCal, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_iso_charged2GeV_R04_photons_etaEMCal_bin, h_iso_charged2GeV_R04_photons_etaEMCal, file, dir_isoGamma, 2*etaEMCal, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_iso_charged2GeV_R05_photons_etaEMCal_bin, h_iso_charged2GeV_R05_photons_etaEMCal, file, dir_isoGamma, 2*etaEMCal, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_iso_charged2GeV_R03_photons_etaPHOS_bin, h_iso_charged2GeV_R03_photons_etaPHOS, file, dir_isoGamma, 2*etaPHOS, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_iso_charged2GeV_R04_photons_etaPHOS_bin, h_iso_charged2GeV_R04_photons_etaPHOS, file, dir_isoGamma, 2*etaPHOS, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_iso_charged2GeV_R05_photons_etaPHOS_bin, h_iso_charged2GeV_R05_photons_etaPHOS, file, dir_isoGamma, 2*etaPHOS, false);
 
-    pyHelp.Add_Histos_Scale_Write2File( vec_iso_charged3GeV_R03_photons_etaTPC_bin, h_iso_charged3GeV_R03_photons_etaTPC, file, dir_isoGamma, 2*etaTPC);
-    pyHelp.Add_Histos_Scale_Write2File( vec_iso_charged3GeV_R04_photons_etaTPC_bin, h_iso_charged3GeV_R04_photons_etaTPC, file, dir_isoGamma, 2*etaTPC);
-    pyHelp.Add_Histos_Scale_Write2File( vec_iso_charged3GeV_R05_photons_etaTPC_bin, h_iso_charged3GeV_R05_photons_etaTPC, file, dir_isoGamma, 2*etaTPC);
-    pyHelp.Add_Histos_Scale_Write2File( vec_iso_charged3GeV_R03_photons_etaEMCal_bin, h_iso_charged3GeV_R03_photons_etaEMCal, file, dir_isoGamma, 2*etaEMCal);
-    pyHelp.Add_Histos_Scale_Write2File( vec_iso_charged3GeV_R04_photons_etaEMCal_bin, h_iso_charged3GeV_R04_photons_etaEMCal, file, dir_isoGamma, 2*etaEMCal);
-    pyHelp.Add_Histos_Scale_Write2File( vec_iso_charged3GeV_R05_photons_etaEMCal_bin, h_iso_charged3GeV_R05_photons_etaEMCal, file, dir_isoGamma, 2*etaEMCal);
-    pyHelp.Add_Histos_Scale_Write2File( vec_iso_charged3GeV_R03_photons_etaPHOS_bin, h_iso_charged3GeV_R03_photons_etaPHOS, file, dir_isoGamma, 2*etaPHOS);
-    pyHelp.Add_Histos_Scale_Write2File( vec_iso_charged3GeV_R04_photons_etaPHOS_bin, h_iso_charged3GeV_R04_photons_etaPHOS, file, dir_isoGamma, 2*etaPHOS);
-    pyHelp.Add_Histos_Scale_Write2File( vec_iso_charged3GeV_R05_photons_etaPHOS_bin, h_iso_charged3GeV_R05_photons_etaPHOS, file, dir_isoGamma, 2*etaPHOS);
+    pyHelp.Add_Histos_Scale_Write2File( vec_iso_charged3GeV_R03_photons_etaTPC_bin, h_iso_charged3GeV_R03_photons_etaTPC, file, dir_isoGamma, 2*etaTPC, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_iso_charged3GeV_R04_photons_etaTPC_bin, h_iso_charged3GeV_R04_photons_etaTPC, file, dir_isoGamma, 2*etaTPC, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_iso_charged3GeV_R05_photons_etaTPC_bin, h_iso_charged3GeV_R05_photons_etaTPC, file, dir_isoGamma, 2*etaTPC, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_iso_charged3GeV_R03_photons_etaEMCal_bin, h_iso_charged3GeV_R03_photons_etaEMCal, file, dir_isoGamma, 2*etaEMCal, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_iso_charged3GeV_R04_photons_etaEMCal_bin, h_iso_charged3GeV_R04_photons_etaEMCal, file, dir_isoGamma, 2*etaEMCal, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_iso_charged3GeV_R05_photons_etaEMCal_bin, h_iso_charged3GeV_R05_photons_etaEMCal, file, dir_isoGamma, 2*etaEMCal, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_iso_charged3GeV_R03_photons_etaPHOS_bin, h_iso_charged3GeV_R03_photons_etaPHOS, file, dir_isoGamma, 2*etaPHOS, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_iso_charged3GeV_R04_photons_etaPHOS_bin, h_iso_charged3GeV_R04_photons_etaPHOS, file, dir_isoGamma, 2*etaPHOS, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_iso_charged3GeV_R05_photons_etaPHOS_bin, h_iso_charged3GeV_R05_photons_etaPHOS, file, dir_isoGamma, 2*etaPHOS, false);
 
 
-    pyHelp.Add_Histos_Scale_Write2File( vec_iso_full2GeV_R03_photons_etaTPC_bin, h_iso_full2GeV_R03_photons_etaTPC, file, dir_isoGamma, 2*etaTPC);
-    pyHelp.Add_Histos_Scale_Write2File( vec_iso_full2GeV_R04_photons_etaTPC_bin, h_iso_full2GeV_R04_photons_etaTPC, file, dir_isoGamma, 2*etaTPC);
-    pyHelp.Add_Histos_Scale_Write2File( vec_iso_full2GeV_R05_photons_etaTPC_bin, h_iso_full2GeV_R05_photons_etaTPC, file, dir_isoGamma, 2*etaTPC);
-    pyHelp.Add_Histos_Scale_Write2File( vec_iso_full2GeV_R03_photons_etaEMCal_bin, h_iso_full2GeV_R03_photons_etaEMCal, file, dir_isoGamma, 2*etaEMCal);
-    pyHelp.Add_Histos_Scale_Write2File( vec_iso_full2GeV_R04_photons_etaEMCal_bin, h_iso_full2GeV_R04_photons_etaEMCal, file, dir_isoGamma, 2*etaEMCal);
-    pyHelp.Add_Histos_Scale_Write2File( vec_iso_full2GeV_R05_photons_etaEMCal_bin, h_iso_full2GeV_R05_photons_etaEMCal, file, dir_isoGamma, 2*etaEMCal);
-    pyHelp.Add_Histos_Scale_Write2File( vec_iso_full2GeV_R03_photons_etaPHOS_bin, h_iso_full2GeV_R03_photons_etaPHOS, file, dir_isoGamma, 2*etaPHOS);
-    pyHelp.Add_Histos_Scale_Write2File( vec_iso_full2GeV_R04_photons_etaPHOS_bin, h_iso_full2GeV_R04_photons_etaPHOS, file, dir_isoGamma, 2*etaPHOS);
-    pyHelp.Add_Histos_Scale_Write2File( vec_iso_full2GeV_R05_photons_etaPHOS_bin, h_iso_full2GeV_R05_photons_etaPHOS, file, dir_isoGamma, 2*etaPHOS);
+    pyHelp.Add_Histos_Scale_Write2File( vec_iso_full2GeV_R03_photons_etaTPC_bin, h_iso_full2GeV_R03_photons_etaTPC, file, dir_isoGamma, 2*etaTPC, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_iso_full2GeV_R04_photons_etaTPC_bin, h_iso_full2GeV_R04_photons_etaTPC, file, dir_isoGamma, 2*etaTPC, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_iso_full2GeV_R05_photons_etaTPC_bin, h_iso_full2GeV_R05_photons_etaTPC, file, dir_isoGamma, 2*etaTPC, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_iso_full2GeV_R03_photons_etaEMCal_bin, h_iso_full2GeV_R03_photons_etaEMCal, file, dir_isoGamma, 2*etaEMCal, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_iso_full2GeV_R04_photons_etaEMCal_bin, h_iso_full2GeV_R04_photons_etaEMCal, file, dir_isoGamma, 2*etaEMCal, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_iso_full2GeV_R05_photons_etaEMCal_bin, h_iso_full2GeV_R05_photons_etaEMCal, file, dir_isoGamma, 2*etaEMCal, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_iso_full2GeV_R03_photons_etaPHOS_bin, h_iso_full2GeV_R03_photons_etaPHOS, file, dir_isoGamma, 2*etaPHOS, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_iso_full2GeV_R04_photons_etaPHOS_bin, h_iso_full2GeV_R04_photons_etaPHOS, file, dir_isoGamma, 2*etaPHOS, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_iso_full2GeV_R05_photons_etaPHOS_bin, h_iso_full2GeV_R05_photons_etaPHOS, file, dir_isoGamma, 2*etaPHOS, false);
 
-    pyHelp.Add_Histos_Scale_Write2File( vec_iso_full3GeV_R03_photons_etaTPC_bin, h_iso_full3GeV_R03_photons_etaTPC, file, dir_isoGamma, 2*etaTPC);
-    pyHelp.Add_Histos_Scale_Write2File( vec_iso_full3GeV_R04_photons_etaTPC_bin, h_iso_full3GeV_R04_photons_etaTPC, file, dir_isoGamma, 2*etaTPC);
-    pyHelp.Add_Histos_Scale_Write2File( vec_iso_full3GeV_R05_photons_etaTPC_bin, h_iso_full3GeV_R05_photons_etaTPC, file, dir_isoGamma, 2*etaTPC);
-    pyHelp.Add_Histos_Scale_Write2File( vec_iso_full3GeV_R03_photons_etaEMCal_bin, h_iso_full3GeV_R03_photons_etaEMCal, file, dir_isoGamma, 2*etaEMCal);
-    pyHelp.Add_Histos_Scale_Write2File( vec_iso_full3GeV_R04_photons_etaEMCal_bin, h_iso_full3GeV_R04_photons_etaEMCal, file, dir_isoGamma, 2*etaEMCal);
-    pyHelp.Add_Histos_Scale_Write2File( vec_iso_full3GeV_R05_photons_etaEMCal_bin, h_iso_full3GeV_R05_photons_etaEMCal, file, dir_isoGamma, 2*etaEMCal);
-    pyHelp.Add_Histos_Scale_Write2File( vec_iso_full3GeV_R03_photons_etaPHOS_bin, h_iso_full3GeV_R03_photons_etaPHOS, file, dir_isoGamma, 2*etaPHOS);
-    pyHelp.Add_Histos_Scale_Write2File( vec_iso_full3GeV_R04_photons_etaPHOS_bin, h_iso_full3GeV_R04_photons_etaPHOS, file, dir_isoGamma, 2*etaPHOS);
-    pyHelp.Add_Histos_Scale_Write2File( vec_iso_full3GeV_R05_photons_etaPHOS_bin, h_iso_full3GeV_R05_photons_etaPHOS, file, dir_isoGamma, 2*etaPHOS);
+    pyHelp.Add_Histos_Scale_Write2File( vec_iso_full3GeV_R03_photons_etaTPC_bin, h_iso_full3GeV_R03_photons_etaTPC, file, dir_isoGamma, 2*etaTPC, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_iso_full3GeV_R04_photons_etaTPC_bin, h_iso_full3GeV_R04_photons_etaTPC, file, dir_isoGamma, 2*etaTPC, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_iso_full3GeV_R05_photons_etaTPC_bin, h_iso_full3GeV_R05_photons_etaTPC, file, dir_isoGamma, 2*etaTPC, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_iso_full3GeV_R03_photons_etaEMCal_bin, h_iso_full3GeV_R03_photons_etaEMCal, file, dir_isoGamma, 2*etaEMCal, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_iso_full3GeV_R04_photons_etaEMCal_bin, h_iso_full3GeV_R04_photons_etaEMCal, file, dir_isoGamma, 2*etaEMCal, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_iso_full3GeV_R05_photons_etaEMCal_bin, h_iso_full3GeV_R05_photons_etaEMCal, file, dir_isoGamma, 2*etaEMCal, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_iso_full3GeV_R03_photons_etaPHOS_bin, h_iso_full3GeV_R03_photons_etaPHOS, file, dir_isoGamma, 2*etaPHOS, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_iso_full3GeV_R04_photons_etaPHOS_bin, h_iso_full3GeV_R04_photons_etaPHOS, file, dir_isoGamma, 2*etaPHOS, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_iso_full3GeV_R05_photons_etaPHOS_bin, h_iso_full3GeV_R05_photons_etaPHOS, file, dir_isoGamma, 2*etaPHOS, false);
   }
 
   TDirectory *dir_decayGamma = file.mkdir("decayGamma");
-  pyHelp.Add_Histos_Scale_Write2File( vec_decay_photons_etaLarge_bin, h_decay_photons_etaLarge, file, dir_decayGamma, 2*etaLarge);
-  pyHelp.Add_Histos_Scale_Write2File( vec_decay_photons_etaTPC_bin, h_decay_photons_etaTPC, file, dir_decayGamma, 2*etaTPC);
-  pyHelp.Add_Histos_Scale_Write2File( vec_decay_photons_etaEMCal_bin, h_decay_photons_etaEMCal, file, dir_decayGamma, 2*etaEMCal);
-  pyHelp.Add_Histos_Scale_Write2File( vec_decay_photons_etaPHOS_bin, h_decay_photons_etaPHOS, file, dir_decayGamma, 2*etaPHOS);
+  pyHelp.Add_Histos_Scale_Write2File( vec_decay_photons_etaLarge_bin, h_decay_photons_etaLarge, file, dir_decayGamma, 2*etaLarge, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_decay_photons_etaTPC_bin, h_decay_photons_etaTPC, file, dir_decayGamma, 2*etaTPC, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_decay_photons_etaEMCal_bin, h_decay_photons_etaEMCal, file, dir_decayGamma, 2*etaEMCal, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_decay_photons_etaPHOS_bin, h_decay_photons_etaPHOS, file, dir_decayGamma, 2*etaPHOS, false);
   
 
   //----------------------------------------------------------------------------------------------------
@@ -1266,100 +1324,105 @@ int main(int argc, char **argv) {
   //------------------------------------------------------------------------------------------
 
   TDirectory *dir_pi0_invXsec = file.mkdir("pi0_invXsec");
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_pi0_etaLarge_bin, h_invXsec_pi0_etaLarge, file, dir_pi0_invXsec, 2.*etaLarge);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_pi0_etaTPC_bin, h_invXsec_pi0_etaTPC, file, dir_pi0_invXsec, 2.*etaTPC);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_pi0_etaEMCal_bin, h_invXsec_pi0_etaEMCal, file, dir_pi0_invXsec, 2.*etaEMCal);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_pi0_etaPHOS_bin, h_invXsec_pi0_etaPHOS, file, dir_pi0_invXsec, 2.*etaPHOS);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_pi0_yDefault_bin, h_invXsec_pi0_yDefault, file, dir_pi0_invXsec, 2.*yDefault, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_pi0_etaLarge_bin, h_invXsec_pi0_etaLarge, file, dir_pi0_invXsec, 2.*etaLarge, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_pi0_etaTPC_bin, h_invXsec_pi0_etaTPC, file, dir_pi0_invXsec, 2.*etaTPC, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_pi0_etaEMCal_bin, h_invXsec_pi0_etaEMCal, file, dir_pi0_invXsec, 2.*etaEMCal, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_pi0_etaPHOS_bin, h_invXsec_pi0_etaPHOS, file, dir_pi0_invXsec, 2.*etaPHOS, false);
 
   TDirectory *dir_pi0primary_invXsec = file.mkdir("pi0primary_invXsec");
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_pi0primary_etaLarge_bin, h_invXsec_pi0primary_etaLarge, file, dir_pi0primary_invXsec, 2.*etaLarge);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_pi0primary_etaTPC_bin, h_invXsec_pi0primary_etaTPC, file, dir_pi0primary_invXsec, 2.*etaTPC);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_pi0primary_etaEMCal_bin, h_invXsec_pi0primary_etaEMCal, file, dir_pi0primary_invXsec, 2.*etaEMCal);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_pi0primary_etaPHOS_bin, h_invXsec_pi0primary_etaPHOS, file, dir_pi0primary_invXsec, 2.*etaPHOS);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_pi0primary_yDefault_bin, h_invXsec_pi0primary_yDefault, file, dir_pi0primary_invXsec, 2.*yDefault, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_pi0primary_etaLarge_bin, h_invXsec_pi0primary_etaLarge, file, dir_pi0primary_invXsec, 2.*etaLarge, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_pi0primary_etaTPC_bin, h_invXsec_pi0primary_etaTPC, file, dir_pi0primary_invXsec, 2.*etaTPC, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_pi0primary_etaEMCal_bin, h_invXsec_pi0primary_etaEMCal, file, dir_pi0primary_invXsec, 2.*etaEMCal, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_pi0primary_etaPHOS_bin, h_invXsec_pi0primary_etaPHOS, file, dir_pi0primary_invXsec, 2.*etaPHOS, false);
 
   TDirectory *dir_eta_invXsec = file.mkdir("eta_invXsec");
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_eta_etaLarge_bin, h_invXsec_eta_etaLarge, file, dir_eta_invXsec, 2.*etaLarge);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_eta_etaTPC_bin, h_invXsec_eta_etaTPC, file, dir_eta_invXsec, 2.*etaTPC);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_eta_etaEMCal_bin, h_invXsec_eta_etaEMCal, file, dir_eta_invXsec, 2.*etaEMCal);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_eta_etaPHOS_bin, h_invXsec_eta_etaPHOS, file, dir_eta_invXsec, 2.*etaPHOS);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_eta_yDefault_bin, h_invXsec_eta_yDefault, file, dir_eta_invXsec, 2.*yDefault, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_eta_etaLarge_bin, h_invXsec_eta_etaLarge, file, dir_eta_invXsec, 2.*etaLarge, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_eta_etaTPC_bin, h_invXsec_eta_etaTPC, file, dir_eta_invXsec, 2.*etaTPC, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_eta_etaEMCal_bin, h_invXsec_eta_etaEMCal, file, dir_eta_invXsec, 2.*etaEMCal, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_eta_etaPHOS_bin, h_invXsec_eta_etaPHOS, file, dir_eta_invXsec, 2.*etaPHOS, false);
 
   TDirectory *dir_etaprime_invXsec = file.mkdir("etaprime_invXsec");
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_etaprime_etaLarge_bin, h_invXsec_etaprime_etaLarge, file, dir_etaprime_invXsec, 2.*etaLarge);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_etaprime_etaTPC_bin, h_invXsec_etaprime_etaTPC, file, dir_etaprime_invXsec, 2.*etaTPC);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_etaprime_etaEMCal_bin, h_invXsec_etaprime_etaEMCal, file, dir_etaprime_invXsec, 2.*etaEMCal);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_etaprime_etaPHOS_bin, h_invXsec_etaprime_etaPHOS, file, dir_etaprime_invXsec, 2.*etaPHOS);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_etaprime_yDefault_bin, h_invXsec_etaprime_yDefault, file, dir_etaprime_invXsec, 2.*yDefault, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_etaprime_etaLarge_bin, h_invXsec_etaprime_etaLarge, file, dir_etaprime_invXsec, 2.*etaLarge, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_etaprime_etaTPC_bin, h_invXsec_etaprime_etaTPC, file, dir_etaprime_invXsec, 2.*etaTPC, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_etaprime_etaEMCal_bin, h_invXsec_etaprime_etaEMCal, file, dir_etaprime_invXsec, 2.*etaEMCal, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_etaprime_etaPHOS_bin, h_invXsec_etaprime_etaPHOS, file, dir_etaprime_invXsec, 2.*etaPHOS, false);
 
   TDirectory *dir_omega_invXsec = file.mkdir("omega_invXsec");
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_omega_etaLarge_bin, h_invXsec_omega_etaLarge, file, dir_omega_invXsec, 2.*etaLarge);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_omega_etaTPC_bin, h_invXsec_omega_etaTPC, file, dir_omega_invXsec, 2.*etaTPC);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_omega_etaEMCal_bin, h_invXsec_omega_etaEMCal, file, dir_omega_invXsec, 2.*etaEMCal);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_omega_etaPHOS_bin, h_invXsec_omega_etaPHOS, file, dir_omega_invXsec, 2.*etaPHOS);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_omega_yDefault_bin, h_invXsec_omega_yDefault, file, dir_omega_invXsec, 2.*yDefault, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_omega_etaLarge_bin, h_invXsec_omega_etaLarge, file, dir_omega_invXsec, 2.*etaLarge, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_omega_etaTPC_bin, h_invXsec_omega_etaTPC, file, dir_omega_invXsec, 2.*etaTPC, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_omega_etaEMCal_bin, h_invXsec_omega_etaEMCal, file, dir_omega_invXsec, 2.*etaEMCal, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_omega_etaPHOS_bin, h_invXsec_omega_etaPHOS, file, dir_omega_invXsec, 2.*etaPHOS, false);
 
   TDirectory *dir_gamma_invXsec = file.mkdir("gamma_invXsec");
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_direct_photons_etaLarge_bin, h_invXsec_direct_photons_etaLarge, file, dir_gamma_invXsec, 2.*etaLarge);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_direct_photons_etaTPC_bin, h_invXsec_direct_photons_etaTPC, file, dir_gamma_invXsec, 2.*etaTPC);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_direct_photons_etaEMCal_bin, h_invXsec_direct_photons_etaEMCal, file, dir_gamma_invXsec, 2.*etaEMCal);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_direct_photons_etaPHOS_bin, h_invXsec_direct_photons_etaPHOS, file, dir_gamma_invXsec, 2.*etaPHOS);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_direct_photons_etaLarge_bin, h_invXsec_direct_photons_etaLarge, file, dir_gamma_invXsec, 2.*etaLarge, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_direct_photons_etaTPC_bin, h_invXsec_direct_photons_etaTPC, file, dir_gamma_invXsec, 2.*etaTPC, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_direct_photons_etaEMCal_bin, h_invXsec_direct_photons_etaEMCal, file, dir_gamma_invXsec, 2.*etaEMCal, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_direct_photons_etaPHOS_bin, h_invXsec_direct_photons_etaPHOS, file, dir_gamma_invXsec, 2.*etaPHOS, false);
 
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_shower_photons_etaLarge_bin, h_invXsec_shower_photons_etaLarge, file, dir_gamma_invXsec, 2.*etaLarge);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_shower_photons_etaTPC_bin, h_invXsec_shower_photons_etaTPC, file, dir_gamma_invXsec, 2.*etaTPC);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_shower_photons_etaEMCal_bin, h_invXsec_shower_photons_etaEMCal, file, dir_gamma_invXsec, 2.*etaEMCal);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_shower_photons_etaPHOS_bin, h_invXsec_shower_photons_etaPHOS, file, dir_gamma_invXsec, 2.*etaPHOS);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_shower_photons_etaLarge_bin, h_invXsec_shower_photons_etaLarge, file, dir_gamma_invXsec, 2.*etaLarge, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_shower_photons_etaTPC_bin, h_invXsec_shower_photons_etaTPC, file, dir_gamma_invXsec, 2.*etaTPC, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_shower_photons_etaEMCal_bin, h_invXsec_shower_photons_etaEMCal, file, dir_gamma_invXsec, 2.*etaEMCal, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_shower_photons_etaPHOS_bin, h_invXsec_shower_photons_etaPHOS, file, dir_gamma_invXsec, 2.*etaPHOS, false);
 
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_222_photons_etaLarge_bin, h_invXsec_222_photons_etaLarge, file, dir_gamma_invXsec, 2.*etaLarge);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_222_photons_etaTPC_bin, h_invXsec_222_photons_etaTPC, file, dir_gamma_invXsec, 2.*etaTPC);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_222_photons_etaEMCal_bin, h_invXsec_222_photons_etaEMCal, file, dir_gamma_invXsec, 2.*etaEMCal);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_222_photons_etaPHOS_bin, h_invXsec_222_photons_etaPHOS, file, dir_gamma_invXsec, 2.*etaPHOS);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_222_photons_etaLarge_bin, h_invXsec_222_photons_etaLarge, file, dir_gamma_invXsec, 2.*etaLarge, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_222_photons_etaTPC_bin, h_invXsec_222_photons_etaTPC, file, dir_gamma_invXsec, 2.*etaTPC, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_222_photons_etaEMCal_bin, h_invXsec_222_photons_etaEMCal, file, dir_gamma_invXsec, 2.*etaEMCal, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_222_photons_etaPHOS_bin, h_invXsec_222_photons_etaPHOS, file, dir_gamma_invXsec, 2.*etaPHOS, false);
 
   if(applyPhotonIso){
     TDirectory *dir_isoGamma_invXsec = file.mkdir("isoGamma_invXsec");
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged2GeV_R03_photons_etaTPC_bin, h_invXsec_iso_charged2GeV_R03_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged2GeV_R04_photons_etaTPC_bin, h_invXsec_iso_charged2GeV_R04_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged2GeV_R05_photons_etaTPC_bin, h_invXsec_iso_charged2GeV_R05_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged2GeV_R03_photons_etaEMCal_bin, h_invXsec_iso_charged2GeV_R03_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged2GeV_R04_photons_etaEMCal_bin, h_invXsec_iso_charged2GeV_R04_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged2GeV_R05_photons_etaEMCal_bin, h_invXsec_iso_charged2GeV_R05_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged2GeV_R03_photons_etaPHOS_bin, h_invXsec_iso_charged2GeV_R03_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged2GeV_R04_photons_etaPHOS_bin, h_invXsec_iso_charged2GeV_R04_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged2GeV_R05_photons_etaPHOS_bin, h_invXsec_iso_charged2GeV_R05_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged2GeV_R03_photons_etaTPC_bin, h_invXsec_iso_charged2GeV_R03_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged2GeV_R04_photons_etaTPC_bin, h_invXsec_iso_charged2GeV_R04_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged2GeV_R05_photons_etaTPC_bin, h_invXsec_iso_charged2GeV_R05_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged2GeV_R03_photons_etaEMCal_bin, h_invXsec_iso_charged2GeV_R03_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged2GeV_R04_photons_etaEMCal_bin, h_invXsec_iso_charged2GeV_R04_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged2GeV_R05_photons_etaEMCal_bin, h_invXsec_iso_charged2GeV_R05_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged2GeV_R03_photons_etaPHOS_bin, h_invXsec_iso_charged2GeV_R03_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged2GeV_R04_photons_etaPHOS_bin, h_invXsec_iso_charged2GeV_R04_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged2GeV_R05_photons_etaPHOS_bin, h_invXsec_iso_charged2GeV_R05_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS, false);
 
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged3GeV_R03_photons_etaTPC_bin, h_invXsec_iso_charged3GeV_R03_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged3GeV_R04_photons_etaTPC_bin, h_invXsec_iso_charged3GeV_R04_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged3GeV_R05_photons_etaTPC_bin, h_invXsec_iso_charged3GeV_R05_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged3GeV_R03_photons_etaEMCal_bin, h_invXsec_iso_charged3GeV_R03_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged3GeV_R04_photons_etaEMCal_bin, h_invXsec_iso_charged3GeV_R04_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged3GeV_R05_photons_etaEMCal_bin, h_invXsec_iso_charged3GeV_R05_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged3GeV_R03_photons_etaPHOS_bin, h_invXsec_iso_charged3GeV_R03_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged3GeV_R04_photons_etaPHOS_bin, h_invXsec_iso_charged3GeV_R04_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged3GeV_R05_photons_etaPHOS_bin, h_invXsec_iso_charged3GeV_R05_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged3GeV_R03_photons_etaTPC_bin, h_invXsec_iso_charged3GeV_R03_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged3GeV_R04_photons_etaTPC_bin, h_invXsec_iso_charged3GeV_R04_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged3GeV_R05_photons_etaTPC_bin, h_invXsec_iso_charged3GeV_R05_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged3GeV_R03_photons_etaEMCal_bin, h_invXsec_iso_charged3GeV_R03_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged3GeV_R04_photons_etaEMCal_bin, h_invXsec_iso_charged3GeV_R04_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged3GeV_R05_photons_etaEMCal_bin, h_invXsec_iso_charged3GeV_R05_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged3GeV_R03_photons_etaPHOS_bin, h_invXsec_iso_charged3GeV_R03_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged3GeV_R04_photons_etaPHOS_bin, h_invXsec_iso_charged3GeV_R04_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged3GeV_R05_photons_etaPHOS_bin, h_invXsec_iso_charged3GeV_R05_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS, false);
 
 
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full2GeV_R03_photons_etaTPC_bin, h_invXsec_iso_full2GeV_R03_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full2GeV_R04_photons_etaTPC_bin, h_invXsec_iso_full2GeV_R04_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full2GeV_R05_photons_etaTPC_bin, h_invXsec_iso_full2GeV_R05_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full2GeV_R03_photons_etaEMCal_bin, h_invXsec_iso_full2GeV_R03_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full2GeV_R04_photons_etaEMCal_bin, h_invXsec_iso_full2GeV_R04_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full2GeV_R05_photons_etaEMCal_bin, h_invXsec_iso_full2GeV_R05_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full2GeV_R03_photons_etaPHOS_bin, h_invXsec_iso_full2GeV_R03_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full2GeV_R04_photons_etaPHOS_bin, h_invXsec_iso_full2GeV_R04_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full2GeV_R05_photons_etaPHOS_bin, h_invXsec_iso_full2GeV_R05_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full2GeV_R03_photons_etaTPC_bin, h_invXsec_iso_full2GeV_R03_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full2GeV_R04_photons_etaTPC_bin, h_invXsec_iso_full2GeV_R04_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full2GeV_R05_photons_etaTPC_bin, h_invXsec_iso_full2GeV_R05_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full2GeV_R03_photons_etaEMCal_bin, h_invXsec_iso_full2GeV_R03_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full2GeV_R04_photons_etaEMCal_bin, h_invXsec_iso_full2GeV_R04_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full2GeV_R05_photons_etaEMCal_bin, h_invXsec_iso_full2GeV_R05_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full2GeV_R03_photons_etaPHOS_bin, h_invXsec_iso_full2GeV_R03_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full2GeV_R04_photons_etaPHOS_bin, h_invXsec_iso_full2GeV_R04_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full2GeV_R05_photons_etaPHOS_bin, h_invXsec_iso_full2GeV_R05_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS, false);
 
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full3GeV_R03_photons_etaTPC_bin, h_invXsec_iso_full3GeV_R03_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full3GeV_R04_photons_etaTPC_bin, h_invXsec_iso_full3GeV_R04_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full3GeV_R05_photons_etaTPC_bin, h_invXsec_iso_full3GeV_R05_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full3GeV_R03_photons_etaEMCal_bin, h_invXsec_iso_full3GeV_R03_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full3GeV_R04_photons_etaEMCal_bin, h_invXsec_iso_full3GeV_R04_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full3GeV_R05_photons_etaEMCal_bin, h_invXsec_iso_full3GeV_R05_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full3GeV_R03_photons_etaPHOS_bin, h_invXsec_iso_full3GeV_R03_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full3GeV_R04_photons_etaPHOS_bin, h_invXsec_iso_full3GeV_R04_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full3GeV_R05_photons_etaPHOS_bin, h_invXsec_iso_full3GeV_R05_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full3GeV_R03_photons_etaTPC_bin, h_invXsec_iso_full3GeV_R03_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full3GeV_R04_photons_etaTPC_bin, h_invXsec_iso_full3GeV_R04_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full3GeV_R05_photons_etaTPC_bin, h_invXsec_iso_full3GeV_R05_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full3GeV_R03_photons_etaEMCal_bin, h_invXsec_iso_full3GeV_R03_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full3GeV_R04_photons_etaEMCal_bin, h_invXsec_iso_full3GeV_R04_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full3GeV_R05_photons_etaEMCal_bin, h_invXsec_iso_full3GeV_R05_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full3GeV_R03_photons_etaPHOS_bin, h_invXsec_iso_full3GeV_R03_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full3GeV_R04_photons_etaPHOS_bin, h_invXsec_iso_full3GeV_R04_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full3GeV_R05_photons_etaPHOS_bin, h_invXsec_iso_full3GeV_R05_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS, false);
   }
 
   TDirectory *dir_decayGamma_invXsec = file.mkdir("decayGamma_invXsec");
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_decay_photons_etaLarge_bin, h_invXsec_decay_photons_etaLarge, file, dir_decayGamma_invXsec, 2.*etaLarge);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_decay_photons_etaTPC_bin, h_invXsec_decay_photons_etaTPC, file, dir_decayGamma_invXsec, 2.*etaTPC);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_decay_photons_etaEMCal_bin, h_invXsec_decay_photons_etaEMCal, file, dir_decayGamma_invXsec, 2.*etaEMCal);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_decay_photons_etaPHOS_bin, h_invXsec_decay_photons_etaPHOS, file, dir_decayGamma_invXsec, 2.*etaPHOS);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_decay_photons_etaLarge_bin, h_invXsec_decay_photons_etaLarge, file, dir_decayGamma_invXsec, 2.*etaLarge, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_decay_photons_etaTPC_bin, h_invXsec_decay_photons_etaTPC, file, dir_decayGamma_invXsec, 2.*etaTPC, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_decay_photons_etaEMCal_bin, h_invXsec_decay_photons_etaEMCal, file, dir_decayGamma_invXsec, 2.*etaEMCal, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_decay_photons_etaPHOS_bin, h_invXsec_decay_photons_etaPHOS, file, dir_decayGamma_invXsec, 2.*etaPHOS, false);
 
 
   //-----------------------------
