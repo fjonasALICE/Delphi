@@ -739,7 +739,8 @@ int main(int argc, char **argv) {
 	// reject softQCD events in the hardQCD regime
 	if (p.info.pTHat() > pTHatBin[iBin]) continue;
 	
-	// reject softQCD events with super large weight, i.e. pthat << ptparticle
+	// #### omitted (at least for the moment) because it may change cross section ###########
+	/*	// reject softQCD events with super large weight, i.e. pthat << ptparticle
 	bool is_large_weight = false;
 	for (int i = 5; i < p.event.size(); i++) {
 	  if(p.event[i].isFinal() && p.info.pTHat() > 5. ) {
@@ -750,6 +751,7 @@ int main(int argc, char **argv) {
 	  }
 	}      
 	if(is_large_weight) continue;
+	*/
 	
       }	//------------------------------------------------------------------------------------------
 
