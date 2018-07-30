@@ -93,224 +93,233 @@ int main(int argc, char **argv) {
     h2_electron_pt_topMotherID->GetXaxis()->SetBinLabel(i+1, electronMotherName[i]);
 
   // all pions without secondary correction
-  TH1D *h_pi0_yDefault = new TH1D("h_pi0_yDefault","pi0_yDefault", ptBins, ptMin, ptMax);
-  TH1D *h_pi0_etaLarge = new TH1D("h_pi0_etaLarge","pi0_etaLarge", ptBins, ptMin, ptMax);
-  TH1D *h_pi0_etaTPC   = new TH1D("h_pi0_etaTPC","pi0_etaTPC", ptBins, ptMin, ptMax);
-  TH1D *h_pi0_etaEMCal = new TH1D("h_pi0_etaEMCal","pi0_etaEMCal", ptBins, ptMin, ptMax);
-  TH1D *h_pi0_etaPHOS  = new TH1D("h_pi0_etaPHOS","pi0_etaPHOS", ptBins, ptMin, ptMax);
+  TH1D *h_pi0_yDefault = new TH1D("h_pi0_yDefault","#pi^{0} in |y| < 0.8", ptBins, ptMin, ptMax);
+  TH1D *h_pi0_etaLarge = new TH1D("h_pi0_etaLarge","#pi^{0} in |#eta| < 3.0", ptBins, ptMin, ptMax);
+  TH1D *h_pi0_etaTPC   = new TH1D("h_pi0_etaTPC"  ,"#pi^{0} in |#eta| < 0.9", ptBins, ptMin, ptMax);
+  TH1D *h_pi0_etaEMCal = new TH1D("h_pi0_etaEMCal","#pi^{0} in |#eta| < 0.66", ptBins, ptMin, ptMax);
+  TH1D *h_pi0_etaPHOS  = new TH1D("h_pi0_etaPHOS" ,"#pi^{0} in |#eta| < 0.12", ptBins, ptMin, ptMax);
 
   // primary pions (with secondary correction)
-  TH1D *h_pi0primary_yDefault = new TH1D("h_pi0primary_yDefault","pi0primary_yDefault", ptBins, ptMin, ptMax);
-  TH1D *h_pi0primary_etaLarge = new TH1D("h_pi0primary_etaLarge","pi0primary_etaLarge", ptBins, ptMin, ptMax);
-  TH1D *h_pi0primary_etaTPC   = new TH1D("h_pi0primary_etaTPC","pi0primary_etaTPC", ptBins, ptMin, ptMax);
-  TH1D *h_pi0primary_etaEMCal = new TH1D("h_pi0primary_etaEMCal","pi0primary_etaEMCal", ptBins, ptMin, ptMax);
-  TH1D *h_pi0primary_etaPHOS  = new TH1D("h_pi0primary_etaPHOS","pi0primary_etaPHOS", ptBins, ptMin, ptMax);
+  TH1D *h_pi0primary_yDefault = new TH1D("h_pi0primary_yDefault","#pi^{0} (primary) in |y| < 0.8", ptBins, ptMin, ptMax);
+  TH1D *h_pi0primary_etaLarge = new TH1D("h_pi0primary_etaLarge","#pi^{0} (primary) in |#eta| < 3.0", ptBins, ptMin, ptMax);
+  TH1D *h_pi0primary_etaTPC   = new TH1D("h_pi0primary_etaTPC"  ,"#pi^{0} (primary) in |#eta| < 0.9", ptBins, ptMin, ptMax);
+  TH1D *h_pi0primary_etaEMCal = new TH1D("h_pi0primary_etaEMCal","#pi^{0} (primary) in |#eta| < 0.66", ptBins, ptMin, ptMax);
+  TH1D *h_pi0primary_etaPHOS  = new TH1D("h_pi0primary_etaPHOS" ,"#pi^{0} (primary) in |#eta| < 0.12", ptBins, ptMin, ptMax);
 
   // eta meson
-  TH1D *h_eta_yDefault = new TH1D("h_eta_yDefault","eta_yDefault", ptBins, ptMin, ptMax);
-  TH1D *h_eta_etaLarge = new TH1D("h_eta_etaLarge","eta_etaLarge", ptBins, ptMin, ptMax);
-  TH1D *h_eta_etaTPC   = new TH1D("h_eta_etaTPC","eta_etaTPC", ptBins, ptMin, ptMax);
-  TH1D *h_eta_etaEMCal = new TH1D("h_eta_etaEMCal","eta_etaEMCal", ptBins, ptMin, ptMax);
-  TH1D *h_eta_etaPHOS  = new TH1D("h_eta_etaPHOS","eta_etaPHOS", ptBins, ptMin, ptMax);
+  TH1D *h_eta_yDefault = new TH1D("h_eta_yDefault","#eta in |y| < 0.8", ptBins, ptMin, ptMax);
+  TH1D *h_eta_etaLarge = new TH1D("h_eta_etaLarge","#eta in |#eta| < 3.0", ptBins, ptMin, ptMax);
+  TH1D *h_eta_etaTPC   = new TH1D("h_eta_etaTPC"  ,"#eta in |#eta| < 0.9", ptBins, ptMin, ptMax);
+  TH1D *h_eta_etaEMCal = new TH1D("h_eta_etaEMCal","#eta in |#eta| < 0.66", ptBins, ptMin, ptMax);
+  TH1D *h_eta_etaPHOS  = new TH1D("h_eta_etaPHOS" ,"#eta in |#eta| < 0.12", ptBins, ptMin, ptMax);
 
   // eta prime meson
-  TH1D *h_etaprime_yDefault = new TH1D("h_etaprime_yDefault","etaprime_yDefault", ptBins, ptMin, ptMax);
-  TH1D *h_etaprime_etaLarge = new TH1D("h_etaprime_etaLarge","etaprime_etaLarge", ptBins, ptMin, ptMax);
-  TH1D *h_etaprime_etaTPC   = new TH1D("h_etaprime_etaTPC","etaprime_etaTPC", ptBins, ptMin, ptMax);
-  TH1D *h_etaprime_etaEMCal = new TH1D("h_etaprime_etaEMCal","etaprime_etaEMCal", ptBins, ptMin, ptMax);
-  TH1D *h_etaprime_etaPHOS  = new TH1D("h_etaprime_etaPHOS","etaprime_etaPHOS", ptBins, ptMin, ptMax);
+  TH1D *h_etaprime_yDefault = new TH1D("h_etaprime_yDefault","#eta' in |y| < 0.8", ptBins, ptMin, ptMax);
+  TH1D *h_etaprime_etaLarge = new TH1D("h_etaprime_etaLarge","#eta' in |#eta| < 3.0", ptBins, ptMin, ptMax);
+  TH1D *h_etaprime_etaTPC   = new TH1D("h_etaprime_etaTPC"  ,"#eta' in |#eta| < 0.9", ptBins, ptMin, ptMax);
+  TH1D *h_etaprime_etaEMCal = new TH1D("h_etaprime_etaEMCal","#eta' in |#eta| < 0.66", ptBins, ptMin, ptMax);
+  TH1D *h_etaprime_etaPHOS  = new TH1D("h_etaprime_etaPHOS" ,"#eta' in |#eta| < 0.12", ptBins, ptMin, ptMax);
 
   // omega meson
-  TH1D *h_omega_yDefault = new TH1D("h_omega_yDefault","omega_yDefault", ptBins, ptMin, ptMax);
-  TH1D *h_omega_etaLarge = new TH1D("h_omega_etaLarge","omega_etaLarge", ptBins, ptMin, ptMax);
-  TH1D *h_omega_etaTPC   = new TH1D("h_omega_etaTPC","omega_etaTPC", ptBins, ptMin, ptMax);
-  TH1D *h_omega_etaEMCal = new TH1D("h_omega_etaEMCal","omega_etaEMCal", ptBins, ptMin, ptMax);
-  TH1D *h_omega_etaPHOS  = new TH1D("h_omega_etaPHOS","omega_etaPHOS", ptBins, ptMin, ptMax);
+  TH1D *h_omega_yDefault = new TH1D("h_omega_yDefault","#omega in |y| < 0.8", ptBins, ptMin, ptMax);
+  TH1D *h_omega_etaLarge = new TH1D("h_omega_etaLarge","#omega in |#eta| < 3.0", ptBins, ptMin, ptMax);
+  TH1D *h_omega_etaTPC   = new TH1D("h_omega_etaTPC"  ,"#omega in |#eta| < 0.9", ptBins, ptMin, ptMax);
+  TH1D *h_omega_etaEMCal = new TH1D("h_omega_etaEMCal","#omega in |#eta| < 0.66", ptBins, ptMin, ptMax);
+  TH1D *h_omega_etaPHOS  = new TH1D("h_omega_etaPHOS" ,"#omega in |#eta| < 0.12", ptBins, ptMin, ptMax);
 
   // direct photons (consider only direct photons)
-  TH1D *h_direct_photons_etaLarge = new TH1D("h_direct_photons_etaLarge","direct photons_etaLarge", ptBins, ptMin, ptMax);
-  TH1D *h_direct_photons_etaTPC   = new TH1D("h_direct_photons_etaTPC","direct photons_etaTPC", ptBins, ptMin, ptMax);
-  TH1D *h_direct_photons_etaEMCal = new TH1D("h_direct_photons_etaEMCal","direct photons_etaEMCal", ptBins, ptMin, ptMax);
-  TH1D *h_direct_photons_etaPHOS  = new TH1D("h_direct_photons_etaPHOS","direct photons_etaPHOS", ptBins, ptMin, ptMax);
-
+  TH1D *h_direct_photons_yDefault = new TH1D("h_direct_photons_yDefault","direct photons in |y| < 0.8", ptBins, ptMin, ptMax);
+  TH1D *h_direct_photons_etaLarge = new TH1D("h_direct_photons_etaLarge","direct photons in |#eta| < 3.0", ptBins, ptMin, ptMax);
+  TH1D *h_direct_photons_etaTPC   = new TH1D("h_direct_photons_etaTPC"  ,"direct photons in |#eta| < 0.9", ptBins, ptMin, ptMax);
+  TH1D *h_direct_photons_etaEMCal = new TH1D("h_direct_photons_etaEMCal","direct photons in |#eta| < 0.66", ptBins, ptMin, ptMax);
+  TH1D *h_direct_photons_etaPHOS  = new TH1D("h_direct_photons_etaPHOS" ,"direct photons in |#eta| < 0.12", ptBins, ptMin, ptMax);
+  
   // shower/fragmentation photons only (gammas from "q -> q gamma" splitting)
+  TH1D *h_shower_photons_yDefault = new TH1D("h_shower_photons_yDefault","shower photons (q -> q #gamma) in |y| < 0.8", ptBins, ptMin, ptMax);
   TH1D *h_shower_photons_etaLarge = new TH1D("h_shower_photons_etaLarge","shower photons (q -> q #gamma) in |#eta| < 3.0", ptBins, ptMin, ptMax);
-  TH1D *h_shower_photons_etaTPC   = new TH1D("h_shower_photons_etaTPC","shower photons (q -> q #gamma) in |#eta| < 0.9", ptBins, ptMin, ptMax);
+  TH1D *h_shower_photons_etaTPC   = new TH1D("h_shower_photons_etaTPC"  ,"shower photons (q -> q #gamma) in |#eta| < 0.9", ptBins, ptMin, ptMax);
   TH1D *h_shower_photons_etaEMCal = new TH1D("h_shower_photons_etaEMCal","shower photons (q -> q #gamma) in |#eta| < 0.66", ptBins, ptMin, ptMax);
-  TH1D *h_shower_photons_etaPHOS  = new TH1D("h_shower_photons_etaPHOS","shower photons (q -> q #gamma) in |#eta| < 0.12", ptBins, ptMin, ptMax);
+  TH1D *h_shower_photons_etaPHOS  = new TH1D("h_shower_photons_etaPHOS" ,"shower photons (q -> q #gamma) in |#eta| < 0.12", ptBins, ptMin, ptMax);
+  
   // photons from ME (aka prompt)
+  TH1D *h_222_photons_yDefault = new TH1D("h_222_photons_yDefault","photons from ME (aka prompt) in |y| < 0.8", ptBins, ptMin, ptMax);
   TH1D *h_222_photons_etaLarge = new TH1D("h_222_photons_etaLarge","photons from ME (aka prompt) in |#eta| < 3.0", ptBins, ptMin, ptMax);
-  TH1D *h_222_photons_etaTPC   = new TH1D("h_222_photons_etaTPC","photons from ME (aka prompt) in |#eta| < 0.9", ptBins, ptMin, ptMax);
+  TH1D *h_222_photons_etaTPC   = new TH1D("h_222_photons_etaTPC"  ,"photons from ME (aka prompt) in |#eta| < 0.9", ptBins, ptMin, ptMax);
   TH1D *h_222_photons_etaEMCal = new TH1D("h_222_photons_etaEMCal","photons from ME (aka prompt) in |#eta| < 0.66", ptBins, ptMin, ptMax);
-  TH1D *h_222_photons_etaPHOS  = new TH1D("h_222_photons_etaPHOS","photons from ME (aka prompt) in |#eta| < 0.12", ptBins, ptMin, ptMax);
+  TH1D *h_222_photons_etaPHOS  = new TH1D("h_222_photons_etaPHOS" ,"photons from ME (aka prompt) in |#eta| < 0.12", ptBins, ptMin, ptMax);
+  
+  // decay photons
+  TH1D *h_decay_photons_yDefault = new TH1D("h_decay_photons_yDefault","decay photons in |y| < 0.8", ptBins, ptMin, ptMax);
+  TH1D *h_decay_photons_etaLarge = new TH1D("h_decay_photons_etaLarge","decay photons in |#eta| < 3.0", ptBins, ptMin, ptMax);
+  TH1D *h_decay_photons_etaTPC   = new TH1D("h_decay_photons_etaTPC"  ,"decay photons in |#eta| < 0.9", ptBins, ptMin, ptMax);
+  TH1D *h_decay_photons_etaEMCal = new TH1D("h_decay_photons_etaEMCal","decay photons in |#eta| < 0.66", ptBins, ptMin, ptMax);
+  TH1D *h_decay_photons_etaPHOS  = new TH1D("h_decay_photons_etaPHOS" ,"decay photons in |#eta| < 0.12", ptBins, ptMin, ptMax);
 
   // isolated photons (considers only direct photons)
-  TH1D *h_iso_charged2GeV_R03_photons_etaTPC = new TH1D("h_iso_charged2GeV_R03_photons_etaTPC","direct iso (charged pt 2 GeV/c in R=0.3) photons_etaTPC", ptBins, ptMin, ptMax);
+  TH1D *h_iso_charged2GeV_R03_photons_etaTPC   = new TH1D("h_iso_charged2GeV_R03_photons_etaTPC","direct iso (charged pt 2 GeV/c in R=0.3) photons_etaTPC", ptBins, ptMin, ptMax);
   TH1D *h_iso_charged2GeV_R03_photons_etaEMCal = new TH1D("h_iso_charged2GeV_R03_photons_etaEMCal","direct iso (charged pt 2 GeV/c in R=0.3) photons_etaEMCal", ptBins, ptMin, ptMax);
-  TH1D *h_iso_charged2GeV_R03_photons_etaPHOS = new TH1D("h_iso_charged2GeV_R03_photons_etaPHOS","direct iso (charged pt 2 GeV/c in R=0.3) photons_etaPHOS", ptBins, ptMin, ptMax);
+  TH1D *h_iso_charged2GeV_R03_photons_etaPHOS  = new TH1D("h_iso_charged2GeV_R03_photons_etaPHOS","direct iso (charged pt 2 GeV/c in R=0.3) photons_etaPHOS", ptBins, ptMin, ptMax);
 
-  TH1D *h_iso_charged2GeV_R04_photons_etaTPC = new TH1D("h_iso_charged2GeV_R04_photons_etaTPC","direct iso (charged pt 2 GeV/c in R=0.4) photons_etaTPC", ptBins, ptMin, ptMax);
+  TH1D *h_iso_charged2GeV_R04_photons_etaTPC   = new TH1D("h_iso_charged2GeV_R04_photons_etaTPC","direct iso (charged pt 2 GeV/c in R=0.4) photons_etaTPC", ptBins, ptMin, ptMax);
   TH1D *h_iso_charged2GeV_R04_photons_etaEMCal = new TH1D("h_iso_charged2GeV_R04_photons_etaEMCal","direct iso (charged pt 2 GeV/c in R=0.4) photons_etaEMCal", ptBins, ptMin, ptMax);
-  TH1D *h_iso_charged2GeV_R04_photons_etaPHOS = new TH1D("h_iso_charged2GeV_R04_photons_etaPHOS","direct iso (charged pt 2 GeV/c in R=0.4) photons_etaPHOS", ptBins, ptMin, ptMax);
+  TH1D *h_iso_charged2GeV_R04_photons_etaPHOS  = new TH1D("h_iso_charged2GeV_R04_photons_etaPHOS","direct iso (charged pt 2 GeV/c in R=0.4) photons_etaPHOS", ptBins, ptMin, ptMax);
 
-  TH1D *h_iso_charged2GeV_R05_photons_etaTPC = new TH1D("h_iso_charged2GeV_R05_photons_etaTPC","direct iso (charged pt 2 GeV/c in R=0.5) photons_etaTPC", ptBins, ptMin, ptMax);
+  TH1D *h_iso_charged2GeV_R05_photons_etaTPC   = new TH1D("h_iso_charged2GeV_R05_photons_etaTPC","direct iso (charged pt 2 GeV/c in R=0.5) photons_etaTPC", ptBins, ptMin, ptMax);
   TH1D *h_iso_charged2GeV_R05_photons_etaEMCal = new TH1D("h_iso_charged2GeV_R05_photons_etaEMCal","direct iso (charged pt 2 GeV/c in R=0.5) photons_etaEMCal", ptBins, ptMin, ptMax);
-  TH1D *h_iso_charged2GeV_R05_photons_etaPHOS = new TH1D("h_iso_charged2GeV_R05_photons_etaPHOS","direct iso (charged pt 2 GeV/c in R=0.5) photons_etaPHOS", ptBins, ptMin, ptMax);
+  TH1D *h_iso_charged2GeV_R05_photons_etaPHOS  = new TH1D("h_iso_charged2GeV_R05_photons_etaPHOS","direct iso (charged pt 2 GeV/c in R=0.5) photons_etaPHOS", ptBins, ptMin, ptMax);
 
-  TH1D *h_iso_charged3GeV_R03_photons_etaTPC = new TH1D("h_iso_charged3GeV_R03_photons_etaTPC","direct iso (charged pt 3 GeV/c in R=0.3) photons_etaTPC", ptBins, ptMin, ptMax);
+  TH1D *h_iso_charged3GeV_R03_photons_etaTPC   = new TH1D("h_iso_charged3GeV_R03_photons_etaTPC","direct iso (charged pt 3 GeV/c in R=0.3) photons_etaTPC", ptBins, ptMin, ptMax);
   TH1D *h_iso_charged3GeV_R03_photons_etaEMCal = new TH1D("h_iso_charged3GeV_R03_photons_etaEMCal","direct iso (charged pt 3 GeV/c in R=0.3) photons_etaEMCal", ptBins, ptMin, ptMax);
-  TH1D *h_iso_charged3GeV_R03_photons_etaPHOS = new TH1D("h_iso_charged3GeV_R03_photons_etaPHOS","direct iso (charged pt 3 GeV/c in R=0.3) photons_etaPHOS", ptBins, ptMin, ptMax);
+  TH1D *h_iso_charged3GeV_R03_photons_etaPHOS  = new TH1D("h_iso_charged3GeV_R03_photons_etaPHOS","direct iso (charged pt 3 GeV/c in R=0.3) photons_etaPHOS", ptBins, ptMin, ptMax);
 
-  TH1D *h_iso_charged3GeV_R04_photons_etaTPC = new TH1D("h_iso_charged3GeV_R04_photons_etaTPC","direct iso (charged pt 3 GeV/c in R=0.4) photons_etaTPC", ptBins, ptMin, ptMax);
+  TH1D *h_iso_charged3GeV_R04_photons_etaTPC   = new TH1D("h_iso_charged3GeV_R04_photons_etaTPC","direct iso (charged pt 3 GeV/c in R=0.4) photons_etaTPC", ptBins, ptMin, ptMax);
   TH1D *h_iso_charged3GeV_R04_photons_etaEMCal = new TH1D("h_iso_charged3GeV_R04_photons_etaEMCal","direct iso (charged pt 3 GeV/c in R=0.4) photons_etaEMCal", ptBins, ptMin, ptMax);
-  TH1D *h_iso_charged3GeV_R04_photons_etaPHOS = new TH1D("h_iso_charged3GeV_R04_photons_etaPHOS","direct iso (charged pt 3 GeV/c in R=0.4) photons_etaPHOS", ptBins, ptMin, ptMax);
+  TH1D *h_iso_charged3GeV_R04_photons_etaPHOS  = new TH1D("h_iso_charged3GeV_R04_photons_etaPHOS","direct iso (charged pt 3 GeV/c in R=0.4) photons_etaPHOS", ptBins, ptMin, ptMax);
 
-  TH1D *h_iso_charged3GeV_R05_photons_etaTPC = new TH1D("h_iso_charged3GeV_R05_photons_etaTPC","direct iso (charged pt 3 GeV/c in R=0.5) photons_etaTPC", ptBins, ptMin, ptMax);
+  TH1D *h_iso_charged3GeV_R05_photons_etaTPC   = new TH1D("h_iso_charged3GeV_R05_photons_etaTPC","direct iso (charged pt 3 GeV/c in R=0.5) photons_etaTPC", ptBins, ptMin, ptMax);
   TH1D *h_iso_charged3GeV_R05_photons_etaEMCal = new TH1D("h_iso_charged3GeV_R05_photons_etaEMCal","direct iso (charged pt 3 GeV/c in R=0.5) photons_etaEMCal", ptBins, ptMin, ptMax);
-  TH1D *h_iso_charged3GeV_R05_photons_etaPHOS = new TH1D("h_iso_charged3GeV_R05_photons_etaPHOS","direct iso (charged pt 3 GeV/c in R=0.5) photons_etaPHOS", ptBins, ptMin, ptMax);
+  TH1D *h_iso_charged3GeV_R05_photons_etaPHOS  = new TH1D("h_iso_charged3GeV_R05_photons_etaPHOS","direct iso (charged pt 3 GeV/c in R=0.5) photons_etaPHOS", ptBins, ptMin, ptMax);
 
-  TH1D *h_iso_full2GeV_R03_photons_etaTPC = new TH1D("h_iso_full2GeV_R03_photons_etaTPC","direct iso (full pt 2 GeV/c in R=0.3) photons_etaTPC", ptBins, ptMin, ptMax);
-  TH1D *h_iso_full2GeV_R03_photons_etaEMCal = new TH1D("h_iso_full2GeV_R03_photons_etaEMCal","direct iso (full pt 2 GeV/c in R=0.3) photons_etaEMCal", ptBins, ptMin, ptMax);
-  TH1D *h_iso_full2GeV_R03_photons_etaPHOS = new TH1D("h_iso_full2GeV_R03_photons_etaPHOS","direct iso (full pt 2 GeV/c in R=0.3) photons_etaPHOS", ptBins, ptMin, ptMax);
+  TH1D *h_iso_full2GeV_R03_photons_etaTPC      = new TH1D("h_iso_full2GeV_R03_photons_etaTPC","direct iso (full pt 2 GeV/c in R=0.3) photons_etaTPC", ptBins, ptMin, ptMax);
+  TH1D *h_iso_full2GeV_R03_photons_etaEMCal    = new TH1D("h_iso_full2GeV_R03_photons_etaEMCal","direct iso (full pt 2 GeV/c in R=0.3) photons_etaEMCal", ptBins, ptMin, ptMax);
+  TH1D *h_iso_full2GeV_R03_photons_etaPHOS     = new TH1D("h_iso_full2GeV_R03_photons_etaPHOS","direct iso (full pt 2 GeV/c in R=0.3) photons_etaPHOS", ptBins, ptMin, ptMax);
 
-  TH1D *h_iso_full2GeV_R04_photons_etaTPC = new TH1D("h_iso_full2GeV_R04_photons_etaTPC","direct iso (full pt 2 GeV/c in R=0.4) photons_etaTPC", ptBins, ptMin, ptMax);
-  TH1D *h_iso_full2GeV_R04_photons_etaEMCal = new TH1D("h_iso_full2GeV_R04_photons_etaEMCal","direct iso (full pt 2 GeV/c in R=0.4) photons_etaEMCal", ptBins, ptMin, ptMax);
-  TH1D *h_iso_full2GeV_R04_photons_etaPHOS = new TH1D("h_iso_full2GeV_R04_photons_etaPHOS","direct iso (full pt 2 GeV/c in R=0.4) photons_etaPHOS", ptBins, ptMin, ptMax);
+  TH1D *h_iso_full2GeV_R04_photons_etaTPC      = new TH1D("h_iso_full2GeV_R04_photons_etaTPC","direct iso (full pt 2 GeV/c in R=0.4) photons_etaTPC", ptBins, ptMin, ptMax);
+  TH1D *h_iso_full2GeV_R04_photons_etaEMCal    = new TH1D("h_iso_full2GeV_R04_photons_etaEMCal","direct iso (full pt 2 GeV/c in R=0.4) photons_etaEMCal", ptBins, ptMin, ptMax);
+  TH1D *h_iso_full2GeV_R04_photons_etaPHOS     = new TH1D("h_iso_full2GeV_R04_photons_etaPHOS","direct iso (full pt 2 GeV/c in R=0.4) photons_etaPHOS", ptBins, ptMin, ptMax);
 
-  TH1D *h_iso_full2GeV_R05_photons_etaTPC = new TH1D("h_iso_full2GeV_R05_photons_etaTPC","direct iso (full pt 2 GeV/c in R=0.5) photons_etaTPC", ptBins, ptMin, ptMax);
-  TH1D *h_iso_full2GeV_R05_photons_etaEMCal = new TH1D("h_iso_full2GeV_R05_photons_etaEMCal","direct iso (full pt 2 GeV/c in R=0.5) photons_etaEMCal", ptBins, ptMin, ptMax);
-  TH1D *h_iso_full2GeV_R05_photons_etaPHOS = new TH1D("h_iso_full2GeV_R05_photons_etaPHOS","direct iso (full pt 2 GeV/c in R=0.5) photons_etaPHOS", ptBins, ptMin, ptMax);
+  TH1D *h_iso_full2GeV_R05_photons_etaTPC      = new TH1D("h_iso_full2GeV_R05_photons_etaTPC","direct iso (full pt 2 GeV/c in R=0.5) photons_etaTPC", ptBins, ptMin, ptMax);
+  TH1D *h_iso_full2GeV_R05_photons_etaEMCal    = new TH1D("h_iso_full2GeV_R05_photons_etaEMCal","direct iso (full pt 2 GeV/c in R=0.5) photons_etaEMCal", ptBins, ptMin, ptMax);
+  TH1D *h_iso_full2GeV_R05_photons_etaPHOS     = new TH1D("h_iso_full2GeV_R05_photons_etaPHOS","direct iso (full pt 2 GeV/c in R=0.5) photons_etaPHOS", ptBins, ptMin, ptMax);
 
-  TH1D *h_iso_full3GeV_R03_photons_etaTPC = new TH1D("h_iso_full3GeV_R03_photons_etaTPC","direct iso (full pt 3 GeV/c in R=0.3) photons_etaTPC", ptBins, ptMin, ptMax);
-  TH1D *h_iso_full3GeV_R03_photons_etaEMCal = new TH1D("h_iso_full3GeV_R03_photons_etaEMCal","direct iso (full pt 3 GeV/c in R=0.3) photons_etaEMCal", ptBins, ptMin, ptMax);
-  TH1D *h_iso_full3GeV_R03_photons_etaPHOS = new TH1D("h_iso_full3GeV_R03_photons_etaPHOS","direct iso (full pt 3 GeV/c in R=0.3) photons_etaPHOS", ptBins, ptMin, ptMax);
+  TH1D *h_iso_full3GeV_R03_photons_etaTPC      = new TH1D("h_iso_full3GeV_R03_photons_etaTPC","direct iso (full pt 3 GeV/c in R=0.3) photons_etaTPC", ptBins, ptMin, ptMax);
+  TH1D *h_iso_full3GeV_R03_photons_etaEMCal    = new TH1D("h_iso_full3GeV_R03_photons_etaEMCal","direct iso (full pt 3 GeV/c in R=0.3) photons_etaEMCal", ptBins, ptMin, ptMax);
+  TH1D *h_iso_full3GeV_R03_photons_etaPHOS     = new TH1D("h_iso_full3GeV_R03_photons_etaPHOS","direct iso (full pt 3 GeV/c in R=0.3) photons_etaPHOS", ptBins, ptMin, ptMax);
 
-  TH1D *h_iso_full3GeV_R04_photons_etaTPC = new TH1D("h_iso_full3GeV_R04_photons_etaTPC","direct iso (full pt 3 GeV/c in R=0.4) photons_etaTPC", ptBins, ptMin, ptMax);
-  TH1D *h_iso_full3GeV_R04_photons_etaEMCal = new TH1D("h_iso_full3GeV_R04_photons_etaEMCal","direct iso (full pt 3 GeV/c in R=0.4) photons_etaEMCal", ptBins, ptMin, ptMax);
-  TH1D *h_iso_full3GeV_R04_photons_etaPHOS = new TH1D("h_iso_full3GeV_R04_photons_etaPHOS","direct iso (full pt 3 GeV/c in R=0.4) photons_etaPHOS", ptBins, ptMin, ptMax);
+  TH1D *h_iso_full3GeV_R04_photons_etaTPC      = new TH1D("h_iso_full3GeV_R04_photons_etaTPC","direct iso (full pt 3 GeV/c in R=0.4) photons_etaTPC", ptBins, ptMin, ptMax);
+  TH1D *h_iso_full3GeV_R04_photons_etaEMCal    = new TH1D("h_iso_full3GeV_R04_photons_etaEMCal","direct iso (full pt 3 GeV/c in R=0.4) photons_etaEMCal", ptBins, ptMin, ptMax);
+  TH1D *h_iso_full3GeV_R04_photons_etaPHOS     = new TH1D("h_iso_full3GeV_R04_photons_etaPHOS","direct iso (full pt 3 GeV/c in R=0.4) photons_etaPHOS", ptBins, ptMin, ptMax);
 
-  TH1D *h_iso_full3GeV_R05_photons_etaTPC = new TH1D("h_iso_full3GeV_R05_photons_etaTPC","direct iso (full pt 3 GeV/c in R=0.5) photons_etaTPC", ptBins, ptMin, ptMax);
-  TH1D *h_iso_full3GeV_R05_photons_etaEMCal = new TH1D("h_iso_full3GeV_R05_photons_etaEMCal","direct iso (full pt 3 GeV/c in R=0.5) photons_etaEMCal", ptBins, ptMin, ptMax);
-  TH1D *h_iso_full3GeV_R05_photons_etaPHOS = new TH1D("h_iso_full3GeV_R05_photons_etaPHOS","direct iso (full pt 3 GeV/c in R=0.5) photons_etaPHOS", ptBins, ptMin, ptMax);
+  TH1D *h_iso_full3GeV_R05_photons_etaTPC      = new TH1D("h_iso_full3GeV_R05_photons_etaTPC","direct iso (full pt 3 GeV/c in R=0.5) photons_etaTPC", ptBins, ptMin, ptMax);
+  TH1D *h_iso_full3GeV_R05_photons_etaEMCal    = new TH1D("h_iso_full3GeV_R05_photons_etaEMCal","direct iso (full pt 3 GeV/c in R=0.5) photons_etaEMCal", ptBins, ptMin, ptMax);
+  TH1D *h_iso_full3GeV_R05_photons_etaPHOS     = new TH1D("h_iso_full3GeV_R05_photons_etaPHOS","direct iso (full pt 3 GeV/c in R=0.5) photons_etaPHOS", ptBins, ptMin, ptMax);
 
-  // decay photons
-  TH1D *h_decay_photons_etaLarge = new TH1D("h_decay_photons_etaLarge","decay photons_etaLarge", ptBins, ptMin, ptMax);
-  TH1D *h_decay_photons_etaTPC = new TH1D("h_decay_photons_etaTPC","decay photons_etaTPC", ptBins, ptMin, ptMax);
-  TH1D *h_decay_photons_etaEMCal = new TH1D("h_decay_photons_etaEMCal","decay photons_etaEMCal", ptBins, ptMin, ptMax);
-  TH1D *h_decay_photons_etaPHOS = new TH1D("h_decay_photons_etaPHOS","decay photons_etaPHOS", ptBins, ptMin, ptMax);
-
-
+  
   //----------------------------------------------------------------------------------------------------
   // do the same jazz for invariant cross section histos ------------------------------------------
   //------------------------------------------------------------------------------------------
   // all pions without secondary correction
-  TH1D *h_invXsec_pi0_yDefault = new TH1D("h_invXsec_pi0_yDefault","pi0_yDefault", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_pi0_etaLarge = new TH1D("h_invXsec_pi0_etaLarge","pi0_etaLarge", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_pi0_etaTPC = new TH1D("h_invXsec_pi0_etaTPC","pi0_etaTPC", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_pi0_etaEMCal = new TH1D("h_invXsec_pi0_etaEMCal","pi0_etaEMCal", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_pi0_etaPHOS = new TH1D("h_invXsec_pi0_etaPHOS","pi0_etaPHOS", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_pi0_yDefault = new TH1D("h_invXsec_pi0_yDefault","#pi^{0} in |y| < 0.8", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_pi0_etaLarge = new TH1D("h_invXsec_pi0_etaLarge","#pi^{0} in |#eta| < 3.0", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_pi0_etaTPC   = new TH1D("h_invXsec_pi0_etaTPC"  ,"#pi^{0} in |#eta| < 0.9", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_pi0_etaEMCal = new TH1D("h_invXsec_pi0_etaEMCal","#pi^{0} in |#eta| < 0.66", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_pi0_etaPHOS  = new TH1D("h_invXsec_pi0_etaPHOS" ,"#pi^{0} in |#eta| < 0.12", ptBins, ptMin, ptMax);
 
   // primary pions (with secondary correction)
-  TH1D *h_invXsec_pi0primary_yDefault = new TH1D("h_invXsec_pi0primary_yDefault","pi0primary_yDefault", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_pi0primary_etaLarge = new TH1D("h_invXsec_pi0primary_etaLarge","pi0primary_etaLarge", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_pi0primary_etaTPC = new TH1D("h_invXsec_pi0primary_etaTPC","pi0primary_etaTPC", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_pi0primary_etaEMCal = new TH1D("h_invXsec_pi0primary_etaEMCal","pi0primary_etaEMCal", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_pi0primary_etaPHOS = new TH1D("h_invXsec_pi0primary_etaPHOS","pi0primary_etaPHOS", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_pi0primary_yDefault = new TH1D("h_invXsec_pi0primary_yDefault","#pi^{0} (primary) in |y| < 0.8", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_pi0primary_etaLarge = new TH1D("h_invXsec_pi0primary_etaLarge","#pi^{0} (primary) in |#eta| < 3.0", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_pi0primary_etaTPC   = new TH1D("h_invXsec_pi0primary_etaTPC"  ,"#pi^{0} (primary) in |#eta| < 0.9", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_pi0primary_etaEMCal = new TH1D("h_invXsec_pi0primary_etaEMCal","#pi^{0} (primary) in |#eta| < 0.66", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_pi0primary_etaPHOS  = new TH1D("h_invXsec_pi0primary_etaPHOS" ,"#pi^{0} (primary) in |#eta| < 0.12", ptBins, ptMin, ptMax);
 
   // eta meson
-  TH1D *h_invXsec_eta_yDefault = new TH1D("h_invXsec_eta_yDefault","eta_yDefault", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_eta_etaLarge = new TH1D("h_invXsec_eta_etaLarge","eta_etaLarge", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_eta_etaTPC = new TH1D("h_invXsec_eta_etaTPC","eta_etaTPC", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_eta_etaEMCal = new TH1D("h_invXsec_eta_etaEMCal","eta_etaEMCal", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_eta_etaPHOS = new TH1D("h_invXsec_eta_etaPHOS","eta_etaPHOS", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_eta_yDefault = new TH1D("h_invXsec_eta_yDefault","#eta in |y| < 0.8", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_eta_etaLarge = new TH1D("h_invXsec_eta_etaLarge","#eta in |#eta| < 3.0", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_eta_etaTPC   = new TH1D("h_invXsec_eta_etaTPC"  ,"#eta in |#eta| < 0.9", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_eta_etaEMCal = new TH1D("h_invXsec_eta_etaEMCal","#eta in |#eta| < 0.66", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_eta_etaPHOS  = new TH1D("h_invXsec_eta_etaPHOS" ,"#eta in |#eta| < 0.12", ptBins, ptMin, ptMax);
 
   // eta prime meson
-  TH1D *h_invXsec_etaprime_yDefault = new TH1D("h_invXsec_etaprime_yDefault","etaprime_yDefault", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_etaprime_etaLarge = new TH1D("h_invXsec_etaprime_etaLarge","etaprime_etaLarge", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_etaprime_etaTPC = new TH1D("h_invXsec_etaprime_etaTPC","etaprime_etaTPC", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_etaprime_etaEMCal = new TH1D("h_invXsec_etaprime_etaEMCal","etaprime_etaEMCal", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_etaprime_etaPHOS = new TH1D("h_invXsec_etaprime_etaPHOS","etaprime_etaPHOS", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_etaprime_yDefault = new TH1D("h_invXsec_etaprime_yDefault","#eta' in |y| < 0.8", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_etaprime_etaLarge = new TH1D("h_invXsec_etaprime_etaLarge","#eta' in |#eta| < 3.0", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_etaprime_etaTPC   = new TH1D("h_invXsec_etaprime_etaTPC"  ,"#eta' in |#eta| < 0.9", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_etaprime_etaEMCal = new TH1D("h_invXsec_etaprime_etaEMCal","#eta' in |#eta| < 0.66", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_etaprime_etaPHOS  = new TH1D("h_invXsec_etaprime_etaPHOS" ,"#eta' in |#eta| < 0.12", ptBins, ptMin, ptMax);
 
   // omega meson
-  TH1D *h_invXsec_omega_yDefault = new TH1D("h_invXsec_omega_yDefault","omega_yDefault", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_omega_etaLarge = new TH1D("h_invXsec_omega_etaLarge","omega_etaLarge", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_omega_etaTPC = new TH1D("h_invXsec_omega_etaTPC","omega_etaTPC", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_omega_etaEMCal = new TH1D("h_invXsec_omega_etaEMCal","omega_etaEMCal", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_omega_etaPHOS = new TH1D("h_invXsec_omega_etaPHOS","omega_etaPHOS", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_omega_yDefault = new TH1D("h_invXsec_omega_yDefault","#omega in |y| < 0.8", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_omega_etaLarge = new TH1D("h_invXsec_omega_etaLarge","#omega in |#eta| < 3.0", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_omega_etaTPC   = new TH1D("h_invXsec_omega_etaTPC"  ,"#omega in |#eta| < 0.9", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_omega_etaEMCal = new TH1D("h_invXsec_omega_etaEMCal","#omega in |#eta| < 0.66", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_omega_etaPHOS  = new TH1D("h_invXsec_omega_etaPHOS" ,"#omega in |#eta| < 0.12", ptBins, ptMin, ptMax);
 
   // direct photons (consider only direct photons)
-  TH1D *h_invXsec_direct_photons_etaLarge = new TH1D("h_invXsec_direct_photons_etaLarge","direct photons_etaLarge", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_direct_photons_etaTPC = new TH1D("h_invXsec_direct_photons_etaTPC","direct photons_etaTPC", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_direct_photons_etaEMCal = new TH1D("h_invXsec_direct_photons_etaEMCal","direct photons_etaEMCal", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_direct_photons_etaPHOS = new TH1D("h_invXsec_direct_photons_etaPHOS","direct photons_etaPHOS", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_direct_photons_yDefault = new TH1D("h_invXsec_direct_photons_yDefault","direct photons in |y| < 0.8", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_direct_photons_etaLarge = new TH1D("h_invXsec_direct_photons_etaLarge","direct photons in |#eta| < 3.0", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_direct_photons_etaTPC   = new TH1D("h_invXsec_direct_photons_etaTPC"  ,"direct photons in |#eta| < 0.9", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_direct_photons_etaEMCal = new TH1D("h_invXsec_direct_photons_etaEMCal","direct photons in |#eta| < 0.66", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_direct_photons_etaPHOS  = new TH1D("h_invXsec_direct_photons_etaPHOS" ,"direct photons in |#eta| < 0.12", ptBins, ptMin, ptMax);
 
   // shower/fragmentation photons only (gammas from "q -> q gamma" splitting)
+  TH1D *h_invXsec_shower_photons_yDefault = new TH1D("h_invXsec_shower_photons_yDefault","shower photons (q -> q #gamma) in |y| < 0.8", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_shower_photons_etaLarge = new TH1D("h_invXsec_shower_photons_etaLarge","shower photons (q -> q #gamma) in |#eta| < 3.0", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_shower_photons_etaTPC   = new TH1D("h_invXsec_shower_photons_etaTPC","shower photons (q -> q #gamma) in |#eta| < 0.9", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_shower_photons_etaTPC   = new TH1D("h_invXsec_shower_photons_etaTPC"  ,"shower photons (q -> q #gamma) in |#eta| < 0.9", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_shower_photons_etaEMCal = new TH1D("h_invXsec_shower_photons_etaEMCal","shower photons (q -> q #gamma) in |#eta| < 0.66", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_shower_photons_etaPHOS  = new TH1D("h_invXsec_shower_photons_etaPHOS","shower photons (q -> q #gamma) in |#eta| < 0.12", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_shower_photons_etaPHOS  = new TH1D("h_invXsec_shower_photons_etaPHOS" ,"shower photons (q -> q #gamma) in |#eta| < 0.12", ptBins, ptMin, ptMax);
+
   // photons from ME (aka prompt)
+  TH1D *h_invXsec_222_photons_yDefault = new TH1D("h_invXsec_222_photons_yDefault","photons from ME (aka prompt) in |y| < 0.8", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_222_photons_etaLarge = new TH1D("h_invXsec_222_photons_etaLarge","photons from ME (aka prompt) in |#eta| < 3.0", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_222_photons_etaTPC   = new TH1D("h_invXsec_222_photons_etaTPC","photons from ME (aka prompt) in |#eta| < 0.9", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_222_photons_etaTPC   = new TH1D("h_invXsec_222_photons_etaTPC"  ,"photons from ME (aka prompt) in |#eta| < 0.9", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_222_photons_etaEMCal = new TH1D("h_invXsec_222_photons_etaEMCal","photons from ME (aka prompt) in |#eta| < 0.66", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_222_photons_etaPHOS  = new TH1D("h_invXsec_222_photons_etaPHOS","photons from ME (aka prompt) in |#eta| < 0.12", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_222_photons_etaPHOS  = new TH1D("h_invXsec_222_photons_etaPHOS" ,"photons from ME (aka prompt) in |#eta| < 0.12", ptBins, ptMin, ptMax);
+
+  // decay photons
+  TH1D *h_invXsec_decay_photons_yDefault = new TH1D("h_invXsec_decay_photons_yDefault","decay photons in |y| < 0.8", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_decay_photons_etaLarge = new TH1D("h_invXsec_decay_photons_etaLarge","decay photons in |#eta| < 3.0", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_decay_photons_etaTPC   = new TH1D("h_invXsec_decay_photons_etaTPC"  ,"decay photons in |#eta| < 0.9", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_decay_photons_etaEMCal = new TH1D("h_invXsec_decay_photons_etaEMCal","decay photons in |#eta| < 0.66", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_decay_photons_etaPHOS  = new TH1D("h_invXsec_decay_photons_etaPHOS" ,"decay photons in |#eta| < 0.12", ptBins, ptMin, ptMax);
 
   // isolated photons (considers only direct photons)
-  TH1D *h_invXsec_iso_charged2GeV_R03_photons_etaTPC = new TH1D("h_invXsec_iso_charged2GeV_R03_photons_etaTPC","direct iso (charged pt 2 GeV/c in R=0.3) photons_etaTPC", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_iso_charged2GeV_R03_photons_etaTPC   = new TH1D("h_invXsec_iso_charged2GeV_R03_photons_etaTPC","direct iso (charged pt 2 GeV/c in R=0.3) photons_etaTPC", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_iso_charged2GeV_R03_photons_etaEMCal = new TH1D("h_invXsec_iso_charged2GeV_R03_photons_etaEMCal","direct iso (charged pt 2 GeV/c in R=0.3) photons_etaEMCal", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_iso_charged2GeV_R03_photons_etaPHOS = new TH1D("h_invXsec_iso_charged2GeV_R03_photons_etaPHOS","direct iso (charged pt 2 GeV/c in R=0.3) photons_etaPHOS", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_iso_charged2GeV_R03_photons_etaPHOS  = new TH1D("h_invXsec_iso_charged2GeV_R03_photons_etaPHOS","direct iso (charged pt 2 GeV/c in R=0.3) photons_etaPHOS", ptBins, ptMin, ptMax);
 
-  TH1D *h_invXsec_iso_charged2GeV_R04_photons_etaTPC = new TH1D("h_invXsec_iso_charged2GeV_R04_photons_etaTPC","direct iso (charged pt 2 GeV/c in R=0.4) photons_etaTPC", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_iso_charged2GeV_R04_photons_etaTPC   = new TH1D("h_invXsec_iso_charged2GeV_R04_photons_etaTPC","direct iso (charged pt 2 GeV/c in R=0.4) photons_etaTPC", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_iso_charged2GeV_R04_photons_etaEMCal = new TH1D("h_invXsec_iso_charged2GeV_R04_photons_etaEMCal","direct iso (charged pt 2 GeV/c in R=0.4) photons_etaEMCal", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_iso_charged2GeV_R04_photons_etaPHOS = new TH1D("h_invXsec_iso_charged2GeV_R04_photons_etaPHOS","direct iso (charged pt 2 GeV/c in R=0.4) photons_etaPHOS", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_iso_charged2GeV_R04_photons_etaPHOS  = new TH1D("h_invXsec_iso_charged2GeV_R04_photons_etaPHOS","direct iso (charged pt 2 GeV/c in R=0.4) photons_etaPHOS", ptBins, ptMin, ptMax);
 
-  TH1D *h_invXsec_iso_charged2GeV_R05_photons_etaTPC = new TH1D("h_invXsec_iso_charged2GeV_R05_photons_etaTPC","direct iso (charged pt 2 GeV/c in R=0.5) photons_etaTPC", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_iso_charged2GeV_R05_photons_etaTPC   = new TH1D("h_invXsec_iso_charged2GeV_R05_photons_etaTPC","direct iso (charged pt 2 GeV/c in R=0.5) photons_etaTPC", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_iso_charged2GeV_R05_photons_etaEMCal = new TH1D("h_invXsec_iso_charged2GeV_R05_photons_etaEMCal","direct iso (charged pt 2 GeV/c in R=0.5) photons_etaEMCal", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_iso_charged2GeV_R05_photons_etaPHOS = new TH1D("h_invXsec_iso_charged2GeV_R05_photons_etaPHOS","direct iso (charged pt 2 GeV/c in R=0.5) photons_etaPHOS", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_iso_charged2GeV_R05_photons_etaPHOS  = new TH1D("h_invXsec_iso_charged2GeV_R05_photons_etaPHOS","direct iso (charged pt 2 GeV/c in R=0.5) photons_etaPHOS", ptBins, ptMin, ptMax);
 
-  TH1D *h_invXsec_iso_charged3GeV_R03_photons_etaTPC = new TH1D("h_invXsec_iso_charged3GeV_R03_photons_etaTPC","direct iso (charged pt 3 GeV/c in R=0.3) photons_etaTPC", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_iso_charged3GeV_R03_photons_etaTPC   = new TH1D("h_invXsec_iso_charged3GeV_R03_photons_etaTPC","direct iso (charged pt 3 GeV/c in R=0.3) photons_etaTPC", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_iso_charged3GeV_R03_photons_etaEMCal = new TH1D("h_invXsec_iso_charged3GeV_R03_photons_etaEMCal","direct iso (charged pt 3 GeV/c in R=0.3) photons_etaEMCal", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_iso_charged3GeV_R03_photons_etaPHOS = new TH1D("h_invXsec_iso_charged3GeV_R03_photons_etaPHOS","direct iso (charged pt 3 GeV/c in R=0.3) photons_etaPHOS", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_iso_charged3GeV_R03_photons_etaPHOS  = new TH1D("h_invXsec_iso_charged3GeV_R03_photons_etaPHOS","direct iso (charged pt 3 GeV/c in R=0.3) photons_etaPHOS", ptBins, ptMin, ptMax);
 
-  TH1D *h_invXsec_iso_charged3GeV_R04_photons_etaTPC = new TH1D("h_invXsec_iso_charged3GeV_R04_photons_etaTPC","direct iso (charged pt 3 GeV/c in R=0.4) photons_etaTPC", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_iso_charged3GeV_R04_photons_etaTPC   = new TH1D("h_invXsec_iso_charged3GeV_R04_photons_etaTPC","direct iso (charged pt 3 GeV/c in R=0.4) photons_etaTPC", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_iso_charged3GeV_R04_photons_etaEMCal = new TH1D("h_invXsec_iso_charged3GeV_R04_photons_etaEMCal","direct iso (charged pt 3 GeV/c in R=0.4) photons_etaEMCal", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_iso_charged3GeV_R04_photons_etaPHOS = new TH1D("h_invXsec_iso_charged3GeV_R04_photons_etaPHOS","direct iso (charged pt 3 GeV/c in R=0.4) photons_etaPHOS", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_iso_charged3GeV_R04_photons_etaPHOS  = new TH1D("h_invXsec_iso_charged3GeV_R04_photons_etaPHOS","direct iso (charged pt 3 GeV/c in R=0.4) photons_etaPHOS", ptBins, ptMin, ptMax);
 
-  TH1D *h_invXsec_iso_charged3GeV_R05_photons_etaTPC = new TH1D("h_invXsec_iso_charged3GeV_R05_photons_etaTPC","direct iso (charged pt 3 GeV/c in R=0.5) photons_etaTPC", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_iso_charged3GeV_R05_photons_etaTPC   = new TH1D("h_invXsec_iso_charged3GeV_R05_photons_etaTPC","direct iso (charged pt 3 GeV/c in R=0.5) photons_etaTPC", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_iso_charged3GeV_R05_photons_etaEMCal = new TH1D("h_invXsec_iso_charged3GeV_R05_photons_etaEMCal","direct iso (charged pt 3 GeV/c in R=0.5) photons_etaEMCal", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_iso_charged3GeV_R05_photons_etaPHOS = new TH1D("h_invXsec_iso_charged3GeV_R05_photons_etaPHOS","direct iso (charged pt 3 GeV/c in R=0.5) photons_etaPHOS", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_iso_charged3GeV_R05_photons_etaPHOS  = new TH1D("h_invXsec_iso_charged3GeV_R05_photons_etaPHOS","direct iso (charged pt 3 GeV/c in R=0.5) photons_etaPHOS", ptBins, ptMin, ptMax);
 
-  TH1D *h_invXsec_iso_full2GeV_R03_photons_etaTPC = new TH1D("h_invXsec_iso_full2GeV_R03_photons_etaTPC","direct iso (full pt 2 GeV/c in R=0.3) photons_etaTPC", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_iso_full2GeV_R03_photons_etaEMCal = new TH1D("h_invXsec_iso_full2GeV_R03_photons_etaEMCal","direct iso (full pt 2 GeV/c in R=0.3) photons_etaEMCal", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_iso_full2GeV_R03_photons_etaPHOS = new TH1D("h_invXsec_iso_full2GeV_R03_photons_etaPHOS","direct iso (full pt 2 GeV/c in R=0.3) photons_etaPHOS", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_iso_full2GeV_R03_photons_etaTPC      = new TH1D("h_invXsec_iso_full2GeV_R03_photons_etaTPC","direct iso (full pt 2 GeV/c in R=0.3) photons_etaTPC", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_iso_full2GeV_R03_photons_etaEMCal    = new TH1D("h_invXsec_iso_full2GeV_R03_photons_etaEMCal","direct iso (full pt 2 GeV/c in R=0.3) photons_etaEMCal", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_iso_full2GeV_R03_photons_etaPHOS     = new TH1D("h_invXsec_iso_full2GeV_R03_photons_etaPHOS","direct iso (full pt 2 GeV/c in R=0.3) photons_etaPHOS", ptBins, ptMin, ptMax);
 
-  TH1D *h_invXsec_iso_full2GeV_R04_photons_etaTPC = new TH1D("h_invXsec_iso_full2GeV_R04_photons_etaTPC","direct iso (full pt 2 GeV/c in R=0.4) photons_etaTPC", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_iso_full2GeV_R04_photons_etaEMCal = new TH1D("h_invXsec_iso_full2GeV_R04_photons_etaEMCal","direct iso (full pt 2 GeV/c in R=0.4) photons_etaEMCal", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_iso_full2GeV_R04_photons_etaPHOS = new TH1D("h_invXsec_iso_full2GeV_R04_photons_etaPHOS","direct iso (full pt 2 GeV/c in R=0.4) photons_etaPHOS", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_iso_full2GeV_R04_photons_etaTPC      = new TH1D("h_invXsec_iso_full2GeV_R04_photons_etaTPC","direct iso (full pt 2 GeV/c in R=0.4) photons_etaTPC", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_iso_full2GeV_R04_photons_etaEMCal    = new TH1D("h_invXsec_iso_full2GeV_R04_photons_etaEMCal","direct iso (full pt 2 GeV/c in R=0.4) photons_etaEMCal", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_iso_full2GeV_R04_photons_etaPHOS     = new TH1D("h_invXsec_iso_full2GeV_R04_photons_etaPHOS","direct iso (full pt 2 GeV/c in R=0.4) photons_etaPHOS", ptBins, ptMin, ptMax);
 
-  TH1D *h_invXsec_iso_full2GeV_R05_photons_etaTPC = new TH1D("h_invXsec_iso_full2GeV_R05_photons_etaTPC","direct iso (full pt 2 GeV/c in R=0.5) photons_etaTPC", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_iso_full2GeV_R05_photons_etaEMCal = new TH1D("h_invXsec_iso_full2GeV_R05_photons_etaEMCal","direct iso (full pt 2 GeV/c in R=0.5) photons_etaEMCal", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_iso_full2GeV_R05_photons_etaPHOS = new TH1D("h_invXsec_iso_full2GeV_R05_photons_etaPHOS","direct iso (full pt 2 GeV/c in R=0.5) photons_etaPHOS", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_iso_full2GeV_R05_photons_etaTPC      = new TH1D("h_invXsec_iso_full2GeV_R05_photons_etaTPC","direct iso (full pt 2 GeV/c in R=0.5) photons_etaTPC", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_iso_full2GeV_R05_photons_etaEMCal    = new TH1D("h_invXsec_iso_full2GeV_R05_photons_etaEMCal","direct iso (full pt 2 GeV/c in R=0.5) photons_etaEMCal", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_iso_full2GeV_R05_photons_etaPHOS     = new TH1D("h_invXsec_iso_full2GeV_R05_photons_etaPHOS","direct iso (full pt 2 GeV/c in R=0.5) photons_etaPHOS", ptBins, ptMin, ptMax);
 
-  TH1D *h_invXsec_iso_full3GeV_R03_photons_etaTPC = new TH1D("h_invXsec_iso_full3GeV_R03_photons_etaTPC","direct iso (full pt 3 GeV/c in R=0.3) photons_etaTPC", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_iso_full3GeV_R03_photons_etaEMCal = new TH1D("h_invXsec_iso_full3GeV_R03_photons_etaEMCal","direct iso (full pt 3 GeV/c in R=0.3) photons_etaEMCal", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_iso_full3GeV_R03_photons_etaPHOS = new TH1D("h_invXsec_iso_full3GeV_R03_photons_etaPHOS","direct iso (full pt 3 GeV/c in R=0.3) photons_etaPHOS", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_iso_full3GeV_R03_photons_etaTPC      = new TH1D("h_invXsec_iso_full3GeV_R03_photons_etaTPC","direct iso (full pt 3 GeV/c in R=0.3) photons_etaTPC", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_iso_full3GeV_R03_photons_etaEMCal    = new TH1D("h_invXsec_iso_full3GeV_R03_photons_etaEMCal","direct iso (full pt 3 GeV/c in R=0.3) photons_etaEMCal", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_iso_full3GeV_R03_photons_etaPHOS     = new TH1D("h_invXsec_iso_full3GeV_R03_photons_etaPHOS","direct iso (full pt 3 GeV/c in R=0.3) photons_etaPHOS", ptBins, ptMin, ptMax);
 
-  TH1D *h_invXsec_iso_full3GeV_R04_photons_etaTPC = new TH1D("h_invXsec_iso_full3GeV_R04_photons_etaTPC","direct iso (full pt 3 GeV/c in R=0.4) photons_etaTPC", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_iso_full3GeV_R04_photons_etaEMCal = new TH1D("h_invXsec_iso_full3GeV_R04_photons_etaEMCal","direct iso (full pt 3 GeV/c in R=0.4) photons_etaEMCal", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_iso_full3GeV_R04_photons_etaPHOS = new TH1D("h_invXsec_iso_full3GeV_R04_photons_etaPHOS","direct iso (full pt 3 GeV/c in R=0.4) photons_etaPHOS", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_iso_full3GeV_R04_photons_etaTPC      = new TH1D("h_invXsec_iso_full3GeV_R04_photons_etaTPC","direct iso (full pt 3 GeV/c in R=0.4) photons_etaTPC", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_iso_full3GeV_R04_photons_etaEMCal    = new TH1D("h_invXsec_iso_full3GeV_R04_photons_etaEMCal","direct iso (full pt 3 GeV/c in R=0.4) photons_etaEMCal", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_iso_full3GeV_R04_photons_etaPHOS     = new TH1D("h_invXsec_iso_full3GeV_R04_photons_etaPHOS","direct iso (full pt 3 GeV/c in R=0.4) photons_etaPHOS", ptBins, ptMin, ptMax);
 
-  TH1D *h_invXsec_iso_full3GeV_R05_photons_etaTPC = new TH1D("h_invXsec_iso_full3GeV_R05_photons_etaTPC","direct iso (full pt 3 GeV/c in R=0.5) photons_etaTPC", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_iso_full3GeV_R05_photons_etaEMCal = new TH1D("h_invXsec_iso_full3GeV_R05_photons_etaEMCal","direct iso (full pt 3 GeV/c in R=0.5) photons_etaEMCal", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_iso_full3GeV_R05_photons_etaPHOS = new TH1D("h_invXsec_iso_full3GeV_R05_photons_etaPHOS","direct iso (full pt 3 GeV/c in R=0.5) photons_etaPHOS", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_iso_full3GeV_R05_photons_etaTPC      = new TH1D("h_invXsec_iso_full3GeV_R05_photons_etaTPC","direct iso (full pt 3 GeV/c in R=0.5) photons_etaTPC", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_iso_full3GeV_R05_photons_etaEMCal    = new TH1D("h_invXsec_iso_full3GeV_R05_photons_etaEMCal","direct iso (full pt 3 GeV/c in R=0.5) photons_etaEMCal", ptBins, ptMin, ptMax);
+  TH1D *h_invXsec_iso_full3GeV_R05_photons_etaPHOS     = new TH1D("h_invXsec_iso_full3GeV_R05_photons_etaPHOS","direct iso (full pt 3 GeV/c in R=0.5) photons_etaPHOS", ptBins, ptMin, ptMax);
   
-  // decay photons
-  TH1D *h_invXsec_decay_photons_etaLarge = new TH1D("h_invXsec_decay_photons_etaLarge","decay photons_etaLarge", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_decay_photons_etaTPC = new TH1D("h_invXsec_decay_photons_etaTPC","decay photons_etaTPC", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_decay_photons_etaEMCal = new TH1D("h_invXsec_decay_photons_etaEMCal","decay photons_etaEMCal", ptBins, ptMin, ptMax);
-  TH1D *h_invXsec_decay_photons_etaPHOS = new TH1D("h_invXsec_decay_photons_etaPHOS","decay photons_etaPHOS", ptBins, ptMin, ptMax);
-
-
 
   //----------------------------------------------------------------------------------------------------
   // check underlying born kt to see, e.g., if HardQCD cross section does not blow up
@@ -351,20 +360,29 @@ int main(int argc, char **argv) {
   vector <TH1D*> vec_omega_etaEMCal_bin;
   vector <TH1D*> vec_omega_etaPHOS_bin;
 
+  vector <TH1D*> vec_direct_photons_yDefault_bin;
   vector <TH1D*> vec_direct_photons_etaLarge_bin;
   vector <TH1D*> vec_direct_photons_etaTPC_bin;
   vector <TH1D*> vec_direct_photons_etaEMCal_bin;
   vector <TH1D*> vec_direct_photons_etaPHOS_bin;
 
+  vector <TH1D*> vec_shower_photons_yDefault_bin;
   vector <TH1D*> vec_shower_photons_etaLarge_bin;
   vector <TH1D*> vec_shower_photons_etaTPC_bin;
   vector <TH1D*> vec_shower_photons_etaEMCal_bin;
   vector <TH1D*> vec_shower_photons_etaPHOS_bin;
 
+  vector <TH1D*> vec_222_photons_yDefault_bin;
   vector <TH1D*> vec_222_photons_etaLarge_bin;
   vector <TH1D*> vec_222_photons_etaTPC_bin;
   vector <TH1D*> vec_222_photons_etaEMCal_bin;
   vector <TH1D*> vec_222_photons_etaPHOS_bin;
+
+  vector <TH1D*> vec_decay_photons_yDefault_bin;
+  vector <TH1D*> vec_decay_photons_etaLarge_bin;
+  vector <TH1D*> vec_decay_photons_etaTPC_bin;
+  vector <TH1D*> vec_decay_photons_etaEMCal_bin;
+  vector <TH1D*> vec_decay_photons_etaPHOS_bin;
 
   vector <TH1D*> vec_iso_charged2GeV_R03_photons_etaTPC_bin;
   vector <TH1D*> vec_iso_charged2GeV_R04_photons_etaTPC_bin;
@@ -414,11 +432,6 @@ int main(int argc, char **argv) {
   vector <TH1D*> vec_iso_full3GeV_R04_photons_etaPHOS_bin;
   vector <TH1D*> vec_iso_full3GeV_R05_photons_etaPHOS_bin;
 
-  vector <TH1D*> vec_decay_photons_etaLarge_bin;
-  vector <TH1D*> vec_decay_photons_etaTPC_bin;
-  vector <TH1D*> vec_decay_photons_etaEMCal_bin;
-  vector <TH1D*> vec_decay_photons_etaPHOS_bin;
-
   //----------------------------------------------------------------------------------------------------
   // do the same jazz for invariant cross section histos ------------------------------------------
   //------------------------------------------------------------------------------------------
@@ -452,20 +465,29 @@ int main(int argc, char **argv) {
   vector <TH1D*> vec_invXsec_omega_etaEMCal_bin;
   vector <TH1D*> vec_invXsec_omega_etaPHOS_bin;
 
+  vector <TH1D*> vec_invXsec_direct_photons_yDefault_bin;
   vector <TH1D*> vec_invXsec_direct_photons_etaLarge_bin;
   vector <TH1D*> vec_invXsec_direct_photons_etaTPC_bin;
   vector <TH1D*> vec_invXsec_direct_photons_etaEMCal_bin;
   vector <TH1D*> vec_invXsec_direct_photons_etaPHOS_bin;
 
+  vector <TH1D*> vec_invXsec_shower_photons_yDefault_bin;
   vector <TH1D*> vec_invXsec_shower_photons_etaLarge_bin;
   vector <TH1D*> vec_invXsec_shower_photons_etaTPC_bin;
   vector <TH1D*> vec_invXsec_shower_photons_etaEMCal_bin;
   vector <TH1D*> vec_invXsec_shower_photons_etaPHOS_bin;
 
+  vector <TH1D*> vec_invXsec_222_photons_yDefault_bin;
   vector <TH1D*> vec_invXsec_222_photons_etaLarge_bin;
   vector <TH1D*> vec_invXsec_222_photons_etaTPC_bin;
   vector <TH1D*> vec_invXsec_222_photons_etaEMCal_bin;
   vector <TH1D*> vec_invXsec_222_photons_etaPHOS_bin;
+
+  vector <TH1D*> vec_invXsec_decay_photons_yDefault_bin;
+  vector <TH1D*> vec_invXsec_decay_photons_etaLarge_bin;
+  vector <TH1D*> vec_invXsec_decay_photons_etaTPC_bin;
+  vector <TH1D*> vec_invXsec_decay_photons_etaEMCal_bin;
+  vector <TH1D*> vec_invXsec_decay_photons_etaPHOS_bin;
 
   vector <TH1D*> vec_invXsec_iso_charged2GeV_R03_photons_etaTPC_bin;
   vector <TH1D*> vec_invXsec_iso_charged2GeV_R04_photons_etaTPC_bin;
@@ -515,11 +537,6 @@ int main(int argc, char **argv) {
   vector <TH1D*> vec_invXsec_iso_full3GeV_R04_photons_etaPHOS_bin;
   vector <TH1D*> vec_invXsec_iso_full3GeV_R05_photons_etaPHOS_bin;
 
-  vector <TH1D*> vec_invXsec_decay_photons_etaLarge_bin;
-  vector <TH1D*> vec_invXsec_decay_photons_etaTPC_bin;
-  vector <TH1D*> vec_invXsec_decay_photons_etaEMCal_bin;
-  vector <TH1D*> vec_invXsec_decay_photons_etaPHOS_bin;
-
   //----------------------------------------------------------------------------------------------------
 
   vector <TH1D*> vec_pTHat_bin;
@@ -567,22 +584,31 @@ int main(int argc, char **argv) {
     vec_omega_etaPHOS_bin.push_back( (TH1D*)h_omega_etaPHOS->Clone(Form("h_omega_etaPHOS_bin_%02d",i)) );
 
     // direct photon histos
-    vec_direct_photons_etaLarge_bin.push_back( (TH1D*)h_direct_photons_etaLarge->Clone(Form("h_direct_photons_etaLarge_bin_%02d",i)) );
+    vec_direct_photons_yDefault_bin.push_back( (TH1D*)h_direct_photons_yDefault->Clone(Form("h_direct_photons_yDefault_bin_%02d",i)) );
     vec_direct_photons_etaLarge_bin.push_back( (TH1D*)h_direct_photons_etaLarge->Clone(Form("h_direct_photons_etaLarge_bin_%02d",i)) );
     vec_direct_photons_etaTPC_bin.push_back( (TH1D*)h_direct_photons_etaTPC->Clone(Form("h_direct_photons_etaTPC_bin_%02d",i)) );
     vec_direct_photons_etaEMCal_bin.push_back( (TH1D*)h_direct_photons_etaEMCal->Clone(Form("h_direct_photons_etaEMCal_bin_%02d",i)) );
     vec_direct_photons_etaPHOS_bin.push_back( (TH1D*)h_direct_photons_etaPHOS->Clone(Form("h_direct_photons_etaPHOS_bin_%02d",i)) );
 
     // discriminating shower and prompt photons
+    vec_shower_photons_yDefault_bin.push_back( (TH1D*)h_direct_photons_yDefault->Clone(Form("h_shower_photons_yDefault_bin_%02d",i)) );
     vec_shower_photons_etaLarge_bin.push_back( (TH1D*)h_direct_photons_etaLarge->Clone(Form("h_shower_photons_etaLarge_bin_%02d",i)) );
     vec_shower_photons_etaTPC_bin.push_back( (TH1D*)h_direct_photons_etaTPC->Clone(Form("h_shower_photons_etaTPC_bin_%02d",i)) );
     vec_shower_photons_etaEMCal_bin.push_back( (TH1D*)h_direct_photons_etaEMCal->Clone(Form("h_shower_photons_etaEMCal_bin_%02d",i)) );
     vec_shower_photons_etaPHOS_bin.push_back( (TH1D*)h_direct_photons_etaPHOS->Clone(Form("h_shower_photons_etaPHOS_bin_%02d",i)) );
 
+    vec_222_photons_yDefault_bin.push_back( (TH1D*)h_direct_photons_yDefault->Clone(Form("h_222_photons_yDefault_bin_%02d",i)) );
     vec_222_photons_etaLarge_bin.push_back( (TH1D*)h_direct_photons_etaLarge->Clone(Form("h_222_photons_etaLarge_bin_%02d",i)) );
     vec_222_photons_etaTPC_bin.push_back( (TH1D*)h_direct_photons_etaTPC->Clone(Form("h_222_photons_etaTPC_bin_%02d",i)) );
     vec_222_photons_etaEMCal_bin.push_back( (TH1D*)h_direct_photons_etaEMCal->Clone(Form("h_222_photons_etaEMCal_bin_%02d",i)) );
     vec_222_photons_etaPHOS_bin.push_back( (TH1D*)h_direct_photons_etaPHOS->Clone(Form("h_222_photons_etaPHOS_bin_%02d",i)) );
+
+    // decay photon histos
+    vec_decay_photons_yDefault_bin.push_back( (TH1D*)h_decay_photons_yDefault->Clone(Form("h_decay_photons_yDefault_bin_%02d",i)) );
+    vec_decay_photons_etaLarge_bin.push_back( (TH1D*)h_decay_photons_etaLarge->Clone(Form("h_decay_photons_etaLarge_bin_%02d",i)) );
+    vec_decay_photons_etaTPC_bin.push_back( (TH1D*)h_decay_photons_etaTPC->Clone(Form("h_decay_photons_etaTPC_bin_%02d",i)) );
+    vec_decay_photons_etaEMCal_bin.push_back( (TH1D*)h_decay_photons_etaEMCal->Clone(Form("h_decay_photons_etaEMCal_bin_%02d",i)) );
+    vec_decay_photons_etaPHOS_bin.push_back( (TH1D*)h_decay_photons_etaPHOS->Clone(Form("h_decay_photons_etaPHOS_bin_%02d",i)) );
 
     if(applyPhotonIso){
       // isolated photon histos TPC
@@ -628,13 +654,6 @@ int main(int argc, char **argv) {
       vec_iso_full3GeV_R05_photons_etaPHOS_bin.push_back( (TH1D*)h_iso_full3GeV_R05_photons_etaPHOS->Clone(Form("h_iso_full3GeV_R05_photons_etaPHOS_bin_%02d",i)) );
     }
 
-    // decay photon histos
-    vec_decay_photons_etaLarge_bin.push_back( (TH1D*)h_decay_photons_etaLarge->Clone(Form("h_decay_photons_etaLarge_bin_%02d",i)) );
-    vec_decay_photons_etaTPC_bin.push_back( (TH1D*)h_decay_photons_etaTPC->Clone(Form("h_decay_photons_etaTPC_bin_%02d",i)) );
-    vec_decay_photons_etaEMCal_bin.push_back( (TH1D*)h_decay_photons_etaEMCal->Clone(Form("h_decay_photons_etaEMCal_bin_%02d",i)) );
-    vec_decay_photons_etaPHOS_bin.push_back( (TH1D*)h_decay_photons_etaPHOS->Clone(Form("h_decay_photons_etaPHOS_bin_%02d",i)) );
-
-
 
     //----------------------------------------------------------------------------------------------------
     // do the same jazz for invariant cross section histos ------------------------------------------
@@ -675,21 +694,32 @@ int main(int argc, char **argv) {
     vec_invXsec_omega_etaPHOS_bin.push_back( (TH1D*)h_invXsec_omega_etaPHOS->Clone(Form("h_invXsec_omega_etaPHOS_bin_%02d",i)) );
 
     // direct photon histos
+    vec_invXsec_direct_photons_yDefault_bin.push_back( (TH1D*)h_invXsec_direct_photons_yDefault->Clone(Form("h_invXsec_direct_photons_yDefault_bin_%02d",i)) );
     vec_invXsec_direct_photons_etaLarge_bin.push_back( (TH1D*)h_invXsec_direct_photons_etaLarge->Clone(Form("h_invXsec_direct_photons_etaLarge_bin_%02d",i)) );
     vec_invXsec_direct_photons_etaTPC_bin.push_back( (TH1D*)h_invXsec_direct_photons_etaTPC->Clone(Form("h_invXsec_direct_photons_etaTPC_bin_%02d",i)) );
     vec_invXsec_direct_photons_etaEMCal_bin.push_back( (TH1D*)h_invXsec_direct_photons_etaEMCal->Clone(Form("h_invXsec_direct_photons_etaEMCal_bin_%02d",i)) );
     vec_invXsec_direct_photons_etaPHOS_bin.push_back( (TH1D*)h_invXsec_direct_photons_etaPHOS->Clone(Form("h_invXsec_direct_photons_etaPHOS_bin_%02d",i)) );
 
     // discriminating shower and prompt photons
+    vec_invXsec_shower_photons_yDefault_bin.push_back( (TH1D*)h_invXsec_direct_photons_yDefault->Clone(Form("h_invXsec_shower_photons_yDefault_bin_%02d",i)) );
     vec_invXsec_shower_photons_etaLarge_bin.push_back( (TH1D*)h_invXsec_direct_photons_etaLarge->Clone(Form("h_invXsec_shower_photons_etaLarge_bin_%02d",i)) );
     vec_invXsec_shower_photons_etaTPC_bin.push_back( (TH1D*)h_invXsec_direct_photons_etaTPC->Clone(Form("h_invXsec_shower_photons_etaTPC_bin_%02d",i)) );
     vec_invXsec_shower_photons_etaEMCal_bin.push_back( (TH1D*)h_invXsec_direct_photons_etaEMCal->Clone(Form("h_invXsec_shower_photons_etaEMCal_bin_%02d",i)) );
     vec_invXsec_shower_photons_etaPHOS_bin.push_back( (TH1D*)h_invXsec_direct_photons_etaPHOS->Clone(Form("h_invXsec_shower_photons_etaPHOS_bin_%02d",i)) );
 
+    vec_invXsec_222_photons_yDefault_bin.push_back( (TH1D*)h_invXsec_direct_photons_yDefault->Clone(Form("h_invXsec_222_photons_yDefault_bin_%02d",i)) );
     vec_invXsec_222_photons_etaLarge_bin.push_back( (TH1D*)h_invXsec_direct_photons_etaLarge->Clone(Form("h_invXsec_222_photons_etaLarge_bin_%02d",i)) );
     vec_invXsec_222_photons_etaTPC_bin.push_back( (TH1D*)h_invXsec_direct_photons_etaTPC->Clone(Form("h_invXsec_222_photons_etaTPC_bin_%02d",i)) );
     vec_invXsec_222_photons_etaEMCal_bin.push_back( (TH1D*)h_invXsec_direct_photons_etaEMCal->Clone(Form("h_invXsec_222_photons_etaEMCal_bin_%02d",i)) );
     vec_invXsec_222_photons_etaPHOS_bin.push_back( (TH1D*)h_invXsec_direct_photons_etaPHOS->Clone(Form("h_invXsec_222_photons_etaPHOS_bin_%02d",i)) );
+
+    // decay photon histos
+    vec_invXsec_decay_photons_yDefault_bin.push_back( (TH1D*)h_decay_photons_yDefault->Clone(Form("h_invXsec_decay_photons_yDefault_bin_%02d",i)) );
+    vec_invXsec_decay_photons_etaLarge_bin.push_back( (TH1D*)h_decay_photons_etaLarge->Clone(Form("h_invXsec_decay_photons_etaLarge_bin_%02d",i)) );
+    vec_invXsec_decay_photons_etaTPC_bin.push_back( (TH1D*)h_decay_photons_etaTPC->Clone(Form("h_invXsec_decay_photons_etaTPC_bin_%02d",i)) );
+    vec_invXsec_decay_photons_etaEMCal_bin.push_back( (TH1D*)h_decay_photons_etaEMCal->Clone(Form("h_invXsec_decay_photons_etaEMCal_bin_%02d",i)) );
+    vec_invXsec_decay_photons_etaPHOS_bin.push_back( (TH1D*)h_decay_photons_etaPHOS->Clone(Form("h_invXsec_decay_photons_etaPHOS_bin_%02d",i)) );
+
 
     if(applyPhotonIso){
       // isolated photon histos TPC
@@ -734,15 +764,6 @@ int main(int argc, char **argv) {
       vec_invXsec_iso_full3GeV_R04_photons_etaPHOS_bin.push_back( (TH1D*)h_iso_full3GeV_R04_photons_etaPHOS->Clone(Form("h_invXsec_iso_full3GeV_R04_photons_etaPHOS_bin_%02d",i)) );
       vec_invXsec_iso_full3GeV_R05_photons_etaPHOS_bin.push_back( (TH1D*)h_iso_full3GeV_R05_photons_etaPHOS->Clone(Form("h_invXsec_iso_full3GeV_R05_photons_etaPHOS_bin_%02d",i)) );
     }
-
-    // decay photon histos
-    vec_invXsec_decay_photons_etaLarge_bin.push_back( (TH1D*)h_decay_photons_etaLarge->Clone(Form("h_invXsec_decay_photons_etaLarge_bin_%02d",i)) );
-    vec_invXsec_decay_photons_etaTPC_bin.push_back( (TH1D*)h_decay_photons_etaTPC->Clone(Form("h_invXsec_decay_photons_etaTPC_bin_%02d",i)) );
-    vec_invXsec_decay_photons_etaEMCal_bin.push_back( (TH1D*)h_decay_photons_etaEMCal->Clone(Form("h_invXsec_decay_photons_etaEMCal_bin_%02d",i)) );
-    vec_invXsec_decay_photons_etaPHOS_bin.push_back( (TH1D*)h_decay_photons_etaPHOS->Clone(Form("h_invXsec_decay_photons_etaPHOS_bin_%02d",i)) );
-
-
-
 
 
     //----------------------------------------------------------------------------------------------------
@@ -822,20 +843,29 @@ int main(int argc, char **argv) {
       pyHelp.Fill_Omega_Pt(p.event, etaEMCal, false, vec_omega_etaEMCal_bin.at(iBin));
       pyHelp.Fill_Omega_Pt(p.event, etaPHOS, false, vec_omega_etaPHOS_bin.at(iBin));
 
+      pyHelp.Fill_Direct_Photon_Pt(p.event, yDefault, vec_direct_photons_yDefault_bin.at(iBin));
       pyHelp.Fill_Direct_Photon_Pt(p.event, etaLarge, vec_direct_photons_etaLarge_bin.at(iBin));
       pyHelp.Fill_Direct_Photon_Pt(p.event, etaTPC, vec_direct_photons_etaTPC_bin.at(iBin));
       pyHelp.Fill_Direct_Photon_Pt(p.event, etaEMCal, vec_direct_photons_etaEMCal_bin.at(iBin));
       pyHelp.Fill_Direct_Photon_Pt(p.event, etaPHOS, vec_direct_photons_etaPHOS_bin.at(iBin));
 
+      pyHelp.Fill_Shower_Photon_Pt(p.event, yDefault, vec_shower_photons_yDefault_bin.at(iBin));
       pyHelp.Fill_Shower_Photon_Pt(p.event, etaLarge, vec_shower_photons_etaLarge_bin.at(iBin));
       pyHelp.Fill_Shower_Photon_Pt(p.event, etaTPC, vec_shower_photons_etaTPC_bin.at(iBin));
       pyHelp.Fill_Shower_Photon_Pt(p.event, etaEMCal, vec_shower_photons_etaEMCal_bin.at(iBin));
       pyHelp.Fill_Shower_Photon_Pt(p.event, etaPHOS, vec_shower_photons_etaPHOS_bin.at(iBin));
 
+      pyHelp.Fill_222_Photon_Pt(p.event, yDefault, vec_222_photons_yDefault_bin.at(iBin));
       pyHelp.Fill_222_Photon_Pt(p.event, etaLarge, vec_222_photons_etaLarge_bin.at(iBin));
       pyHelp.Fill_222_Photon_Pt(p.event, etaTPC, vec_222_photons_etaTPC_bin.at(iBin));
       pyHelp.Fill_222_Photon_Pt(p.event, etaEMCal, vec_222_photons_etaEMCal_bin.at(iBin));
       pyHelp.Fill_222_Photon_Pt(p.event, etaPHOS, vec_222_photons_etaPHOS_bin.at(iBin));
+      
+      pyHelp.Fill_Decay_Photon_Pt(p.event, yDefault, vec_decay_photons_yDefault_bin.at(iBin));
+      pyHelp.Fill_Decay_Photon_Pt(p.event, etaLarge, vec_decay_photons_etaLarge_bin.at(iBin));
+      pyHelp.Fill_Decay_Photon_Pt(p.event, etaTPC, vec_decay_photons_etaTPC_bin.at(iBin));
+      pyHelp.Fill_Decay_Photon_Pt(p.event, etaEMCal, vec_decay_photons_etaEMCal_bin.at(iBin));
+      pyHelp.Fill_Decay_Photon_Pt(p.event, etaPHOS, vec_decay_photons_etaPHOS_bin.at(iBin));
 
       if(applyPhotonIso){
 	// fill isolated photons: considers only direct photons
@@ -882,11 +912,6 @@ int main(int argc, char **argv) {
 	pyHelp.Fill_Direct_Iso_Photon_Pt(p.event, etaPHOS, vec_iso_full3GeV_R05_photons_etaPHOS_bin.at(iBin), false, 0.5, 3.);
       }
 
-      pyHelp.Fill_Decay_Photon_Pt(p.event, etaLarge, vec_decay_photons_etaLarge_bin.at(iBin));
-      pyHelp.Fill_Decay_Photon_Pt(p.event, etaTPC, vec_decay_photons_etaTPC_bin.at(iBin));
-      pyHelp.Fill_Decay_Photon_Pt(p.event, etaEMCal, vec_decay_photons_etaEMCal_bin.at(iBin));
-      pyHelp.Fill_Decay_Photon_Pt(p.event, etaPHOS, vec_decay_photons_etaPHOS_bin.at(iBin));
-
       //----------------------------------------------------------------------------------------------------
       // do the same jazz for invariant cross section histos ------------------------------------------
       //------------------------------------------------------------------------------------------
@@ -921,21 +946,25 @@ int main(int argc, char **argv) {
       pyHelp.Fill_invXsec_Omega_Pt(p.event, etaEMCal, false, vec_invXsec_omega_etaEMCal_bin.at(iBin));
       pyHelp.Fill_invXsec_Omega_Pt(p.event, etaPHOS, false, vec_invXsec_omega_etaPHOS_bin.at(iBin));
 
+      pyHelp.Fill_invXsec_Direct_Photon_Pt(p.event, yDefault, vec_invXsec_direct_photons_yDefault_bin.at(iBin));
       pyHelp.Fill_invXsec_Direct_Photon_Pt(p.event, etaLarge, vec_invXsec_direct_photons_etaLarge_bin.at(iBin));
       pyHelp.Fill_invXsec_Direct_Photon_Pt(p.event, etaTPC, vec_invXsec_direct_photons_etaTPC_bin.at(iBin));
       pyHelp.Fill_invXsec_Direct_Photon_Pt(p.event, etaEMCal, vec_invXsec_direct_photons_etaEMCal_bin.at(iBin));
       pyHelp.Fill_invXsec_Direct_Photon_Pt(p.event, etaPHOS, vec_invXsec_direct_photons_etaPHOS_bin.at(iBin));
 
+      pyHelp.Fill_invXsec_Shower_Photon_Pt(p.event, yDefault, vec_invXsec_shower_photons_yDefault_bin.at(iBin));
       pyHelp.Fill_invXsec_Shower_Photon_Pt(p.event, etaLarge, vec_invXsec_shower_photons_etaLarge_bin.at(iBin));
       pyHelp.Fill_invXsec_Shower_Photon_Pt(p.event, etaTPC, vec_invXsec_shower_photons_etaTPC_bin.at(iBin));
       pyHelp.Fill_invXsec_Shower_Photon_Pt(p.event, etaEMCal, vec_invXsec_shower_photons_etaEMCal_bin.at(iBin));
       pyHelp.Fill_invXsec_Shower_Photon_Pt(p.event, etaPHOS, vec_invXsec_shower_photons_etaPHOS_bin.at(iBin));
 
+      pyHelp.Fill_invXsec_222_Photon_Pt(p.event, yDefault, vec_invXsec_222_photons_yDefault_bin.at(iBin));
       pyHelp.Fill_invXsec_222_Photon_Pt(p.event, etaLarge, vec_invXsec_222_photons_etaLarge_bin.at(iBin));
       pyHelp.Fill_invXsec_222_Photon_Pt(p.event, etaTPC, vec_invXsec_222_photons_etaTPC_bin.at(iBin));
       pyHelp.Fill_invXsec_222_Photon_Pt(p.event, etaEMCal, vec_invXsec_222_photons_etaEMCal_bin.at(iBin));
       pyHelp.Fill_invXsec_222_Photon_Pt(p.event, etaPHOS, vec_invXsec_222_photons_etaPHOS_bin.at(iBin));
 
+      pyHelp.Fill_invXsec_Decay_Photon_Pt(p.event, yDefault, vec_invXsec_decay_photons_yDefault_bin.at(iBin));
       pyHelp.Fill_invXsec_Decay_Photon_Pt(p.event, etaLarge, vec_invXsec_decay_photons_etaLarge_bin.at(iBin));
       pyHelp.Fill_invXsec_Decay_Photon_Pt(p.event, etaTPC, vec_invXsec_decay_photons_etaTPC_bin.at(iBin));
       pyHelp.Fill_invXsec_Decay_Photon_Pt(p.event, etaEMCal, vec_invXsec_decay_photons_etaEMCal_bin.at(iBin));
@@ -1033,21 +1062,29 @@ int main(int argc, char **argv) {
     vec_omega_etaEMCal_bin.at(iBin)->Scale(sigma);
     vec_omega_etaPHOS_bin.at(iBin)->Scale(sigma);
 
+    vec_direct_photons_yDefault_bin.at(iBin)->Scale(sigma);
     vec_direct_photons_etaLarge_bin.at(iBin)->Scale(sigma);
     vec_direct_photons_etaTPC_bin.at(iBin)->Scale(sigma);
     vec_direct_photons_etaEMCal_bin.at(iBin)->Scale(sigma);
     vec_direct_photons_etaPHOS_bin.at(iBin)->Scale(sigma);
 
+    vec_shower_photons_yDefault_bin.at(iBin)->Scale(sigma);
     vec_shower_photons_etaLarge_bin.at(iBin)->Scale(sigma);
     vec_shower_photons_etaTPC_bin.at(iBin)->Scale(sigma);
     vec_shower_photons_etaEMCal_bin.at(iBin)->Scale(sigma);
     vec_shower_photons_etaPHOS_bin.at(iBin)->Scale(sigma);
 
+    vec_222_photons_yDefault_bin.at(iBin)->Scale(sigma);
     vec_222_photons_etaLarge_bin.at(iBin)->Scale(sigma);
     vec_222_photons_etaTPC_bin.at(iBin)->Scale(sigma);
     vec_222_photons_etaEMCal_bin.at(iBin)->Scale(sigma);
     vec_222_photons_etaPHOS_bin.at(iBin)->Scale(sigma);
 
+    vec_decay_photons_yDefault_bin.at(iBin)->Scale(sigma);
+    vec_decay_photons_etaLarge_bin.at(iBin)->Scale(sigma);
+    vec_decay_photons_etaTPC_bin.at(iBin)->Scale(sigma);
+    vec_decay_photons_etaEMCal_bin.at(iBin)->Scale(sigma);
+    vec_decay_photons_etaPHOS_bin.at(iBin)->Scale(sigma);
 
     if(applyPhotonIso){
       vec_iso_charged2GeV_R03_photons_etaTPC_bin.at(iBin)->Scale(sigma);
@@ -1091,11 +1128,6 @@ int main(int argc, char **argv) {
       vec_iso_full3GeV_R05_photons_etaPHOS_bin.at(iBin)->Scale(sigma);
     }
 
-    vec_decay_photons_etaLarge_bin.at(iBin)->Scale(sigma);
-    vec_decay_photons_etaTPC_bin.at(iBin)->Scale(sigma);
-    vec_decay_photons_etaEMCal_bin.at(iBin)->Scale(sigma);
-    vec_decay_photons_etaPHOS_bin.at(iBin)->Scale(sigma);
-
     //----------------------------------------------------------------------------------------------------
     // do the same jazz for invariant cross section histos ------------------------------------------
     //------------------------------------------------------------------------------------------
@@ -1130,20 +1162,30 @@ int main(int argc, char **argv) {
     vec_invXsec_omega_etaEMCal_bin.at(iBin)->Scale(sigma);
     vec_invXsec_omega_etaPHOS_bin.at(iBin)->Scale(sigma);
 
+    vec_invXsec_direct_photons_yDefault_bin.at(iBin)->Scale(sigma);
     vec_invXsec_direct_photons_etaLarge_bin.at(iBin)->Scale(sigma);
     vec_invXsec_direct_photons_etaTPC_bin.at(iBin)->Scale(sigma);
     vec_invXsec_direct_photons_etaEMCal_bin.at(iBin)->Scale(sigma);
     vec_invXsec_direct_photons_etaPHOS_bin.at(iBin)->Scale(sigma);
 
+    vec_invXsec_shower_photons_yDefault_bin.at(iBin)->Scale(sigma);
     vec_invXsec_shower_photons_etaLarge_bin.at(iBin)->Scale(sigma);
     vec_invXsec_shower_photons_etaTPC_bin.at(iBin)->Scale(sigma);
     vec_invXsec_shower_photons_etaEMCal_bin.at(iBin)->Scale(sigma);
     vec_invXsec_shower_photons_etaPHOS_bin.at(iBin)->Scale(sigma);
 
+    vec_invXsec_222_photons_yDefault_bin.at(iBin)->Scale(sigma);
     vec_invXsec_222_photons_etaLarge_bin.at(iBin)->Scale(sigma);
     vec_invXsec_222_photons_etaTPC_bin.at(iBin)->Scale(sigma);
     vec_invXsec_222_photons_etaEMCal_bin.at(iBin)->Scale(sigma);
     vec_invXsec_222_photons_etaPHOS_bin.at(iBin)->Scale(sigma);
+
+    vec_invXsec_decay_photons_yDefault_bin.at(iBin)->Scale(sigma);
+    vec_invXsec_decay_photons_etaLarge_bin.at(iBin)->Scale(sigma);
+    vec_invXsec_decay_photons_etaTPC_bin.at(iBin)->Scale(sigma);
+    vec_invXsec_decay_photons_etaEMCal_bin.at(iBin)->Scale(sigma);
+    vec_invXsec_decay_photons_etaPHOS_bin.at(iBin)->Scale(sigma);
+
 
     if(applyPhotonIso){
       vec_invXsec_iso_charged2GeV_R03_photons_etaTPC_bin.at(iBin)->Scale(sigma);
@@ -1186,12 +1228,6 @@ int main(int argc, char **argv) {
       vec_invXsec_iso_full3GeV_R04_photons_etaPHOS_bin.at(iBin)->Scale(sigma);
       vec_invXsec_iso_full3GeV_R05_photons_etaPHOS_bin.at(iBin)->Scale(sigma);
     }
-
-    vec_invXsec_decay_photons_etaLarge_bin.at(iBin)->Scale(sigma);
-    vec_invXsec_decay_photons_etaTPC_bin.at(iBin)->Scale(sigma);
-    vec_invXsec_decay_photons_etaEMCal_bin.at(iBin)->Scale(sigma);
-    vec_invXsec_decay_photons_etaPHOS_bin.at(iBin)->Scale(sigma);
-
 
     //----------------------------------------------------------------------------------------------------
     vec_pTHat_bin.at(iBin)->Scale(sigma);
@@ -1253,20 +1289,29 @@ int main(int argc, char **argv) {
   pyHelp.Add_Histos_Scale_Write2File( vec_omega_etaPHOS_bin, h_omega_etaPHOS, file, dir_omega, 2*etaPHOS, false);
 
   TDirectory *dir_gamma = file.mkdir("gamma");
+  pyHelp.Add_Histos_Scale_Write2File( vec_direct_photons_yDefault_bin, h_direct_photons_yDefault, file, dir_gamma, 2*yDefault, true);
   pyHelp.Add_Histos_Scale_Write2File( vec_direct_photons_etaLarge_bin, h_direct_photons_etaLarge, file, dir_gamma, 2*etaLarge, false);
   pyHelp.Add_Histos_Scale_Write2File( vec_direct_photons_etaTPC_bin, h_direct_photons_etaTPC, file, dir_gamma, 2*etaTPC, false);
   pyHelp.Add_Histos_Scale_Write2File( vec_direct_photons_etaEMCal_bin, h_direct_photons_etaEMCal, file, dir_gamma, 2*etaEMCal, false);
   pyHelp.Add_Histos_Scale_Write2File( vec_direct_photons_etaPHOS_bin, h_direct_photons_etaPHOS, file, dir_gamma, 2*etaPHOS, false);
 
+  pyHelp.Add_Histos_Scale_Write2File( vec_shower_photons_yDefault_bin, h_shower_photons_yDefault, file, dir_gamma, 2*yDefault, true);
   pyHelp.Add_Histos_Scale_Write2File( vec_shower_photons_etaLarge_bin, h_shower_photons_etaLarge, file, dir_gamma, 2*etaLarge, false);
   pyHelp.Add_Histos_Scale_Write2File( vec_shower_photons_etaTPC_bin, h_shower_photons_etaTPC, file, dir_gamma, 2*etaTPC, false);
   pyHelp.Add_Histos_Scale_Write2File( vec_shower_photons_etaEMCal_bin, h_shower_photons_etaEMCal, file, dir_gamma, 2*etaEMCal, false);
   pyHelp.Add_Histos_Scale_Write2File( vec_shower_photons_etaPHOS_bin, h_shower_photons_etaPHOS, file, dir_gamma, 2*etaPHOS, false);
 
+  pyHelp.Add_Histos_Scale_Write2File( vec_222_photons_yDefault_bin, h_222_photons_yDefault, file, dir_gamma, 2*yDefault, true);
   pyHelp.Add_Histos_Scale_Write2File( vec_222_photons_etaLarge_bin, h_222_photons_etaLarge, file, dir_gamma, 2*etaLarge, false);
   pyHelp.Add_Histos_Scale_Write2File( vec_222_photons_etaTPC_bin, h_222_photons_etaTPC, file, dir_gamma, 2*etaTPC, false);
   pyHelp.Add_Histos_Scale_Write2File( vec_222_photons_etaEMCal_bin, h_222_photons_etaEMCal, file, dir_gamma, 2*etaEMCal, false);
   pyHelp.Add_Histos_Scale_Write2File( vec_222_photons_etaPHOS_bin, h_222_photons_etaPHOS, file, dir_gamma, 2*etaPHOS, false);
+
+  pyHelp.Add_Histos_Scale_Write2File( vec_decay_photons_yDefault_bin, h_decay_photons_yDefault, file, dir_gamma, 2*yDefault, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_decay_photons_etaLarge_bin, h_decay_photons_etaLarge, file, dir_gamma, 2*etaLarge, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_decay_photons_etaTPC_bin, h_decay_photons_etaTPC, file, dir_gamma, 2*etaTPC, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_decay_photons_etaEMCal_bin, h_decay_photons_etaEMCal, file, dir_gamma, 2*etaEMCal, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_decay_photons_etaPHOS_bin, h_decay_photons_etaPHOS, file, dir_gamma, 2*etaPHOS, false);
 
   if(applyPhotonIso){
     TDirectory *dir_isoGamma = file.mkdir("isoGamma");
@@ -1311,12 +1356,6 @@ int main(int argc, char **argv) {
     pyHelp.Add_Histos_Scale_Write2File( vec_iso_full3GeV_R04_photons_etaPHOS_bin, h_iso_full3GeV_R04_photons_etaPHOS, file, dir_isoGamma, 2*etaPHOS, false);
     pyHelp.Add_Histos_Scale_Write2File( vec_iso_full3GeV_R05_photons_etaPHOS_bin, h_iso_full3GeV_R05_photons_etaPHOS, file, dir_isoGamma, 2*etaPHOS, false);
   }
-
-  TDirectory *dir_decayGamma = file.mkdir("decayGamma");
-  pyHelp.Add_Histos_Scale_Write2File( vec_decay_photons_etaLarge_bin, h_decay_photons_etaLarge, file, dir_decayGamma, 2*etaLarge, false);
-  pyHelp.Add_Histos_Scale_Write2File( vec_decay_photons_etaTPC_bin, h_decay_photons_etaTPC, file, dir_decayGamma, 2*etaTPC, false);
-  pyHelp.Add_Histos_Scale_Write2File( vec_decay_photons_etaEMCal_bin, h_decay_photons_etaEMCal, file, dir_decayGamma, 2*etaEMCal, false);
-  pyHelp.Add_Histos_Scale_Write2File( vec_decay_photons_etaPHOS_bin, h_decay_photons_etaPHOS, file, dir_decayGamma, 2*etaPHOS, false);
   
 
   //----------------------------------------------------------------------------------------------------
@@ -1324,105 +1363,108 @@ int main(int argc, char **argv) {
   //------------------------------------------------------------------------------------------
 
   TDirectory *dir_pi0_invXsec = file.mkdir("pi0_invXsec");
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_pi0_yDefault_bin, h_invXsec_pi0_yDefault, file, dir_pi0_invXsec, 2.*yDefault, true);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_pi0_etaLarge_bin, h_invXsec_pi0_etaLarge, file, dir_pi0_invXsec, 2.*etaLarge, false);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_pi0_etaTPC_bin, h_invXsec_pi0_etaTPC, file, dir_pi0_invXsec, 2.*etaTPC, false);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_pi0_etaEMCal_bin, h_invXsec_pi0_etaEMCal, file, dir_pi0_invXsec, 2.*etaEMCal, false);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_pi0_etaPHOS_bin, h_invXsec_pi0_etaPHOS, file, dir_pi0_invXsec, 2.*etaPHOS, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_pi0_yDefault_bin, h_invXsec_pi0_yDefault, file, dir_pi0_invXsec, 2.*yDefault, true, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_pi0_etaLarge_bin, h_invXsec_pi0_etaLarge, file, dir_pi0_invXsec, 2.*etaLarge, false, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_pi0_etaTPC_bin, h_invXsec_pi0_etaTPC, file, dir_pi0_invXsec, 2.*etaTPC, false, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_pi0_etaEMCal_bin, h_invXsec_pi0_etaEMCal, file, dir_pi0_invXsec, 2.*etaEMCal, false, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_pi0_etaPHOS_bin, h_invXsec_pi0_etaPHOS, file, dir_pi0_invXsec, 2.*etaPHOS, false, true);
 
   TDirectory *dir_pi0primary_invXsec = file.mkdir("pi0primary_invXsec");
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_pi0primary_yDefault_bin, h_invXsec_pi0primary_yDefault, file, dir_pi0primary_invXsec, 2.*yDefault, true);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_pi0primary_etaLarge_bin, h_invXsec_pi0primary_etaLarge, file, dir_pi0primary_invXsec, 2.*etaLarge, false);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_pi0primary_etaTPC_bin, h_invXsec_pi0primary_etaTPC, file, dir_pi0primary_invXsec, 2.*etaTPC, false);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_pi0primary_etaEMCal_bin, h_invXsec_pi0primary_etaEMCal, file, dir_pi0primary_invXsec, 2.*etaEMCal, false);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_pi0primary_etaPHOS_bin, h_invXsec_pi0primary_etaPHOS, file, dir_pi0primary_invXsec, 2.*etaPHOS, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_pi0primary_yDefault_bin, h_invXsec_pi0primary_yDefault, file, dir_pi0primary_invXsec, 2.*yDefault, true, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_pi0primary_etaLarge_bin, h_invXsec_pi0primary_etaLarge, file, dir_pi0primary_invXsec, 2.*etaLarge, false, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_pi0primary_etaTPC_bin, h_invXsec_pi0primary_etaTPC, file, dir_pi0primary_invXsec, 2.*etaTPC, false, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_pi0primary_etaEMCal_bin, h_invXsec_pi0primary_etaEMCal, file, dir_pi0primary_invXsec, 2.*etaEMCal, false, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_pi0primary_etaPHOS_bin, h_invXsec_pi0primary_etaPHOS, file, dir_pi0primary_invXsec, 2.*etaPHOS, false, true);
 
   TDirectory *dir_eta_invXsec = file.mkdir("eta_invXsec");
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_eta_yDefault_bin, h_invXsec_eta_yDefault, file, dir_eta_invXsec, 2.*yDefault, true);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_eta_etaLarge_bin, h_invXsec_eta_etaLarge, file, dir_eta_invXsec, 2.*etaLarge, false);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_eta_etaTPC_bin, h_invXsec_eta_etaTPC, file, dir_eta_invXsec, 2.*etaTPC, false);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_eta_etaEMCal_bin, h_invXsec_eta_etaEMCal, file, dir_eta_invXsec, 2.*etaEMCal, false);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_eta_etaPHOS_bin, h_invXsec_eta_etaPHOS, file, dir_eta_invXsec, 2.*etaPHOS, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_eta_yDefault_bin, h_invXsec_eta_yDefault, file, dir_eta_invXsec, 2.*yDefault, true, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_eta_etaLarge_bin, h_invXsec_eta_etaLarge, file, dir_eta_invXsec, 2.*etaLarge, false, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_eta_etaTPC_bin, h_invXsec_eta_etaTPC, file, dir_eta_invXsec, 2.*etaTPC, false, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_eta_etaEMCal_bin, h_invXsec_eta_etaEMCal, file, dir_eta_invXsec, 2.*etaEMCal, false, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_eta_etaPHOS_bin, h_invXsec_eta_etaPHOS, file, dir_eta_invXsec, 2.*etaPHOS, false, true);
 
   TDirectory *dir_etaprime_invXsec = file.mkdir("etaprime_invXsec");
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_etaprime_yDefault_bin, h_invXsec_etaprime_yDefault, file, dir_etaprime_invXsec, 2.*yDefault, true);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_etaprime_etaLarge_bin, h_invXsec_etaprime_etaLarge, file, dir_etaprime_invXsec, 2.*etaLarge, false);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_etaprime_etaTPC_bin, h_invXsec_etaprime_etaTPC, file, dir_etaprime_invXsec, 2.*etaTPC, false);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_etaprime_etaEMCal_bin, h_invXsec_etaprime_etaEMCal, file, dir_etaprime_invXsec, 2.*etaEMCal, false);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_etaprime_etaPHOS_bin, h_invXsec_etaprime_etaPHOS, file, dir_etaprime_invXsec, 2.*etaPHOS, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_etaprime_yDefault_bin, h_invXsec_etaprime_yDefault, file, dir_etaprime_invXsec, 2.*yDefault, true, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_etaprime_etaLarge_bin, h_invXsec_etaprime_etaLarge, file, dir_etaprime_invXsec, 2.*etaLarge, false, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_etaprime_etaTPC_bin, h_invXsec_etaprime_etaTPC, file, dir_etaprime_invXsec, 2.*etaTPC, false, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_etaprime_etaEMCal_bin, h_invXsec_etaprime_etaEMCal, file, dir_etaprime_invXsec, 2.*etaEMCal, false, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_etaprime_etaPHOS_bin, h_invXsec_etaprime_etaPHOS, file, dir_etaprime_invXsec, 2.*etaPHOS, false, true);
 
   TDirectory *dir_omega_invXsec = file.mkdir("omega_invXsec");
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_omega_yDefault_bin, h_invXsec_omega_yDefault, file, dir_omega_invXsec, 2.*yDefault, true);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_omega_etaLarge_bin, h_invXsec_omega_etaLarge, file, dir_omega_invXsec, 2.*etaLarge, false);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_omega_etaTPC_bin, h_invXsec_omega_etaTPC, file, dir_omega_invXsec, 2.*etaTPC, false);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_omega_etaEMCal_bin, h_invXsec_omega_etaEMCal, file, dir_omega_invXsec, 2.*etaEMCal, false);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_omega_etaPHOS_bin, h_invXsec_omega_etaPHOS, file, dir_omega_invXsec, 2.*etaPHOS, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_omega_yDefault_bin, h_invXsec_omega_yDefault, file, dir_omega_invXsec, 2.*yDefault, true, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_omega_etaLarge_bin, h_invXsec_omega_etaLarge, file, dir_omega_invXsec, 2.*etaLarge, false, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_omega_etaTPC_bin, h_invXsec_omega_etaTPC, file, dir_omega_invXsec, 2.*etaTPC, false, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_omega_etaEMCal_bin, h_invXsec_omega_etaEMCal, file, dir_omega_invXsec, 2.*etaEMCal, false, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_omega_etaPHOS_bin, h_invXsec_omega_etaPHOS, file, dir_omega_invXsec, 2.*etaPHOS, false, true);
 
   TDirectory *dir_gamma_invXsec = file.mkdir("gamma_invXsec");
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_direct_photons_etaLarge_bin, h_invXsec_direct_photons_etaLarge, file, dir_gamma_invXsec, 2.*etaLarge, false);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_direct_photons_etaTPC_bin, h_invXsec_direct_photons_etaTPC, file, dir_gamma_invXsec, 2.*etaTPC, false);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_direct_photons_etaEMCal_bin, h_invXsec_direct_photons_etaEMCal, file, dir_gamma_invXsec, 2.*etaEMCal, false);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_direct_photons_etaPHOS_bin, h_invXsec_direct_photons_etaPHOS, file, dir_gamma_invXsec, 2.*etaPHOS, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_direct_photons_yDefault_bin, h_invXsec_direct_photons_yDefault, file, dir_gamma_invXsec, 2.*yDefault, true, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_direct_photons_etaLarge_bin, h_invXsec_direct_photons_etaLarge, file, dir_gamma_invXsec, 2.*etaLarge, false, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_direct_photons_etaTPC_bin, h_invXsec_direct_photons_etaTPC, file, dir_gamma_invXsec, 2.*etaTPC, false, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_direct_photons_etaEMCal_bin, h_invXsec_direct_photons_etaEMCal, file, dir_gamma_invXsec, 2.*etaEMCal, false, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_direct_photons_etaPHOS_bin, h_invXsec_direct_photons_etaPHOS, file, dir_gamma_invXsec, 2.*etaPHOS, false, true);
 
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_shower_photons_etaLarge_bin, h_invXsec_shower_photons_etaLarge, file, dir_gamma_invXsec, 2.*etaLarge, false);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_shower_photons_etaTPC_bin, h_invXsec_shower_photons_etaTPC, file, dir_gamma_invXsec, 2.*etaTPC, false);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_shower_photons_etaEMCal_bin, h_invXsec_shower_photons_etaEMCal, file, dir_gamma_invXsec, 2.*etaEMCal, false);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_shower_photons_etaPHOS_bin, h_invXsec_shower_photons_etaPHOS, file, dir_gamma_invXsec, 2.*etaPHOS, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_shower_photons_yDefault_bin, h_invXsec_shower_photons_yDefault, file, dir_gamma_invXsec, 2.*yDefault, true, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_shower_photons_etaLarge_bin, h_invXsec_shower_photons_etaLarge, file, dir_gamma_invXsec, 2.*etaLarge, false, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_shower_photons_etaTPC_bin, h_invXsec_shower_photons_etaTPC, file, dir_gamma_invXsec, 2.*etaTPC, false, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_shower_photons_etaEMCal_bin, h_invXsec_shower_photons_etaEMCal, file, dir_gamma_invXsec, 2.*etaEMCal, false, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_shower_photons_etaPHOS_bin, h_invXsec_shower_photons_etaPHOS, file, dir_gamma_invXsec, 2.*etaPHOS, false, true);
 
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_222_photons_etaLarge_bin, h_invXsec_222_photons_etaLarge, file, dir_gamma_invXsec, 2.*etaLarge, false);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_222_photons_etaTPC_bin, h_invXsec_222_photons_etaTPC, file, dir_gamma_invXsec, 2.*etaTPC, false);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_222_photons_etaEMCal_bin, h_invXsec_222_photons_etaEMCal, file, dir_gamma_invXsec, 2.*etaEMCal, false);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_222_photons_etaPHOS_bin, h_invXsec_222_photons_etaPHOS, file, dir_gamma_invXsec, 2.*etaPHOS, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_222_photons_yDefault_bin, h_invXsec_222_photons_yDefault, file, dir_gamma_invXsec, 2.*yDefault, true, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_222_photons_etaLarge_bin, h_invXsec_222_photons_etaLarge, file, dir_gamma_invXsec, 2.*etaLarge, false, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_222_photons_etaTPC_bin, h_invXsec_222_photons_etaTPC, file, dir_gamma_invXsec, 2.*etaTPC, false, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_222_photons_etaEMCal_bin, h_invXsec_222_photons_etaEMCal, file, dir_gamma_invXsec, 2.*etaEMCal, false, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_222_photons_etaPHOS_bin, h_invXsec_222_photons_etaPHOS, file, dir_gamma_invXsec, 2.*etaPHOS, false, true);
+
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_decay_photons_yDefault_bin, h_invXsec_decay_photons_yDefault, file, dir_gamma_invXsec, 2.*yDefault, true, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_decay_photons_etaLarge_bin, h_invXsec_decay_photons_etaLarge, file, dir_gamma_invXsec, 2.*etaLarge, false, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_decay_photons_etaTPC_bin, h_invXsec_decay_photons_etaTPC, file, dir_gamma_invXsec, 2.*etaTPC, false, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_decay_photons_etaEMCal_bin, h_invXsec_decay_photons_etaEMCal, file, dir_gamma_invXsec, 2.*etaEMCal, false, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_decay_photons_etaPHOS_bin, h_invXsec_decay_photons_etaPHOS, file, dir_gamma_invXsec, 2.*etaPHOS, false, true);
 
   if(applyPhotonIso){
     TDirectory *dir_isoGamma_invXsec = file.mkdir("isoGamma_invXsec");
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged2GeV_R03_photons_etaTPC_bin, h_invXsec_iso_charged2GeV_R03_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC, false);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged2GeV_R04_photons_etaTPC_bin, h_invXsec_iso_charged2GeV_R04_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC, false);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged2GeV_R05_photons_etaTPC_bin, h_invXsec_iso_charged2GeV_R05_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC, false);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged2GeV_R03_photons_etaEMCal_bin, h_invXsec_iso_charged2GeV_R03_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal, false);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged2GeV_R04_photons_etaEMCal_bin, h_invXsec_iso_charged2GeV_R04_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal, false);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged2GeV_R05_photons_etaEMCal_bin, h_invXsec_iso_charged2GeV_R05_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal, false);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged2GeV_R03_photons_etaPHOS_bin, h_invXsec_iso_charged2GeV_R03_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS, false);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged2GeV_R04_photons_etaPHOS_bin, h_invXsec_iso_charged2GeV_R04_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS, false);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged2GeV_R05_photons_etaPHOS_bin, h_invXsec_iso_charged2GeV_R05_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged2GeV_R03_photons_etaTPC_bin, h_invXsec_iso_charged2GeV_R03_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC, false, true);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged2GeV_R04_photons_etaTPC_bin, h_invXsec_iso_charged2GeV_R04_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC, false, true);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged2GeV_R05_photons_etaTPC_bin, h_invXsec_iso_charged2GeV_R05_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC, false, true);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged2GeV_R03_photons_etaEMCal_bin, h_invXsec_iso_charged2GeV_R03_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal, false, true);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged2GeV_R04_photons_etaEMCal_bin, h_invXsec_iso_charged2GeV_R04_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal, false, true);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged2GeV_R05_photons_etaEMCal_bin, h_invXsec_iso_charged2GeV_R05_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal, false, true);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged2GeV_R03_photons_etaPHOS_bin, h_invXsec_iso_charged2GeV_R03_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS, false, true);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged2GeV_R04_photons_etaPHOS_bin, h_invXsec_iso_charged2GeV_R04_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS, false, true);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged2GeV_R05_photons_etaPHOS_bin, h_invXsec_iso_charged2GeV_R05_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS, false, true);
 
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged3GeV_R03_photons_etaTPC_bin, h_invXsec_iso_charged3GeV_R03_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC, false);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged3GeV_R04_photons_etaTPC_bin, h_invXsec_iso_charged3GeV_R04_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC, false);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged3GeV_R05_photons_etaTPC_bin, h_invXsec_iso_charged3GeV_R05_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC, false);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged3GeV_R03_photons_etaEMCal_bin, h_invXsec_iso_charged3GeV_R03_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal, false);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged3GeV_R04_photons_etaEMCal_bin, h_invXsec_iso_charged3GeV_R04_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal, false);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged3GeV_R05_photons_etaEMCal_bin, h_invXsec_iso_charged3GeV_R05_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal, false);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged3GeV_R03_photons_etaPHOS_bin, h_invXsec_iso_charged3GeV_R03_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS, false);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged3GeV_R04_photons_etaPHOS_bin, h_invXsec_iso_charged3GeV_R04_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS, false);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged3GeV_R05_photons_etaPHOS_bin, h_invXsec_iso_charged3GeV_R05_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged3GeV_R03_photons_etaTPC_bin, h_invXsec_iso_charged3GeV_R03_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC, false, true);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged3GeV_R04_photons_etaTPC_bin, h_invXsec_iso_charged3GeV_R04_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC, false, true);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged3GeV_R05_photons_etaTPC_bin, h_invXsec_iso_charged3GeV_R05_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC, false, true);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged3GeV_R03_photons_etaEMCal_bin, h_invXsec_iso_charged3GeV_R03_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal, false, true);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged3GeV_R04_photons_etaEMCal_bin, h_invXsec_iso_charged3GeV_R04_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal, false, true);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged3GeV_R05_photons_etaEMCal_bin, h_invXsec_iso_charged3GeV_R05_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal, false, true);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged3GeV_R03_photons_etaPHOS_bin, h_invXsec_iso_charged3GeV_R03_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS, false, true);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged3GeV_R04_photons_etaPHOS_bin, h_invXsec_iso_charged3GeV_R04_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS, false, true);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged3GeV_R05_photons_etaPHOS_bin, h_invXsec_iso_charged3GeV_R05_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS, false, true);
 
 
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full2GeV_R03_photons_etaTPC_bin, h_invXsec_iso_full2GeV_R03_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC, false);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full2GeV_R04_photons_etaTPC_bin, h_invXsec_iso_full2GeV_R04_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC, false);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full2GeV_R05_photons_etaTPC_bin, h_invXsec_iso_full2GeV_R05_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC, false);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full2GeV_R03_photons_etaEMCal_bin, h_invXsec_iso_full2GeV_R03_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal, false);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full2GeV_R04_photons_etaEMCal_bin, h_invXsec_iso_full2GeV_R04_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal, false);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full2GeV_R05_photons_etaEMCal_bin, h_invXsec_iso_full2GeV_R05_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal, false);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full2GeV_R03_photons_etaPHOS_bin, h_invXsec_iso_full2GeV_R03_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS, false);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full2GeV_R04_photons_etaPHOS_bin, h_invXsec_iso_full2GeV_R04_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS, false);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full2GeV_R05_photons_etaPHOS_bin, h_invXsec_iso_full2GeV_R05_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full2GeV_R03_photons_etaTPC_bin, h_invXsec_iso_full2GeV_R03_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC, false, true);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full2GeV_R04_photons_etaTPC_bin, h_invXsec_iso_full2GeV_R04_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC, false, true);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full2GeV_R05_photons_etaTPC_bin, h_invXsec_iso_full2GeV_R05_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC, false, true);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full2GeV_R03_photons_etaEMCal_bin, h_invXsec_iso_full2GeV_R03_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal, false, true);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full2GeV_R04_photons_etaEMCal_bin, h_invXsec_iso_full2GeV_R04_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal, false, true);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full2GeV_R05_photons_etaEMCal_bin, h_invXsec_iso_full2GeV_R05_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal, false, true);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full2GeV_R03_photons_etaPHOS_bin, h_invXsec_iso_full2GeV_R03_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS, false, true);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full2GeV_R04_photons_etaPHOS_bin, h_invXsec_iso_full2GeV_R04_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS, false, true);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full2GeV_R05_photons_etaPHOS_bin, h_invXsec_iso_full2GeV_R05_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS, false, true);
 
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full3GeV_R03_photons_etaTPC_bin, h_invXsec_iso_full3GeV_R03_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC, false);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full3GeV_R04_photons_etaTPC_bin, h_invXsec_iso_full3GeV_R04_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC, false);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full3GeV_R05_photons_etaTPC_bin, h_invXsec_iso_full3GeV_R05_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC, false);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full3GeV_R03_photons_etaEMCal_bin, h_invXsec_iso_full3GeV_R03_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal, false);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full3GeV_R04_photons_etaEMCal_bin, h_invXsec_iso_full3GeV_R04_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal, false);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full3GeV_R05_photons_etaEMCal_bin, h_invXsec_iso_full3GeV_R05_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal, false);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full3GeV_R03_photons_etaPHOS_bin, h_invXsec_iso_full3GeV_R03_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS, false);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full3GeV_R04_photons_etaPHOS_bin, h_invXsec_iso_full3GeV_R04_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS, false);
-    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full3GeV_R05_photons_etaPHOS_bin, h_invXsec_iso_full3GeV_R05_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS, false);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full3GeV_R03_photons_etaTPC_bin, h_invXsec_iso_full3GeV_R03_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC, false, true);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full3GeV_R04_photons_etaTPC_bin, h_invXsec_iso_full3GeV_R04_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC, false, true);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full3GeV_R05_photons_etaTPC_bin, h_invXsec_iso_full3GeV_R05_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC, false, true);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full3GeV_R03_photons_etaEMCal_bin, h_invXsec_iso_full3GeV_R03_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal, false, true);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full3GeV_R04_photons_etaEMCal_bin, h_invXsec_iso_full3GeV_R04_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal, false, true);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full3GeV_R05_photons_etaEMCal_bin, h_invXsec_iso_full3GeV_R05_photons_etaEMCal, file, dir_isoGamma_invXsec, 2.*etaEMCal, false, true);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full3GeV_R03_photons_etaPHOS_bin, h_invXsec_iso_full3GeV_R03_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS, false, true);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full3GeV_R04_photons_etaPHOS_bin, h_invXsec_iso_full3GeV_R04_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS, false, true);
+    pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_full3GeV_R05_photons_etaPHOS_bin, h_invXsec_iso_full3GeV_R05_photons_etaPHOS, file, dir_isoGamma_invXsec, 2.*etaPHOS, false, true);
   }
-
-  TDirectory *dir_decayGamma_invXsec = file.mkdir("decayGamma_invXsec");
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_decay_photons_etaLarge_bin, h_invXsec_decay_photons_etaLarge, file, dir_decayGamma_invXsec, 2.*etaLarge, false);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_decay_photons_etaTPC_bin, h_invXsec_decay_photons_etaTPC, file, dir_decayGamma_invXsec, 2.*etaTPC, false);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_decay_photons_etaEMCal_bin, h_invXsec_decay_photons_etaEMCal, file, dir_decayGamma_invXsec, 2.*etaEMCal, false);
-  pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_decay_photons_etaPHOS_bin, h_invXsec_decay_photons_etaPHOS, file, dir_decayGamma_invXsec, 2.*etaPHOS, false);
 
 
   //-----------------------------

@@ -27,9 +27,10 @@ class PythiaAnalysisHelper{
   void Fill_Direct_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // fill pt of all direct photons
   void Fill_Shower_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // fill pt of all shower photons
   void Fill_222_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // fill pt of all LO photons
+  void Fill_Decay_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // same with decay photons
   void Fill_Direct_Iso_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h,
                                     bool isoCharged, double iso_cone_radius, double iso_pt); // fill pt of isolated direct photons
-  void Fill_Decay_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // same with decay photons
+
   void Fill_Electron_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // fill pt of all electrons
   void Fill_ElectronNeg_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // fill pt of all negative electrons
   void Fill_ElectronPos_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // fill pt of all positive electrons = positrons
@@ -43,9 +44,9 @@ class PythiaAnalysisHelper{
   void Fill_invXsec_Direct_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // ...if you want to apply 1/(pt*2pi) as weight
   void Fill_invXsec_Shower_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // ...if you want to apply 1/(pt*2pi) as weight
   void Fill_invXsec_222_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // ...if you want to apply 1/(pt*2pi) as weight
+  void Fill_invXsec_Decay_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // same with decay photons
   void Fill_invXsec_Direct_Iso_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h,
                                              bool isoCharged, double iso_cone_radius, double iso_pt); //  ...if you want to apply 1/(pt*2pi) as weight
-  void Fill_invXsec_Decay_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // same with decay photons
 
 
   // mother stuff
@@ -55,9 +56,9 @@ class PythiaAnalysisHelper{
 
 
   // post-processing
-  void Add_Histos_Scale_Write2File( std::vector <TH1D*> &vec_temp_histo, TH1* final_histo, TFile &file, double etaRange, bool useRap); //
-  void Add_Histos_Scale_Write2File( std::vector <TH1D*> &vec_temp_histo, TH1* final_histo, TFile &file, TDirectory *dir, double etaRange, bool useRap); // adds temp. histos from pTHat bins to final; normalize for pt bin width and eta range (= no 2*Pi applied here!)
-  void Add_Histos_Scale_Write2File( std::vector <TH2D*> &vec_temp_histo, TH2* final_histo, TFile &file, TDirectory *dir, double etaRange, bool useRap); // adds temp. histos from pTHat bins to final; normalize for pt bin width and eta range (= no 2*Pi applied here!)
+  void Add_Histos_Scale_Write2File( std::vector <TH1D*> &vec_temp_histo, TH1* final_histo, TFile &file, double etaRange, bool useRap, bool isInvariantXsec = false); //
+  void Add_Histos_Scale_Write2File( std::vector <TH1D*> &vec_temp_histo, TH1* final_histo, TFile &file, TDirectory *dir, double etaRange, bool useRap, bool isInvariantXsec = false); // adds temp. histos from pTHat bins to final; normalize for pt bin width and eta range (= no 2*Pi applied here!)
+  void Add_Histos_Scale_Write2File( std::vector <TH2D*> &vec_temp_histo, TH2* final_histo, TFile &file, TDirectory *dir, double etaRange, bool useRap, bool isInvariantXsec = false); // adds temp. histos from pTHat bins to final; normalize for pt bin width and eta range (= no 2*Pi applied here!)
 
  private:
 

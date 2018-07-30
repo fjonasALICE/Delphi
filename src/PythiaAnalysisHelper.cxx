@@ -519,7 +519,7 @@ void PythiaAnalysisHelper::Fill_Electron_Pt_ByTopMotherID(Pythia8::Event &event,
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
-void PythiaAnalysisHelper::Add_Histos_Scale_Write2File( std::vector <TH1D*>& vec, TH1* final_histo, TFile &file, double etaRange, bool useRap){
+void PythiaAnalysisHelper::Add_Histos_Scale_Write2File( std::vector <TH1D*>& vec, TH1* final_histo, TFile &file, double etaRange, bool useRap, bool isInvariantXsec){
 
   file.cd();
 
@@ -527,14 +527,24 @@ void PythiaAnalysisHelper::Add_Histos_Scale_Write2File( std::vector <TH1D*>& vec
     final_histo->Add(vec.at(i));
     vec.at(i)->Scale(1./etaRange, "width");
     vec.at(i)->SetXTitle("p_{T} (GeV/#it{c})");
-    if(useRap) vec.at(i)->SetYTitle("#frac{d#sigma}{dp_{T}dy}");
-    else vec.at(i)->SetYTitle("#frac{d#sigma}{dp_{T}d#eta}");
+    if(isInvariantXsec){
+      if(useRap) vec.at(i)->SetYTitle("#frac{1}{2#pi p_{T}} #frac{d^{2}#sigma}{dp_{T}dy} (pb)");
+      else vec.at(i)->SetYTitle("#frac{1}{2#pi p_{T}} #frac{d^{2}#sigma}{dp_{T}d#eta} (pb)");
+    }else{
+      if(useRap) vec.at(i)->SetYTitle("#frac{d^{2}#sigma}{dp_{T}dy} (pb)");
+      else vec.at(i)->SetYTitle("#frac{d^{2}#sigma}{dp_{T}d#eta} (pb)");
+    }
     vec.at(i)->Write();
   }
 
   final_histo->SetXTitle("p_{T} (GeV/#it{c})");
-  if(useRap) final_histo->SetYTitle("#frac{d#sigma}{dp_{T}dy}");
-  else final_histo->SetYTitle("#frac{d#sigma}{dp_{T}d#eta}");
+  if(isInvariantXsec){
+    if(useRap) final_histo->SetYTitle("#frac{1}{2#pi p_{T}} #frac{d^{2}#sigma}{dp_{T}dy} (pb)");
+    else final_histo->SetYTitle("#frac{1}{2#pi p_{T}} #frac{d^{2}#sigma}{dp_{T}d#eta} (pb)");
+  }else{
+    if(useRap) final_histo->SetYTitle("#frac{d^{2}#sigma}{dp_{T}dy} (pb)");
+    else final_histo->SetYTitle("#frac{d^{2}#sigma}{dp_{T}d#eta} (pb)");
+  }
   final_histo->Scale(1./etaRange, "width");
   final_histo->Write();
 
@@ -543,7 +553,7 @@ void PythiaAnalysisHelper::Add_Histos_Scale_Write2File( std::vector <TH1D*>& vec
 }
 
 //----------------------------------------------------------------------
-void PythiaAnalysisHelper::Add_Histos_Scale_Write2File( std::vector <TH1D*>& vec, TH1* final_histo, TFile &file, TDirectory *dir, double etaRange, bool useRap){
+void PythiaAnalysisHelper::Add_Histos_Scale_Write2File( std::vector <TH1D*>& vec, TH1* final_histo, TFile &file, TDirectory *dir, double etaRange, bool useRap, bool isInvariantXsec){
 
   file.cd();
   dir->cd();
@@ -552,14 +562,24 @@ void PythiaAnalysisHelper::Add_Histos_Scale_Write2File( std::vector <TH1D*>& vec
     final_histo->Add(vec.at(i));
     vec.at(i)->Scale(1./etaRange, "width");
     vec.at(i)->SetXTitle("p_{T} (GeV/#it{c})");
-    if(useRap) vec.at(i)->SetYTitle("#frac{d#sigma}{dp_{T}dy}");
-    else vec.at(i)->SetYTitle("#frac{d#sigma}{dp_{T}d#eta}");
+    if(isInvariantXsec){
+      if(useRap) vec.at(i)->SetYTitle("#frac{1}{2#pi p_{T}} #frac{d^{2}#sigma}{dp_{T}dy} (pb)");
+      else vec.at(i)->SetYTitle("#frac{1}{2#pi p_{T}} #frac{d^{2}#sigma}{dp_{T}d#eta} (pb)");
+    }else{
+      if(useRap) vec.at(i)->SetYTitle("#frac{d^{2}#sigma}{dp_{T}dy} (pb)");
+      else vec.at(i)->SetYTitle("#frac{d^{2}#sigma}{dp_{T}d#eta} (pb)");
+    }
     vec.at(i)->Write();
   }
 
   final_histo->SetXTitle("p_{T} (GeV/#it{c})");
-  if(useRap) final_histo->SetYTitle("#frac{d#sigma}{dp_{T}dy}");
-  else final_histo->SetYTitle("#frac{d#sigma}{dp_{T}d#eta}");
+  if(isInvariantXsec){
+    if(useRap) final_histo->SetYTitle("#frac{1}{2#pi p_{T}} #frac{d^{2}#sigma}{dp_{T}dy} (pb)");
+    else final_histo->SetYTitle("#frac{1}{2#pi p_{T}} #frac{d^{2}#sigma}{dp_{T}d#eta} (pb)");
+  }else{
+    if(useRap) final_histo->SetYTitle("#frac{d^{2}#sigma}{dp_{T}dy} (pb)");
+    else final_histo->SetYTitle("#frac{d^{2}#sigma}{dp_{T}d#eta} (pb)");
+  }
   final_histo->Scale(1./etaRange, "width");
   final_histo->Write();
 
@@ -569,7 +589,7 @@ void PythiaAnalysisHelper::Add_Histos_Scale_Write2File( std::vector <TH1D*>& vec
 }
 
 //----------------------------------------------------------------------
-void PythiaAnalysisHelper::Add_Histos_Scale_Write2File( std::vector <TH2D*>& vec, TH2* final_histo, TFile &file, TDirectory *dir, double etaRange, bool useRap){
+void PythiaAnalysisHelper::Add_Histos_Scale_Write2File( std::vector <TH2D*>& vec, TH2* final_histo, TFile &file, TDirectory *dir, double etaRange, bool useRap, bool isInvariantXsec){
 
   file.cd();
   dir->cd();
@@ -579,15 +599,25 @@ void PythiaAnalysisHelper::Add_Histos_Scale_Write2File( std::vector <TH2D*>& vec
     vec.at(i)->Scale(1./etaRange, "width");
     vec.at(i)->SetXTitle("electron Mother");
     vec.at(i)->SetYTitle("p_{T} (GeV/#it{c})");
-    if(useRap) vec.at(i)->SetZTitle("#frac{d#sigma}{dp_{T}dy}");
-    else vec.at(i)->SetZTitle("#frac{d#sigma}{dp_{T}d#eta}");
+    if(isInvariantXsec){
+      if(useRap) vec.at(i)->SetZTitle("#frac{1}{2#pi p_{T}} #frac{d^{2}#sigma}{dp_{T}dy} (pb)");
+      else vec.at(i)->SetZTitle("#frac{1}{2#pi p_{T}} #frac{d^{2}#sigma}{dp_{T}d#eta} (pb)");
+    }else{
+      if(useRap) vec.at(i)->SetZTitle("#frac{d^{2}#sigma}{dp_{T}dy} (pb)");
+      else vec.at(i)->SetZTitle("#frac{d^{2}#sigma}{dp_{T}d#eta} (pb)");
+    }
     vec.at(i)->Write();
   }
 
   final_histo->SetXTitle("electron Mother");
   final_histo->SetYTitle("p_{T} (GeV/#it{c})");
-  if(useRap) final_histo->SetZTitle("#frac{d#sigma}{dp_{T}dy}");
-  else final_histo->SetZTitle("#frac{d#sigma}{dp_{T}d#eta}");
+  if(isInvariantXsec){
+    if(useRap) final_histo->SetZTitle("#frac{1}{2#pi p_{T}} #frac{d^{2}#sigma}{dp_{T}dy} (pb)");
+    else final_histo->SetZTitle("#frac{1}{2#pi p_{T}} #frac{d^{2}#sigma}{dp_{T}d#eta} (pb)");
+  }else{
+    if(useRap) final_histo->SetZTitle("#frac{d^{2}#sigma}{dp_{T}dy} (pb)");
+    else final_histo->SetZTitle("#frac{d^{2}#sigma}{dp_{T}d#eta} (pb)");
+  }
   final_histo->Write();
 
   gROOT->cd();
