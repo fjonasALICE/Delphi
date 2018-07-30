@@ -6,6 +6,12 @@
 #include "TFile.h"
 #include "TMath.h"
 #include "TROOT.h"
+#include "fastjet/ClusterSequence.hh"
+
+using fastjet::PseudoJet;
+using fastjet::JetDefinition;
+using fastjet::ClusterSequence;
+using fastjet::antikt_algorithm;
 
 
 //----------------------------------------------------------------------
@@ -97,6 +103,64 @@ void PythiaAnalysisHelper::ProcessSwitch(int iBin, double *pTHatBin, char **argv
 
   return;
 }
+
+//----------------------------------------------------------------------
+// PYTHIA8's phi goes from -pi to pi; compute correct angle difference
+double PythiaAnalysisHelper::CorrectPhiDelta(double angle1, double angle2){
+  double pi = TMath::Pi();
+  double phi = TMath::Abs(angle1 - angle2);
+  if(phi >= pi) return 2*pi-phi;
+  else return phi;
+}
+
+//----------------------------------------------------------------------
+// p going in +z direction
+double PythiaAnalysisHelper::XObs_pGoing(PseudoJet &hadronjet, PseudoJet &photonjet, double beamEnergy){
+  double xobs;
+  xobs = (hadronjet.pt()*TMath::Exp(hadronjet.eta()) + photonjet.pt()*TMath::Exp(-photonjet.eta())) /(2*beamEnergy);
+  return xobs;
+}
+
+//----------------------------------------------------------------------
+// Pb going in +z direction
+double PythiaAnalysisHelper::XObs_PbGoing(PseudoJet &hadronjet, PseudoJet &photonjet, double beamEnergy){
+  double xobs;
+  //xobs = (hadronjet.pt()*TMath::Exp(-hadronjet.eta()) + photonjet.pt()*TMath::Exp(-photonjet.eta())) /(2*beamEnergy);
+  xobs = (hadronjet.pt()*TMath::Exp(hadronjet.eta()) + photonjet.pt()*TMath::Exp(photonjet.eta())) /(2*beamEnergy);
+  return xobs;
+}
+
+//----------------------------------------------------------------------
+// isolation cut: sum energy around photon and abandon event if threshold is reached
+bool PythiaAnalysisHelper::IsPhotonIsolated(Event &event, int iPhoton, const double &etaAbsMaxPhoton, const double &isoConeRadius, const double &isoPtMax, double UEPtDensity, TH1D *h_phi, TH1D *h_eta, TH1D *h_isoPt, TH1D *h_isoPt_corrected){
+
+  double isoCone_dR = 999.;
+  double isoCone_pt = 0.; // reset sum of energy in cone
+  
+  for (int iTrack = 5; iTrack < event.size(); iTrack++) {
+    if ( !event[iTrack].isFinal() ) continue;
+    if ( !event[iTrack].isVisible() ) continue;
+    if ( !event[iTrack].isCharged() ) continue;
+    if ( TMath::Abs(event[iPhoton].eta()) > etaAbsMaxPhoton ) continue;
+    //if ( iTrack == iPhoton ) continue; // dont count photon, not necessary for tracks obviously
+
+    // distance between photon and particle at index iTrack
+    isoCone_dR = sqrt( pow(CorrectPhiDelta(event[iTrack].phi(), event[iPhoton].phi()), 2)
+		       + pow(event[iTrack].eta() - event[iPhoton].eta(), 2) );
+	    
+    if(isoCone_dR < isoConeRadius){
+      isoCone_pt += event[iTrack].pT();
+      h_phi->Fill(event[iTrack].phi() - event[iPhoton].phi());
+      h_eta->Fill(event[iTrack].eta() - event[iPhoton].eta());
+    }
+    h_isoPt_corrected->Fill(isoCone_pt-(UEPtDensity*0.4*0.4*TMath::Pi()));
+    h_isoPt->Fill(isoCone_pt);
+  }
+      
+  if( isoCone_pt >= isoPtMax ) return false;
+  else return true;
+}
+
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------

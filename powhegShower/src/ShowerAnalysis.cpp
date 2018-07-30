@@ -254,7 +254,7 @@ int main(int argc, char **argv) {
       //----------------------------------------------------------------------
       for (int i = 5; i < p.event.size(); i++) {
 	if (p.event[i].isFinal() && p.event[i].isCharged()) {
-	  if (p.event[i].eta() < etaTPC){
+	  if (TMath::Abs(p.event[i].eta()) < etaTPC){
 	    vPseudo.push_back(PseudoJet(p.event[i].px(),p.event[i].py(),p.event[i].pz(),p.event[i].e()));
 	  }
 	}
@@ -279,6 +279,7 @@ int main(int argc, char **argv) {
 	    p.event[i].status() < 90 &&                      // no decay photons allowed, only direct photons
 	    TMath::Abs(p.event[i].eta()) < etaTPC-jetRadius){       // in maximal TPC-minus-iso-cone-radius acceptance
 
+          // photon as pseudojet for analysis
           PseudoJet photonJet(p.event[i].px(), p.event[i].py(), p.event[i].pz(), p.event[i].e());
 	  if(photonJet.pt() < 15.) continue;
 	  if(photonJet.pt() > 30.) continue;
@@ -286,7 +287,6 @@ int main(int argc, char **argv) {
 	  double UEPtDensity = GetUEPtDensity(p.event,i);
 	  //	  printf("UEPtDensity(p.event, i) = %f\n",UEPtDensity);
 	  FillForEachWeight(vec_UEPtDensity, UEPtDensity, vec_weights);
-          // photon as pseudojet for analysis
 	  // check isolation
 	  isPhotonIsolated = IsPhotonIsolated(p.event, i, etaTPC-jetRadius, isoConeRadius, isoPtMax, UEPtDensity,
 					      vec_isoCone_track_phi, vec_isoCone_track_eta, vec_isoPt, vec_isoPt_corrected, vec_weights);
@@ -301,7 +301,7 @@ int main(int argc, char **argv) {
 	    if(i==iPhoton) FillForEachWeight(vec_isodirectphoton_pt_leading, p.event[i].pT(), vec_weights);	    
 	  }
 
-	  if(vJets.size() > 0)
+	  if(vJets.size() > 0 && isPhotonIsolated)
 	    for(unsigned int iJet = 0; iJet < vJets.size(); iJet++){
 	      bool isJetSeparated = ( TMath::Abs(photonJet.delta_phi_to(vJets.at(iJet))) > TMath::Pi()/2. );
 	      if(vJets.at(iJet).pt() < 10.) break; // vJets are sorted by pt, break is ok
@@ -471,8 +471,8 @@ double GetUEPtDensity(Event &event, int iPhoton){
   return sumPt/etaBandArea;
 }
 
-// isolation cut: sum energy around photon and abandon event if threshold is reached
 //----------------------------------------------------------------------
+// isolation cut: sum energy around photon and abandon event if threshold is reached
 bool IsPhotonIsolated(Event &event, int iPhoton, const double &etaAbsMax, const double &isoConeRadius, const double &isoPtMax, double UEPtDensity,
 		      vector<TH1D> &vec_phi, vector<TH1D> &vec_eta, vector<TH1D> &vec_isoPt, vector<TH1D> &vec_isoPt_corrected, vector<double> &vec_weights){
   double isoCone_dR = 999.;

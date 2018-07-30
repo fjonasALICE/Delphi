@@ -7,9 +7,16 @@
 #include "TH2.h"
 #include "PythiaAnalysisHelper.h"
 #include "PythiaAnalysis.h"
+#include "TMath.h"
+
+#include "fastjet/ClusterSequence.hh"
 
 using std::cout;
 using namespace Pythia8;
+using fastjet::PseudoJet;
+using fastjet::JetDefinition;
+using fastjet::ClusterSequence;
+using fastjet::antikt_algorithm;
 
 int main(int, char **);
 int main(int argc, char **argv) {
@@ -86,12 +93,38 @@ int main(int argc, char **argv) {
   TH1::SetDefaultSumw2(kTRUE); // histograms shall carry sum of weights by default for proper error propagation
   gStyle->SetOptStat(0); // no legend by default
 
+  //----------------------------------------------------------------------------------------------------
+  // check underlying born kt to see, e.g., if HardQCD cross section does not blow up
+  TH1D *h_pTHat = new TH1D("h_pTHat","pTHat aka born kt", 1000, ptMin, ptMax);
+  // store the weight sum for proper normalization afterwards
+  TH1D *h_weightSum = new TH1D("h_weightSum","weightSum = number of events for pythia standalone", 1, 0., 1.);
+  
   // TH2D electron_pt vs electron_topMotherID
   TH2D *h2_electron_pt_topMotherID = new TH2D("h2_electron_pt_topMotherID","electron_pt_topMotherID (EMCal acceptance |#eta| < 0.66)",17,0,17,ptBins,ptMin,ptMax);
   h2_electron_pt_topMotherID->SetCanExtend(TH1::kXaxis);
   for(int i = 0; i < 17; i++)
     h2_electron_pt_topMotherID->GetXaxis()->SetBinLabel(i+1, electronMotherName[i]);
 
+  // charged jets
+  TH1D *h_chJets_pt_etaTPC = new TH1D("h_chjet_pt_etaTPC",Form("charged jet pt in |#eta| < (0.9-R), R=%f",jetRadius), ptBins, ptMin, ptMax);
+  TH1D *h_chJets_pt_leading_etaTPC = new TH1D("h_chjet_pt_leading_etaTPC",Form("leading charged jet pt in |#eta| < (0.9-R), R=%f",jetRadius), ptBins, ptMin, ptMax);
+  TH1D *h_dPhiJetGamma   = new TH1D("h_dPhiJetGamma"   ,"#Delta #phi_{J#gamma}", 136, -0.1, 3.3);
+  TH1D *h_xJetGamma      = new TH1D("h_xJetGamma"      ,"x_{J#gamma} = p_{T}^{Jet} / p_{T}^{#gamma}", 150, 0., 3.);
+  TH1D *h_chJetTrackMult = new TH1D("h_chJetTrackMult" ,"charged track multiplicity in jet", 50, 0.5, 50.5);
+  TH1D *h_xObs_pGoing    = new TH1D("h_xObs_pGoing"    ,"xObs_pGoing", 1000, 0., 0.1);
+  TH1D *h_xObs_PbGoing   = new TH1D("h_xObs_PbGoing"   ,"xObs_PbGoing", 1000, 0., 0.1);
+
+  TH1D *h_isoCone_track_dPhi = new TH1D("h_isoCone_track_dPhi","#Delta #phi between photon and iso track", 100, -1., 1.);
+  TH1D *h_isoCone_track_dEta = new TH1D("h_isoCone_track_dEta","#Delta #eta between photon and iso track", 100, -1., 1.);
+
+  TH1D *h_isoPt           = new TH1D("h_isoPt"          ,"sum of pt in iso cone", ptBins, ptMin, ptMax);
+  TH1D *h_isoPt_corrected = new TH1D("h_isoPt_corrected","sum of pt in iso cone minus UE", ptBins, ptMin, ptMax);
+
+  TH1D *h_xBjorken_1 = new TH1D("h_xBjorken_1" ," Bjorken x from pythia's function x1()", 1000, 0., 0.1);
+  TH1D *h_xBjorken_2 = new TH1D("h_xBjorken_2" ," Bjorken x from pythia's function x2()", 1000, 0., 0.1);
+  
+  TH1D *h_xSecTriggerGamma = new TH1D("h_xSecTriggerGamma","accumulated cross section of trigger photons", 1, -0.5, 0.5);
+    
   // all pions without secondary correction
   TH1D *h_pi0_yDefault = new TH1D("h_pi0_yDefault","#pi^{0} in |y| < 0.8", ptBins, ptMin, ptMax);
   TH1D *h_pi0_etaLarge = new TH1D("h_pi0_etaLarge","#pi^{0} in |#eta| < 3.0", ptBins, ptMin, ptMax);
@@ -319,13 +352,31 @@ int main(int argc, char **argv) {
   TH1D *h_invXsec_iso_full3GeV_R05_photons_etaTPC      = new TH1D("h_invXsec_iso_full3GeV_R05_photons_etaTPC","direct iso (full pt 3 GeV/c in R=0.5) photons_etaTPC", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_iso_full3GeV_R05_photons_etaEMCal    = new TH1D("h_invXsec_iso_full3GeV_R05_photons_etaEMCal","direct iso (full pt 3 GeV/c in R=0.5) photons_etaEMCal", ptBins, ptMin, ptMax);
   TH1D *h_invXsec_iso_full3GeV_R05_photons_etaPHOS     = new TH1D("h_invXsec_iso_full3GeV_R05_photons_etaPHOS","direct iso (full pt 3 GeV/c in R=0.5) photons_etaPHOS", ptBins, ptMin, ptMax);
-  
 
-  //----------------------------------------------------------------------------------------------------
-  // check underlying born kt to see, e.g., if HardQCD cross section does not blow up
-  TH1D *h_pTHat = new TH1D("h_pTHat","pTHat aka born kt", 1000, ptMin, ptMax);
-  // store the weight sum for proper normalization afterwards
-  TH1D *h_weightSum = new TH1D("h_weightSum","sum of weights", 1, 0., 1.);
+
+
+  vector <TH1D*> vec_pTHat_bin;
+  vector <TH1D*> vec_weightSum_bin;
+
+  // charged jets
+  vector <TH1D*> vec_chJets_pt_etaTPC_bin;
+  vector <TH1D*> vec_chJets_pt_leading_etaTPC_bin;
+  vector <TH1D*> vec_dPhiJetGamma_bin;
+  vector <TH1D*> vec_xJetGamma_bin;
+  vector <TH1D*> vec_chJetTrackMult_bin;
+  vector <TH1D*> vec_xObs_pGoing_bin;
+  vector <TH1D*> vec_xObs_PbGoing_bin;
+
+  vector <TH1D*> vec_isoCone_track_dPhi_bin;
+  vector <TH1D*> vec_isoCone_track_dEta_bin;
+
+  vector <TH1D*> vec_isoPt_bin;
+  vector <TH1D*> vec_isoPt_corrected_bin;
+
+  vector <TH1D*> vec_xBjorken_1_bin;
+  vector <TH1D*> vec_xBjorken_2_bin;
+
+  vector <TH1D*> vec_xSecTriggerGamma_bin;
 
   // organise pTHat wise histograms in vectors
   vector <TH2D*> vec_electron_pt_topMotherID_bin;
@@ -539,14 +590,31 @@ int main(int argc, char **argv) {
 
   //----------------------------------------------------------------------------------------------------
 
-  vector <TH1D*> vec_pTHat_bin;
-  vector <TH1D*> vec_weightSum_bin;
-
   for(int i = 0; i < pTHatBins; i++){
 
     vec_electron_pt_topMotherID_bin.push_back( (TH2D*)h2_electron_pt_topMotherID->Clone(Form( "h2_electron_pt_topMotherID_bin_%02d", i)) );
 
     vec_weightSum_bin.push_back( (TH1D*)h_weightSum->Clone(Form( "h_weightSum_bin_%02d", i )) );
+
+    // charged jets
+    vec_chJets_pt_etaTPC_bin.push_back( (TH1D*)h_chJets_pt_etaTPC->Clone(Form("h_chJets_pt_etaTPC_bin_%02d",i)) );
+    vec_chJets_pt_leading_etaTPC_bin.push_back( (TH1D*)h_chJets_pt_leading_etaTPC->Clone(Form("h_chJets_pt_leading_etaTPC_bin_%02d",i)) );
+    vec_dPhiJetGamma_bin.push_back( (TH1D*)h_dPhiJetGamma->Clone(Form("h_dPhiJetGamma_bin_%02d",i)) );
+    vec_xJetGamma_bin.push_back( (TH1D*)h_xJetGamma->Clone(Form("h_xJetGamma_bin_%02d",i)) );
+    vec_chJetTrackMult_bin.push_back( (TH1D*)h_chJetTrackMult->Clone(Form("h_chJetTrackMult_bin_%02d",i)) );
+    vec_xObs_pGoing_bin.push_back( (TH1D*)h_xObs_pGoing->Clone(Form("h_xObs_pGoing_bin_%02d",i)) );
+    vec_xObs_PbGoing_bin.push_back( (TH1D*)h_xObs_PbGoing->Clone(Form("h_xObs_PbGoing_bin_%02d",i)) );
+
+    vec_isoCone_track_dPhi_bin.push_back( (TH1D*)h_isoCone_track_dPhi->Clone(Form("h_isoCone_track_dPhi_bin_%02d",i)) );
+    vec_isoCone_track_dEta_bin.push_back( (TH1D*)h_isoCone_track_dEta->Clone(Form("h_isoCone_track_dEta_bin_%02d",i)) );
+
+    vec_isoPt_bin.push_back( (TH1D*)h_isoPt->Clone(Form("h_isoPt_bin_%02d",i)) );
+    vec_isoPt_corrected_bin.push_back( (TH1D*)h_isoPt_corrected->Clone(Form("h_isoPt_corrected_bin_%02d",i)) );
+
+    vec_xBjorken_1_bin.push_back( (TH1D*)h_xBjorken_1->Clone(Form("h_xBjorken_1_bin_%02d",i)) );
+    vec_xBjorken_2_bin.push_back( (TH1D*)h_xBjorken_2->Clone(Form("h_xBjorken_2_bin_%02d",i)) );
+
+    vec_xSecTriggerGamma_bin.push_back( (TH1D*)h_xSecTriggerGamma->Clone(Form( "h_xSecTriggerGamma_bin_%02d", i )) );
 
     // pi0 histos
     vec_pi0_yDefault_bin.push_back( (TH1D*)h_pi0_yDefault->Clone(Form("h_pi0_yDefault_bin_%02d",i)) );
@@ -811,6 +879,122 @@ int main(int argc, char **argv) {
 
 
 
+      
+      //------------------------------------------------------------------------------------------
+      //----- jets + photon correlation ----------------------------------------------------------
+      //------------------------------------------------------------------------------------------
+      // reset jets
+      std::vector<PseudoJet> vJets;
+      std::vector<PseudoJet> vPseudo;
+      ClusterSequence *cs = 0;
+      if(useChargedJetsGammaCorrelations){
+	for (int i = 5; i < p.event.size(); i++) {
+	  if (p.event[i].isFinal() && p.event[i].isCharged()) {
+	    if (TMath::Abs(p.event[i].eta()) < etaTPC){
+	      vPseudo.push_back(PseudoJet(p.event[i].px(),p.event[i].py(),p.event[i].pz(),p.event[i].e()));
+	    }
+	  }
+	}
+	cs = new ClusterSequence(vPseudo, jetDef_miguel);
+	vJets = sorted_by_pt(cs->inclusive_jets(2.)); // argument: jetminpt
+	// loop over charged jets
+	//----------------------------------------------------------------------
+	if (vJets.size() != 0) {
+	  for(unsigned int j = 0; j < vJets.size(); j++){
+	    if(TMath::Abs(vJets.at(j).eta()) > (etaTPC-jetRadius)) continue;
+	    vec_chJets_pt_etaTPC_bin.at(iBin)->Fill(vJets.at(j).pt());
+	    if(j == 0)
+	      vec_chJets_pt_leading_etaTPC_bin.at(iBin)->Fill(vJets.at(j).pt());
+	  }
+	}	
+      }
+
+      photonPtMax  = -1.;
+      photonPtTemp = -1.;
+      iPhoton = -1;
+      // search for hardest photon in this event
+      //----------------------------------------------------------------------
+      for (int i = 5; i < p.event.size(); i++) {
+        if (p.event[i].id() == 22 && p.event[i].isFinal() && // final photon
+            p.event[i].status() < 90 &&                      // no decay photons allowed, only direct photons
+            TMath::Abs(p.event[i].eta()) < (etaTPC-jetRadius)){// in maximal TPC-minus-iso-cone-radius acceptance
+	  
+      	  // find photonPtMax
+      	  photonPtTemp = p.event[i].pT();
+      	  if (photonPtTemp > photonPtMax) {
+      	    photonPtMax = photonPtTemp;
+      	    iPhoton = i; // remember index of hardest photon
+      	  }
+      	}
+      }
+
+      // loop over all direct photons
+      //----------------------------------------------------------------------
+      for (int i = 5; i < p.event.size(); i++) {
+	bool isPhotonIsolated;
+	if (p.event[i].id() == 22 && p.event[i].isFinal() && // final photon
+	    p.event[i].status() < 90 &&                      // no decay photons allowed, only direct photons
+	    TMath::Abs(p.event[i].eta()) < etaTPC-jetRadius){       // in maximal TPC-minus-iso-cone-radius acceptance
+
+          // photon as pseudojet for analysis
+          PseudoJet photonJet(p.event[i].px(), p.event[i].py(), p.event[i].pz(), p.event[i].e());
+	  if(photonJet.pt() < 15.) continue;
+	  if(photonJet.pt() > 30.) continue;
+	  // calculate ue pt density for a given photon i NOT IMPLEMENTED IN THE MOMENT
+	  double UEPtDensity = 0.;
+	  // printf("UEPtDensity(p.event, i) = %f\n",UEPtDensity);
+	  // check isolation
+	  isPhotonIsolated = pyHelp.IsPhotonIsolated(p.event, i, etaTPC, isoConeRadius, isoPtMax, UEPtDensity, vec_isoCone_track_dPhi_bin.at(iBin), vec_isoCone_track_dEta_bin.at(iBin), vec_isoPt_bin.at(iBin), vec_isoPt_corrected_bin.at(iBin));
+
+	  // Fill histograms
+	  //----------------------------------------------------------------------
+	  // vec_directphoton_pt_bin.at(iBin)->Fill(p.event[i].pT());
+	  // if(i==iPhoton) vec_directphoton_pt_leading_bin.at(iBin)->Fill(p.event[i].pT());
+
+	  // if(isPhotonIsolated){
+	  //   vec_isodirectphoton_pt_bin.at(iBin)->Fill(p.event[i].pT());
+	  //   if(i==iPhoton) vec_isodirectphoton_pt_leading_bin.at(iBin)->Fill(p.event[i].pT());
+	  // }
+
+	  if(vJets.size() > 0 && isPhotonIsolated)
+	    for(unsigned int iJet = 0; iJet < vJets.size(); iJet++){
+	      bool isJetSeparated = ( TMath::Abs(photonJet.delta_phi_to(vJets.at(iJet))) > TMath::Pi()/2. );
+	      if(vJets.at(iJet).pt() < 10.) break; // vJets are sorted by pt, break is ok
+	      // gamma-jet correlation	 
+	      vec_dPhiJetGamma_bin.at(iBin)->Fill(TMath::Abs(photonJet.delta_phi_to(vJets.at(iJet))));
+	      if(!isJetSeparated) continue;
+	      // x_Jet-gamma
+	      vec_xSecTriggerGamma_bin.at(iBin)->Fill(0.);
+	      vector<PseudoJet> vec_jetConst = vJets.at(iJet).constituents();
+	      vec_xJetGamma_bin.at(iBin)->Fill(vJets.at(iJet).pt()/photonJet.pt());
+	      // charged particle multiplicity in jets
+	      vec_chJetTrackMult_bin.at(iBin)->Fill(vec_jetConst.size());
+	      // x_obs p-going direction
+	      vec_xObs_pGoing_bin.at(iBin)->Fill(pyHelp.XObs_pGoing(vJets.at(iJet), photonJet, p.info.eB()));
+	      // x_obs Pb-going direction
+	      vec_xObs_PbGoing_bin.at(iBin)->Fill(pyHelp.XObs_PbGoing(vJets.at(iJet), photonJet, p.info.eB()));
+	      // real Bjorken x
+	      vec_xBjorken_1_bin.at(iBin)->Fill(p.info.x1());
+	      vec_xBjorken_2_bin.at(iBin)->Fill(p.info.x2());
+	    }
+
+	  // print scales of event
+	  // printf("---------------------------------------\n");
+	  // printf("p.info.pTHat()   = %f\n", p.info.pTHat());
+	  // printf("p.info.QFac()    = %f\n", p.info.QFac());
+	  // printf("p.info.QRen()    = %f\n", p.info.QRen());
+	  // printf("p.info.scalup()  = %f\n", p.info.scalup());
+	  // printf("\n");
+	  
+	  
+	} // if direct photon in acceptance
+      } // particle for-loop
+      //------------------------------------------------------------------------------------------
+      //----- END OF jets + photon correlation ---------------------------------------------------
+      //------------------------------------------------------------------------------------------
+      delete cs;     
+
+      //------------------------------------------------------------------------------------------
       pyHelp.Fill_TH2_Electron_TopMotherID(p.event, etaEMCal, vec_electron_pt_topMotherID_bin.at(iBin));
 
       pyHelp.Fill_Pi0_Pt(p.event, yDefault, true, vec_pi0_yDefault_bin.at(iBin));
@@ -1030,6 +1214,25 @@ int main(int argc, char **argv) {
     h_weightSum->SetBinContent(1,h_weightSum->GetBinContent(1)+p.info.weightSum());
     cout << "- - - weightSum() = " << p.info.weightSum() << endl;
 
+    vec_chJets_pt_etaTPC_bin.at(iBin)->Scale(sigma);
+    vec_chJets_pt_leading_etaTPC_bin.at(iBin)->Scale(sigma);
+    
+    vec_dPhiJetGamma_bin.at(iBin)->Scale(sigma);
+    vec_xJetGamma_bin.at(iBin)->Scale(sigma);
+    vec_chJetTrackMult_bin.at(iBin)->Scale(sigma);
+    vec_xObs_pGoing_bin.at(iBin)->Scale(sigma);
+    vec_xObs_PbGoing_bin.at(iBin)->Scale(sigma);
+    vec_isoCone_track_dPhi_bin.at(iBin)->Scale(sigma);
+    vec_isoCone_track_dEta_bin.at(iBin)->Scale(sigma);
+
+    vec_isoPt_bin.at(iBin)->Scale(sigma);
+    vec_isoPt_corrected_bin.at(iBin)->Scale(sigma);
+  
+    vec_xBjorken_1_bin.at(iBin)->Scale(sigma);
+    vec_xBjorken_2_bin.at(iBin)->Scale(sigma);
+
+    vec_xSecTriggerGamma_bin.at(iBin)->Scale(sigma);
+    
     vec_electron_pt_topMotherID_bin.at(iBin)->Scale(sigma);
 
     vec_pi0_yDefault_bin.at(iBin)->Scale(sigma);
@@ -1246,6 +1449,27 @@ int main(int argc, char **argv) {
     vec_weightSum_bin.at(iBin)->Write();
   }
   h_weightSum->Write();
+
+  TDirectory *dir_chJets = file.mkdir("chJets");
+  pyHelp.Add_Histos_Scale_Write2File( vec_chJets_pt_etaTPC_bin, h_chJets_pt_etaTPC , file, dir_chJets, 2*(etaTPC-jetRadius), false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_chJets_pt_leading_etaTPC_bin, h_chJets_pt_leading_etaTPC , file, dir_chJets, 2*(etaTPC-jetRadius), false);
+
+  pyHelp.Add_Histos_Scale_Write2File( vec_dPhiJetGamma_bin, h_dPhiJetGamma, file, dir_chJets, 1., false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_xJetGamma_bin, h_xJetGamma, file, dir_chJets, 1., false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_chJetTrackMult_bin, h_chJetTrackMult, file, dir_chJets, 1., false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_xObs_pGoing_bin, h_xObs_pGoing, file, dir_chJets, 1., false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_xObs_PbGoing_bin, h_xObs_PbGoing, file, dir_chJets, 1., false);
+  
+  pyHelp.Add_Histos_Scale_Write2File( vec_isoCone_track_dPhi_bin, h_isoCone_track_dPhi, file, dir_chJets, 1., false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_isoCone_track_dEta_bin, h_isoCone_track_dEta, file, dir_chJets, 1., false);
+
+  pyHelp.Add_Histos_Scale_Write2File( vec_isoPt_bin, h_isoPt, file, dir_chJets, 1., false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_isoPt_corrected_bin, h_isoPt_corrected, file, dir_chJets, 1., false);
+  
+  pyHelp.Add_Histos_Scale_Write2File( vec_xBjorken_1_bin, h_xBjorken_1, file, dir_chJets, 1., false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_xBjorken_2_bin, h_xBjorken_2, file, dir_chJets, 1., false);
+
+  pyHelp.Add_Histos_Scale_Write2File( vec_xSecTriggerGamma_bin, h_xSecTriggerGamma, file, dir_chJets, 1., false);
 
   TDirectory *dir_electron = file.mkdir("electron");
   pyHelp.Add_Histos_Scale_Write2File( vec_electron_pt_topMotherID_bin, h2_electron_pt_topMotherID, file, dir_electron, 2*etaEMCal, false);

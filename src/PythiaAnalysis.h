@@ -10,12 +10,20 @@
 #include "TH2.h"
 #include "PythiaAnalysisHelper.h"
 
+#include "fastjet/ClusterSequence.hh"
+
+using fastjet::PseudoJet;
+using fastjet::JetDefinition;
+using fastjet::ClusterSequence;
+using fastjet::antikt_algorithm;
+
 Pythia8::Pythia p;
 
 PythiaAnalysisHelper pyHelp;
 
 int pTHatStartBin = 0; // option to skip the first pthat bins
 bool applyPhotonIso = false;
+bool useChargedJetsGammaCorrelations = true;
 
 char rootFileName[1024]; // output file name
 
@@ -50,6 +58,17 @@ const char *electronMotherName[17] = {"all",
 				      "#pi^{0}"     ,"#eta",
 				      "#omega"      ,"K^{0}_{s}",
 				      "#Phi,#rho,J/#Psi"};
+
+
+// jet & iso stuff
+const double isoConeRadius = 0.4;
+const double isoPtMax=1.5;
+const double jetRadius = 0.4;
+const JetDefinition jetDef_miguel(antikt_algorithm, jetRadius);
+
+double photonPtMax;
+double photonPtTemp;
+int iPhoton;
 
 
 #endif

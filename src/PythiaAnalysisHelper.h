@@ -6,6 +6,16 @@
 #include "TH2.h"
 #include "TFile.h"
 #include <vector>
+#include "TMath.h"
+#include "fastjet/ClusterSequence.hh"
+
+using std::cout;
+using namespace Pythia8;
+
+using fastjet::PseudoJet;
+using fastjet::JetDefinition;
+using fastjet::ClusterSequence;
+using fastjet::antikt_algorithm;
 
 class PythiaAnalysisHelper{
 
@@ -17,6 +27,12 @@ class PythiaAnalysisHelper{
   void Set_Pythia_Randomseed(Pythia8::Pythia &p); // set seed with ROOT's TRandom3
   void Pass_Parameters_To_Pythia(Pythia8::Pythia &p, int argc, char **argv); // set stuff with one line; check .cxx for enlightenment
   void ProcessSwitch(int iBin, double *pTHatBin, char **argv, Pythia8::Pythia &p); // set pTHat bin specific stuff
+
+  double CorrectPhiDelta(double a, double b);
+  double XObs_pGoing(PseudoJet &hadronjet, PseudoJet &photonjet, double beamEnergy);
+  double XObs_PbGoing(PseudoJet &hadronjet, PseudoJet &photonjet, double beamEnergy);
+
+  bool IsPhotonIsolated(Event &event, int iPhoton, const double &etaAbsMaxPhoton, const double &isoConeRadius, const double &isoPtMax, double UEPtDensity, TH1D *h_phi, TH1D *h_eta, TH1D *h_isoPt, TH1D *h_isoPt_corrected);
 
   // fill "normal" spectra
   void Fill_Pi0_Pt(Pythia8::Event &event, float etaMax, bool useRap, TH1 *h); // fill pt of all pi0 in the event within eta range
