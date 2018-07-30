@@ -117,7 +117,7 @@ double PythiaAnalysisHelper::CorrectPhiDelta(double angle1, double angle2){
 // p going in +z direction
 double PythiaAnalysisHelper::XObs_pGoing(PseudoJet &hadronjet, PseudoJet &photonjet, double beamEnergy){
   double xobs;
-  xobs = (hadronjet.pt()*TMath::Exp(hadronjet.eta()) + photonjet.pt()*TMath::Exp(-photonjet.eta())) /(2*beamEnergy);
+  xobs = (hadronjet.pt()*TMath::Exp(-hadronjet.eta()) + photonjet.pt()*TMath::Exp(-photonjet.eta())) /(2*beamEnergy);
   return xobs;
 }
 

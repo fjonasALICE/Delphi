@@ -934,7 +934,7 @@ int main(int argc, char **argv) {
 	bool isPhotonIsolated;
 	if (p.event[i].id() == 22 && p.event[i].isFinal() && // final photon
 	    p.event[i].status() < 90 &&                      // no decay photons allowed, only direct photons
-	    TMath::Abs(p.event[i].eta()) < etaTPC-jetRadius){       // in maximal TPC-minus-iso-cone-radius acceptance
+	    TMath::Abs(p.event[i].eta()) < (etaTPC-jetRadius)){       // in maximal TPC-minus-iso-cone-radius acceptance
 
           // photon as pseudojet for analysis
           PseudoJet photonJet(p.event[i].px(), p.event[i].py(), p.event[i].pz(), p.event[i].e());
