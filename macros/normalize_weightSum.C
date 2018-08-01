@@ -1,4 +1,4 @@
-void normalize_weightSum(const char* rootInFileName){
+void normalize_weightSum(const char* rootInFileName, bool withGammaJetCorr=kTRUE){
 
   //  char rootOutFileName[1024];
   TString rootOutFileName = TString(rootInFileName);
@@ -44,6 +44,8 @@ void normalize_weightSum(const char* rootInFileName){
     if ( obj2->IsA()->InheritsFrom( TDirectory::Class() ) ){
       TDirectory *dir = (TDirectory*)obj2;
       dir->cd();
+      TString tempString = dir->GetName();
+      if(!withGammaJetCorr && tempString.Contains("chJets")) continue; // dont include simulations for Miguel if not wanted
     }
 
   TKey *key, *oldkey=0;
