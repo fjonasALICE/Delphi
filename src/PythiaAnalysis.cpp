@@ -74,11 +74,22 @@ int main(int argc, char **argv) {
   
   pyHelp.Pass_Parameters_To_Pythia(p, argc, argv); // which energy, scales, optional master switches
 
+  int pTHatBins = 0;
+  double pTHatBin[100];
+  // pthat bin use (ignore for MB production)
+  if(usePtHatBin_100GeV){
+    pTHatBins = pTHatBins_100GeV;
+    std::copy(pTHatBin_100GeV,pTHatBin_100GeV+11,pTHatBin);    
+  }else{
+    pTHatBins = pTHatBins_250GeV;
+    std::copy(pTHatBin_250GeV,pTHatBin_250GeV+19,pTHatBin);    
+  }
+
   if (!strcmp(argv[2],"MBVeto")){ // prevent double sampling of MB events and e.g. JJ events
     MB_veto = true;
     printf("\n Applying MBVeto, i.e. generating MB events with restriction pthat < pTHatBin[0] = %f\n(in order to prevent double sampling with events generated in pthatbins)\n", pTHatBin[0]); 
   }
-
+  
   if( !strcmp(argv[2],"JJ") || !strcmp(argv[2],"GJ") || !strcmp(argv[2],"WeakBoson") ){
     printf("\nUsing %d pTHat bins:\n", pTHatBins);
     for(int i=0; i <= pTHatBins; i++){
@@ -589,7 +600,7 @@ int main(int argc, char **argv) {
   vector <TH1D*> vec_invXsec_iso_full3GeV_R05_photons_etaPHOS_bin;
 
   //----------------------------------------------------------------------------------------------------
-
+  
   for(int i = 0; i < pTHatBins; i++){
 
     vec_electron_pt_topMotherID_bin.push_back( (TH2D*)h2_electron_pt_topMotherID->Clone(Form( "h2_electron_pt_topMotherID_bin_%02d", i)) );
@@ -960,11 +971,11 @@ int main(int argc, char **argv) {
 	    for(unsigned int iJet = 0; iJet < vJets.size(); iJet++){
 	      bool isJetSeparated = ( TMath::Abs(photonJet.delta_phi_to(vJets.at(iJet))) > TMath::Pi()/2. );
 	      if(vJets.at(iJet).pt() < 10.) break; // vJets are sorted by pt, break is ok
+	      if(iJet == 0) vec_xSecTriggerGamma_bin.at(iBin)->Fill(0.);  // if there is at least one jet, count trigger photons, but only once for all jets connected to this photon; can be used to normalize histograms per trigger photon in the end
 	      // gamma-jet correlation	 
 	      vec_dPhiJetGamma_bin.at(iBin)->Fill(TMath::Abs(photonJet.delta_phi_to(vJets.at(iJet))));
 	      if(!isJetSeparated) continue;
 	      // x_Jet-gamma
-	      vec_xSecTriggerGamma_bin.at(iBin)->Fill(0.);
 	      vector<PseudoJet> vec_jetConst = vJets.at(iJet).constituents();
 	      vec_xJetGamma_bin.at(iBin)->Fill(vJets.at(iJet).pt()/photonJet.pt());
 	      // charged particle multiplicity in jets

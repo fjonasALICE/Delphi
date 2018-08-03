@@ -583,38 +583,38 @@ void PythiaAnalysisHelper::Fill_Electron_Pt_ByTopMotherID(Pythia8::Event &event,
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
-void PythiaAnalysisHelper::Add_Histos_Scale_Write2File( std::vector <TH1D*>& vec, TH1* final_histo, TFile &file, double etaRange, bool useRap, bool isInvariantXsec){
+// void PythiaAnalysisHelper::Add_Histos_Scale_Write2File( std::vector <TH1D*>& vec, TH1* final_histo, TFile &file, double etaRange, bool useRap, bool isInvariantXsec){
 
-  file.cd();
+//   file.cd();
 
-  for(unsigned int i = 0; i < vec.size(); i++){
-    final_histo->Add(vec.at(i));
-    vec.at(i)->Scale(1./etaRange, "width");
-    vec.at(i)->SetXTitle("p_{T} (GeV/#it{c})");
-    if(isInvariantXsec){
-      if(useRap) vec.at(i)->SetYTitle("#frac{1}{2#pi p_{T}} #frac{d^{2}#sigma}{dp_{T}dy} (pb)");
-      else vec.at(i)->SetYTitle("#frac{1}{2#pi p_{T}} #frac{d^{2}#sigma}{dp_{T}d#eta} (pb)");
-    }else{
-      if(useRap) vec.at(i)->SetYTitle("#frac{d^{2}#sigma}{dp_{T}dy} (pb)");
-      else vec.at(i)->SetYTitle("#frac{d^{2}#sigma}{dp_{T}d#eta} (pb)");
-    }
-    vec.at(i)->Write();
-  }
+//   for(unsigned int i = 0; i < vec.size(); i++){
+//     final_histo->Add(vec.at(i));
+//     vec.at(i)->Scale(1./etaRange, "width");
+//     vec.at(i)->SetXTitle("p_{T} (GeV/#it{c})");
+//     if(isInvariantXsec){
+//       if(useRap) vec.at(i)->SetYTitle("#frac{1}{2#pi p_{T}} #frac{d^{2}#sigma}{dp_{T}dy} (pb)");
+//       else vec.at(i)->SetYTitle("#frac{1}{2#pi p_{T}} #frac{d^{2}#sigma}{dp_{T}d#eta} (pb)");
+//     }else{
+//       if(useRap) vec.at(i)->SetYTitle("#frac{d^{2}#sigma}{dp_{T}dy} (pb)");
+//       else vec.at(i)->SetYTitle("#frac{d^{2}#sigma}{dp_{T}d#eta} (pb)");
+//     }
+//     vec.at(i)->Write();
+//   }
 
-  final_histo->SetXTitle("p_{T} (GeV/#it{c})");
-  if(isInvariantXsec){
-    if(useRap) final_histo->SetYTitle("#frac{1}{2#pi p_{T}} #frac{d^{2}#sigma}{dp_{T}dy} (pb)");
-    else final_histo->SetYTitle("#frac{1}{2#pi p_{T}} #frac{d^{2}#sigma}{dp_{T}d#eta} (pb)");
-  }else{
-    if(useRap) final_histo->SetYTitle("#frac{d^{2}#sigma}{dp_{T}dy} (pb)");
-    else final_histo->SetYTitle("#frac{d^{2}#sigma}{dp_{T}d#eta} (pb)");
-  }
-  final_histo->Scale(1./etaRange, "width");
-  final_histo->Write();
+//   final_histo->Scale(1./etaRange, "width");
+//   final_histo->SetXTitle("p_{T} (GeV/#it{c})");
+//   if(isInvariantXsec){
+//     if(useRap) final_histo->SetYTitle("#frac{1}{2#pi p_{T}} #frac{d^{2}#sigma}{dp_{T}dy} (pb)");
+//     else final_histo->SetYTitle("#frac{1}{2#pi p_{T}} #frac{d^{2}#sigma}{dp_{T}d#eta} (pb)");
+//   }else{
+//     if(useRap) final_histo->SetYTitle("#frac{d^{2}#sigma}{dp_{T}dy} (pb)");
+//     else final_histo->SetYTitle("#frac{d^{2}#sigma}{dp_{T}d#eta} (pb)");
+//   }
+//   final_histo->Write();
 
 
-  return;
-}
+//   return;
+// }
 
 //----------------------------------------------------------------------
 void PythiaAnalysisHelper::Add_Histos_Scale_Write2File( std::vector <TH1D*>& vec, TH1* final_histo, TFile &file, TDirectory *dir, double etaRange, bool useRap, bool isInvariantXsec){
@@ -633,9 +633,47 @@ void PythiaAnalysisHelper::Add_Histos_Scale_Write2File( std::vector <TH1D*>& vec
       if(useRap) vec.at(i)->SetYTitle("#frac{d^{2}#sigma}{dp_{T}dy} (pb)");
       else vec.at(i)->SetYTitle("#frac{d^{2}#sigma}{dp_{T}d#eta} (pb)");
     }
+
+    // special treatment for gamma jet correlations histos
+    TString axTitleTemp = vec.at(i)->GetName();
+    if( axTitleTemp.Contains("xJetGamma") ){
+      vec.at(i)->SetXTitle("x_{J#gamma}");
+      vec.at(i)->SetYTitle("d#sigma_{J#gamma}/x_{J#gamma} (pb)");
+    }
+    if( axTitleTemp.Contains("dPhiJetGamma") ){
+      vec.at(i)->SetXTitle("#Delta #phi_{J#gamma}");
+      vec.at(i)->SetYTitle("d#sigma_{J#gamma}/d#Delta #phi_{J#gamma} (pb)");
+    }
+    if( axTitleTemp.Contains("chJetTrackMult") ){
+      vec.at(i)->SetXTitle("number of charged tracks per jet N_{chTr,jet}");
+      vec.at(i)->SetYTitle("#sigma_{chTr,jet}/dN_{chTr,jet} (pb)");
+    }
+    if( axTitleTemp.Contains("xObs") ){
+      vec.at(i)->SetXTitle("x^{obs}_{Pb}");
+      vec.at(i)->SetYTitle("d#sigma_{J#gamma}/x^{obs}_{Pb} (pb)");
+    }
+    if( axTitleTemp.Contains("isoCone_track_dPhi") ){
+      vec.at(i)->SetXTitle("#Delta #phi_{#gamma--track}");
+      vec.at(i)->SetYTitle("d#sigma_{tracks}/d#Delta #phi_{#gamma--track} (pb)");
+    }
+    if( axTitleTemp.Contains("isoCone_track_dEta") ){
+      vec.at(i)->SetXTitle("#Delta #eta_{#gamma--track}");
+      vec.at(i)->SetYTitle("d#sigma_{tracks}/d#Delta #eta_{#gamma--track} (pb)");
+    }
+    if( axTitleTemp.Contains("Bjorken") ){
+      vec.at(i)->SetXTitle("real Bjorken x for given gamma-jet pair");
+      vec.at(i)->SetYTitle("d#sigma_{J#gamma}/dx (pb)");
+    }
+    if( axTitleTemp.Contains("xSecTriggerGamma") ){
+      vec.at(i)->SetXTitle("");
+      vec.at(i)->SetYTitle("#sigma_{J#gamma} (pb)");
+    }
+
     vec.at(i)->Write();
+
   }
 
+  final_histo->Scale(1./etaRange, "width");
   final_histo->SetXTitle("p_{T} (GeV/#it{c})");
   if(isInvariantXsec){
     if(useRap) final_histo->SetYTitle("#frac{1}{2#pi p_{T}} #frac{d^{2}#sigma}{dp_{T}dy} (pb)");
@@ -644,7 +682,43 @@ void PythiaAnalysisHelper::Add_Histos_Scale_Write2File( std::vector <TH1D*>& vec
     if(useRap) final_histo->SetYTitle("#frac{d^{2}#sigma}{dp_{T}dy} (pb)");
     else final_histo->SetYTitle("#frac{d^{2}#sigma}{dp_{T}d#eta} (pb)");
   }
-  final_histo->Scale(1./etaRange, "width");
+
+    // special treatment for gamma jet correlations histos
+    TString axTitleTemp = final_histo->GetName();
+    if( axTitleTemp.Contains("xJetGamma") ){
+      final_histo->SetXTitle("x_{J#gamma}");
+      final_histo->SetYTitle("d#sigma_{J#gamma}/x_{J#gamma} (pb)");
+    }
+    if( axTitleTemp.Contains("dPhiJetGamma") ){
+      final_histo->SetXTitle("#Delta #phi_{J#gamma}");
+      final_histo->SetYTitle("d#sigma_{J#gamma}/d#Delta #phi_{J#gamma} (pb)");
+    }
+    if( axTitleTemp.Contains("chJetTrackMult") ){
+      final_histo->SetXTitle("number of charged tracks per jet N_{chTr,jet}");
+      final_histo->SetYTitle("#sigma_{chTr,jet}/dN_{chTr,jet} (pb)");
+    }
+    if( axTitleTemp.Contains("xObs") ){
+      final_histo->SetXTitle("x^{obs}_{Pb}");
+      final_histo->SetYTitle("d#sigma_{J#gamma}/x^{obs}_{Pb} (pb)");
+    }
+    if( axTitleTemp.Contains("isoCone_track_dPhi") ){
+      final_histo->SetXTitle("#Delta #phi_{#gamma--track}");
+      final_histo->SetYTitle("d#sigma_{tracks}/d#Delta #phi_{#gamma-track} (pb)");
+    }
+    if( axTitleTemp.Contains("isoCone_track_dEta") ){
+      final_histo->SetXTitle("#Delta #eta_{#gamma--track}");
+      final_histo->SetYTitle("d#sigma_{tracks}/d#Delta #eta_{#gamma-track} (pb)");
+    }
+    if( axTitleTemp.Contains("Bjorken") ){
+      final_histo->SetXTitle("real Bjorken x for given gamma-jet pair");
+      final_histo->SetYTitle("d#sigma_{J#gamma}/dx (pb)");
+    }
+    if( axTitleTemp.Contains("xSecTriggerGamma") ){
+      final_histo->SetXTitle("");
+      final_histo->SetYTitle("#sigma_{J#gamma} (pb)");
+    }
+
+  
   final_histo->Write();
 
   gROOT->cd();
@@ -660,7 +734,7 @@ void PythiaAnalysisHelper::Add_Histos_Scale_Write2File( std::vector <TH2D*>& vec
 
   for(unsigned int i = 0; i < vec.size(); i++){
     final_histo->Add(vec.at(i));
-    vec.at(i)->Scale(1./etaRange, "width");
+    vec.at(i)->Scale(1./etaRange, "width"); // NB: width is dividing by bin area in TH2 -> here it means dividing by pt bin width, because other bin boundary is of length 1
     vec.at(i)->SetXTitle("electron Mother");
     vec.at(i)->SetYTitle("p_{T} (GeV/#it{c})");
     if(isInvariantXsec){
@@ -673,6 +747,7 @@ void PythiaAnalysisHelper::Add_Histos_Scale_Write2File( std::vector <TH2D*>& vec
     vec.at(i)->Write();
   }
 
+  final_histo->Scale(1./etaRange, "width");
   final_histo->SetXTitle("electron Mother");
   final_histo->SetYTitle("p_{T} (GeV/#it{c})");
   if(isInvariantXsec){

@@ -1,9 +1,12 @@
-void normalize_weightSum(const char* rootInFileName, bool withGammaJetCorr=kTRUE){
+void normalize_weightSum(const char* rootInFileName, bool chooseGammaJetCorr=kFALSE){
 
   //  char rootOutFileName[1024];
   TString rootOutFileName = TString(rootInFileName);
   rootOutFileName.ReplaceAll(".root","");
-  rootOutFileName.Append("_normalized.root");
+  if(chooseGammaJetCorr)
+    rootOutFileName.Append("_normalized_GJcorr.root");
+  else
+    rootOutFileName.Append("_normalized_spectra.root");
   //  snprintf( rootOutFileName, sizeof(rootOutFileName), "%s_normalized.root", rootInFileName);
 
   // for MB production only first bin is considered (i.e. no pthat bins used)
@@ -45,7 +48,8 @@ void normalize_weightSum(const char* rootInFileName, bool withGammaJetCorr=kTRUE
       TDirectory *dir = (TDirectory*)obj2;
       dir->cd();
       TString tempString = dir->GetName();
-      if(!withGammaJetCorr && tempString.Contains("chJets")) continue; // dont include simulations for Miguel if not wanted
+      if(!chooseGammaJetCorr && tempString.Contains("chJets")) continue; // dont include simulations for Miguel if not wanted
+      if(chooseGammaJetCorr && !tempString.Contains("chJets") && !tempString.Contains("pTHat")) continue; // dont include the rest if not wanted
     }
 
   TKey *key, *oldkey=0;

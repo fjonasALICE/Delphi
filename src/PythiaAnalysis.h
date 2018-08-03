@@ -23,7 +23,8 @@ PythiaAnalysisHelper pyHelp;
 
 int pTHatStartBin = 0; // option to skip the first pthat bins
 bool applyPhotonIso = false;
-bool useChargedJetsGammaCorrelations = true;
+bool useChargedJetsGammaCorrelations = false;
+bool usePtHatBin_100GeV = false;
 
 char rootFileName[1024]; // output file name
 
@@ -33,11 +34,16 @@ double boostBetaZ = 0.; // boost in z direction, needed for asymmetric collision
 bool MB_veto = false; // true -> omit double counting between pthatbins and MB generation
 
 // pthat bin definition from ALICE JJ production at 8 TeV
-const int pTHatBins = 18;
-double pTHatBin[pTHatBins+1] = { 9.  , 12. , 16. , 21. , 28.,
-				 36. , 45. , 57. , 70. , 85.,
-				 99. , 115., 132., 150., 169.,
-				 190., 212., 235 , 10000. }; 
+const int pTHatBins_250GeV = 18;
+double pTHatBin_250GeV[pTHatBins_250GeV+1] = { 9.  , 12. , 16. , 21. , 28.,
+					       36. , 45. , 57. , 70. , 85.,
+					       99. , 115., 132., 150., 169.,
+					       190., 212., 235 , 10000. }; 
+
+const int pTHatBins_100GeV = 10;
+double pTHatBin_100GeV[pTHatBins_100GeV+1]= { 9.  , 12. , 16. , 21. , 28.,
+					      36. , 45. , 57. , 70. , 85.,
+					      10000. }; 
 
 // kinematic range
 const double ptMin = 0., ptMax = 300.;
