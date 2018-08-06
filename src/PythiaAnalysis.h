@@ -12,6 +12,8 @@
 
 #include "fastjet/ClusterSequence.hh"
 
+using std::cout;
+using namespace Pythia8;
 using fastjet::PseudoJet;
 using fastjet::JetDefinition;
 using fastjet::ClusterSequence;

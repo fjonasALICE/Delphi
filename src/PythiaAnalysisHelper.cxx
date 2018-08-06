@@ -814,3 +814,18 @@ void PythiaAnalysisHelper::Add_Histos_Scale_Write2File( std::vector <TH2D*>& vec
 
   return;
 }
+
+
+//----------------------------------------------------------------------
+// used for powheg events
+void PythiaAnalysisHelper::FillForEachWeight(vector<TH1D> &vec_h, double val, vector<double> &vec_weights){
+
+  if(vec_h.size() < 1){
+    printf("FillForEachWeight: no histograms in vector. Aborting...\n");
+    return;
+  }
+  for(unsigned long int i = 0; i < vec_weights.size(); i++)
+    vec_h.at(i).Fill(val,vec_weights.at(i));
+  
+  return;
+}

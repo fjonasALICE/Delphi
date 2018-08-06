@@ -13,12 +13,6 @@
 
 #include "fastjet/ClusterSequence.hh"
 
-using std::cout;
-using namespace Pythia8;
-using fastjet::PseudoJet;
-using fastjet::JetDefinition;
-using fastjet::ClusterSequence;
-using fastjet::antikt_algorithm;
 
 int main(int, char **);
 int main(int argc, char **argv) {
@@ -29,6 +23,7 @@ int main(int argc, char **argv) {
   p.readString("Next:numberShowInfo = 0");
   p.readString("Next:numberShowProcess = 0");
   p.readString("Next:numberShowEvent = 0");
+  
   pyHelp.Set_Pythia_Randomseed(p);
 
   //--- read commandline args ----------------------------------------
@@ -962,16 +957,6 @@ int main(int argc, char **argv) {
 	  // printf("UEPtDensity(p.event, i) = %f\n",UEPtDensity);
 	  // check isolation
 	  isPhotonIsolated = pyHelp.IsPhotonIsolated(p.event, i, etaTPC, isoConeRadius, isoPtMax, UEPtDensity, vec_isoCone_track_dPhi_bin.at(iBin), vec_isoCone_track_dEta_bin.at(iBin), vec_isoPt_bin.at(iBin), vec_isoPt_corrected_bin.at(iBin));
-
-	  // Fill histograms
-	  //----------------------------------------------------------------------
-	  // vec_directphoton_pt_bin.at(iBin)->Fill(p.event[i].pT());
-	  // if(i==iPhoton) vec_directphoton_pt_leading_bin.at(iBin)->Fill(p.event[i].pT());
-
-	  // if(isPhotonIsolated){
-	  //   vec_isodirectphoton_pt_bin.at(iBin)->Fill(p.event[i].pT());
-	  //   if(i==iPhoton) vec_isodirectphoton_pt_leading_bin.at(iBin)->Fill(p.event[i].pT());
-	  // }
 
 	  if(vJets.size() > 0 && isPhotonIsolated)
 	    for(unsigned int iJet = 0; iJet < vJets.size(); iJet++){
