@@ -31,6 +31,8 @@ void normalize_weightSum(const char* rootInFileName, bool chooseGammaJetCorr=kFA
   TH1::AddDirectory(kFALSE);
   TIter nextkey2( current_sourcedir2->GetListOfKeys() );
   TKey *key2, *oldkey2=0;
+  
+  bool wasAlready = false;
 
   vector <TH1*> vec_histos_pthat_bins;
   vector <TH2*> vec_histosTH2_pthat_bins;
@@ -336,13 +338,23 @@ void normalize_weightSum(const char* rootInFileName, bool chooseGammaJetCorr=kFA
 
     } // TH2 loop
 
+    if ( obj->IsA()->InheritsFrom( TCanvas::Class()) && !wasAlready ) {
+      target->cd();
+      TCanvas *c= (TCanvas*)obj;
+      obj->Write();
+      wasAlready = true;
+    }
+
+    
   }
+  
+  
   }
 
 
 
 
   infile->Close();
-
+  
   return;
 }
