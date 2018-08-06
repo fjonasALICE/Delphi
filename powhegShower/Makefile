@@ -12,16 +12,16 @@ PYTHIA8=-I$(PYTHIAINC) -L$(PYTHIALIB) -lpythia8
 ROOT=$(shell root-config --cflags --libs)
 
 SHOWER=src/ShowerAnalysis.cpp
-HELPER=ShowerAnalysisHelper
+##PYHELPER=../src/PythiaAnalysisHelper.cxx
 
-ShowerAnalysis: $(SHOWER)
-	$(CXX) $(CXX_COMMON) -o $@ $+ $(PYTHIA8) $(FASTJET) -ldl $(ROOT)
+ShowerAnalysis: $(SHOWER) PythiaAnalysisHelper.o
+	$(CXX) $(CXX_COMMON) -o $@ $+ -I../src/ $(PYTHIA8) $(FASTJET) -ldl $(ROOT)
 
 # helpful functions for pythia
-ShowerAnalysisHelper.o: ShowerAnalysisHelper.cxx ShowerAnalysisHelper.h
-	$(CXX) -c ShowerAnalysisHelper.cxx $(PYTHIA) -ldl $(ROOT)
+PythiaAnalysisHelper.o: ../src/PythiaAnalysisHelper.cxx ../src/PythiaAnalysisHelper.h
+	$(CXX) -c ../src/PythiaAnalysisHelper.cxx $(PYTHIA8) $(FASTJET) -ldl $(ROOT)
 
 .PHONY : clean
 clean:
 	rm -f ShowerAnalysis
-	rm -f ShowerAnalysisHelper.o
+	rm -f PythiaAnalysisHelper.o
