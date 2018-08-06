@@ -288,7 +288,7 @@ int main(int argc, char **argv) {
 	  for(unsigned int iJet = 0; iJet < vJets.size(); iJet++){
 	    bool isJetSeparated = ( TMath::Abs(photonJet.delta_phi_to(vJets.at(iJet))) > TMath::Pi()/2. );
 	    if(vJets.at(iJet).pt() < 10.) break; // vJets are sorted by pt, break is ok
-	    if(iJet == 0) pyHelp.FillForEachWeight(vec_xSecTriggerGamma, 1., vec_weights);  // if there is at least one jet, count trigger photons, but only once 
+	    if(iJet == 0) pyHelp.FillForEachWeight(vec_xSecTriggerGamma, 0., vec_weights);  // if there is at least one jet, count trigger photons, but only once 
 	    // gamma-jet correlation	 
 	    pyHelp.FillForEachWeight(vec_dPhiJetGamma_noDeltaPhiCut, TMath::Abs(photonJet.delta_phi_to(vJets.at(iJet))), vec_weights);
 	    if(!isJetSeparated) continue;
