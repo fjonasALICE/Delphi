@@ -77,6 +77,7 @@ class PythiaAnalysisHelper{
   // post-processing
   //  void Add_Histos_Scale_Write2File( std::vector <TH1D*> &vec_temp_histo, TH1* final_histo, TFile &file, double etaRange, bool useRap, bool isInvariantXsec = false); // not used anymore, marked for deletion
   void Add_Histos_Scale_Write2File( std::vector <TH1D*> &vec_temp_histo, TH1* final_histo, TFile &file, TDirectory *dir, double etaRange, bool useRap, bool isInvariantXsec = false); // adds temp. histos from pTHat bins to final; normalize for pt bin width and eta range (= no 2*Pi applied here!)
+  void Add_Histos_Scale_Write2File_Powheg( std::vector <TH1D>& vec, TFile &file, double invScaleFac);
   void Add_Histos_Scale_Write2File( std::vector <TH2D*> &vec_temp_histo, TH2* final_histo, TFile &file, TDirectory *dir, double etaRange, bool useRap, bool isInvariantXsec = false); // adds temp. histos from pTHat bins to final; normalize for pt bin width and eta range (= no 2*Pi applied here!)
   void FillForEachWeight(vector<TH1D> &vec_h, double val, vector<double> &vec_weights);
 

@@ -74,8 +74,8 @@ int main(int argc, char **argv) {
   TH1D *h_nEvents = new TH1D("h_nEvents", "number of events", 4, 0.5, 4.5);
   h_nEvents->GetXaxis()->SetBinLabel(1, "bornveto2.5(std)");
   h_nEvents->GetXaxis()->SetBinLabel(2, "bornveto0.0(off)");
-  h_nEvents->GetXaxis()->SetBinLabel(3, "bornveto2.0(std)");
-  h_nEvents->GetXaxis()->SetBinLabel(4, "bornveto3.0(std)");
+  h_nEvents->GetXaxis()->SetBinLabel(3, "bornveto2.0");
+  h_nEvents->GetXaxis()->SetBinLabel(4, "bornveto3.0");
   
   // prepare bookkeeping of weights
   //----------------------------------------------------------------------
@@ -127,7 +127,8 @@ int main(int argc, char **argv) {
 
   // skip pythia errors and break, when showering has reached the end of the LHE file
   //----------------------------------------------------------------------
-  while (true) {
+  int counter = 0;
+  while (counter++ < 1000000) {
     if (!p.next()) {
       if (p.info.atEndOfFile()) break;
       continue;
@@ -249,6 +250,7 @@ int main(int argc, char **argv) {
     //----------------------------------------------------------------------
     if (vJets.size() != 0) {
       for(unsigned int j = 0; j < vJets.size(); j++){
+	if(TMath::Abs(vJets.at(j).eta()) > etaTPC-jetRadius) continue;
 	pyHelp.FillForEachWeight(vec_chjet_pt, vJets.at(j).pt(), vec_weights);
 	if(j == 0)
 	  pyHelp.FillForEachWeight(vec_chjet_pt_leading, vJets.at(j).pt(), vec_weights);
@@ -328,39 +330,38 @@ int main(int argc, char **argv) {
   p.stat();
 
   // write histograms to file ----------------------------------------
-  TFile outFile(rootFileName, "RECREATE");
+  TFile file(rootFileName, "RECREATE");
 
   h_nEvents->Write();
   
-  for(unsigned long int i = 0; i < vec_weights.size(); i++){
-    vec_directphoton_pt.at(i).Write();
-    vec_directphoton_pt_leading.at(i).Write();
-    vec_directphoton_pt_leading_bornveto00.at(i).Write();
-    vec_directphoton_pt_leading_bornveto20.at(i).Write();
-    vec_directphoton_pt_leading_bornveto40.at(i).Write();
-    vec_isodirectphoton_pt.at(i).Write();
-    vec_isodirectphoton_pt_leading.at(i).Write();
-    vec_chjet_pt.at(i).Write();
-    vec_chjet_pt_leading.at(i).Write();
-    vec_isoCone_track_phi.at(i).Write();
-    vec_isoCone_track_eta.at(i).Write();
-    vec_dPhiJetGamma_noDeltaPhiCut.at(i).Write();
-    vec_dPhiJetGamma.at(i).Write();
-    vec_xJetGamma.at(i).Write();
-    vec_chJetTrackMult.at(i).Write();
-    vec_xObs_pGoing.at(i).Write();
-    vec_xObs_PbGoing.at(i).Write();
-    vec_xBjorken_1.at(i).Write();
-    vec_xBjorken_2.at(i).Write();
-    vec_xBjorken_1_PDF.at(i).Write();
-    vec_xBjorken_2_PDF.at(i).Write();
-    vec_isoPt.at(i).Write();
-    vec_UEPtDensity.at(i).Write();
-    vec_isoPt_corrected.at(i).Write();
-    vec_xSecTriggerGamma.at(i).Write();
-  }
+  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_directphoton_pt, file, etaTPC-jetRadius); // NB: always "width" scaling applied
+  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_directphoton_pt_leading, file, etaTPC-jetRadius);
+  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_directphoton_pt_leading_bornveto00, file, etaTPC-jetRadius);
+  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_directphoton_pt_leading_bornveto20, file, etaTPC-jetRadius);
+  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_directphoton_pt_leading_bornveto40, file, etaTPC-jetRadius);
+  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_isodirectphoton_pt, file, etaTPC-jetRadius);
+  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_isodirectphoton_pt_leading, file, etaTPC-jetRadius);
+  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_chjet_pt, file, etaTPC-jetRadius);
+  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_chjet_pt_leading, file, etaTPC-jetRadius);
   
-  outFile.Close();
+  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_isoCone_track_phi, file, 1.);
+  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_isoCone_track_eta, file, 1.);
+  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_dPhiJetGamma_noDeltaPhiCut, file, 1.);
+  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_dPhiJetGamma, file, 1.);
+  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_xJetGamma, file, 1.);
+  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_chJetTrackMult, file, 1.);
+  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_xObs_pGoing, file, 1.);
+  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_xObs_PbGoing, file, 1.);
+  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_xBjorken_1, file, 1.);
+  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_xBjorken_2, file, 1.);
+  // pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_xBjorken_1_PDF, file, 1.); // second version to call bjorken x gives same results
+  // pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_xBjorken_2_PDF, file, 1.);
+  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_isoPt, file, 1.);
+  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_UEPtDensity, file, 1.);
+  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_isoPt_corrected, file, 1.);
+  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_xSecTriggerGamma, file, 1.);
+  
+  file.Close();
 
   if (powhegHooks) delete powhegHooks;
   return 0;

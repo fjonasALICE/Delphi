@@ -689,7 +689,7 @@ void PythiaAnalysisHelper::Add_Histos_Scale_Write2File( std::vector <TH1D*>& vec
     TString axTitleTemp = vec.at(i)->GetName();
     if( axTitleTemp.Contains("xJetGamma") ){
       vec.at(i)->SetXTitle("x_{J#gamma}");
-      vec.at(i)->SetYTitle("d#sigma_{J#gamma}/x_{J#gamma} (pb)");
+      vec.at(i)->SetYTitle("d#sigma_{J#gamma}/dx_{J#gamma} (pb)");
     }
     if( axTitleTemp.Contains("dPhiJetGamma") ){
       vec.at(i)->SetXTitle("#Delta #phi_{J#gamma}");
@@ -701,7 +701,7 @@ void PythiaAnalysisHelper::Add_Histos_Scale_Write2File( std::vector <TH1D*>& vec
     }
     if( axTitleTemp.Contains("xObs") ){
       vec.at(i)->SetXTitle("x^{obs}_{Pb}");
-      vec.at(i)->SetYTitle("d#sigma_{J#gamma}/x^{obs}_{Pb} (pb)");
+      vec.at(i)->SetYTitle("d#sigma_{J#gamma}/dx^{obs}_{Pb} (pb)");
     }
     if( axTitleTemp.Contains("isoCone_track_dPhi") ){
       vec.at(i)->SetXTitle("#Delta #phi_{#gamma--track}");
@@ -738,7 +738,7 @@ void PythiaAnalysisHelper::Add_Histos_Scale_Write2File( std::vector <TH1D*>& vec
     TString axTitleTemp = final_histo->GetName();
     if( axTitleTemp.Contains("xJetGamma") ){
       final_histo->SetXTitle("x_{J#gamma}");
-      final_histo->SetYTitle("d#sigma_{J#gamma}/x_{J#gamma} (pb)");
+      final_histo->SetYTitle("d#sigma_{J#gamma}/dx_{J#gamma} (pb)");
     }
     if( axTitleTemp.Contains("dPhiJetGamma") ){
       final_histo->SetXTitle("#Delta #phi_{J#gamma}");
@@ -750,7 +750,7 @@ void PythiaAnalysisHelper::Add_Histos_Scale_Write2File( std::vector <TH1D*>& vec
     }
     if( axTitleTemp.Contains("xObs") ){
       final_histo->SetXTitle("x^{obs}_{Pb}");
-      final_histo->SetYTitle("d#sigma_{J#gamma}/x^{obs}_{Pb} (pb)");
+      final_histo->SetYTitle("d#sigma_{J#gamma}/dx^{obs}_{Pb} (pb)");
     }
     if( axTitleTemp.Contains("isoCone_track_dPhi") ){
       final_histo->SetXTitle("#Delta #phi_{#gamma--track}");
@@ -771,6 +771,60 @@ void PythiaAnalysisHelper::Add_Histos_Scale_Write2File( std::vector <TH1D*>& vec
 
   
   final_histo->Write();
+
+  gROOT->cd();
+
+  return;
+}
+
+//----------------------------------------------------------------------
+void PythiaAnalysisHelper::Add_Histos_Scale_Write2File_Powheg( std::vector <TH1D>& vec, TFile &file, double invScaleFac){
+
+  file.cd();
+
+  for(unsigned int i = 0; i < vec.size(); i++){
+    vec.at(i).Scale(1./invScaleFac, "width");
+    vec.at(i).SetXTitle("p_{T} (GeV/#it{c})");
+    vec.at(i).SetYTitle("#frac{d^{2}#sigma}{dp_{T}d#eta} (pb)");
+
+    // special treatment for gamma jet correlations histos
+    TString axTitleTemp = vec.at(i).GetName();
+    if( axTitleTemp.Contains("xJetGamma") ){
+      vec.at(i).SetXTitle("x_{J#gamma}");
+      vec.at(i).SetYTitle("d#sigma_{J#gamma}/dx_{J#gamma} (pb)");
+    }
+    if( axTitleTemp.Contains("dPhiJetGamma") ){
+      vec.at(i).SetXTitle("#Delta #phi_{J#gamma}");
+      vec.at(i).SetYTitle("d#sigma_{J#gamma}/d#Delta #phi_{J#gamma} (pb)");
+    }
+    if( axTitleTemp.Contains("chJetTrackMult") ){
+      vec.at(i).SetXTitle("number of charged tracks per jet N_{chTr,jet}");
+      vec.at(i).SetYTitle("#sigma_{chTr,jet}/dN_{chTr,jet} (pb)");
+    }
+    if( axTitleTemp.Contains("xObs") ){
+      vec.at(i).SetXTitle("x^{obs}_{Pb}");
+      vec.at(i).SetYTitle("d#sigma_{J#gamma}/dx^{obs}_{Pb} (pb)");
+    }
+    if( axTitleTemp.Contains("isoCone_track_dPhi") ){
+      vec.at(i).SetXTitle("#Delta #phi_{#gamma--track}");
+      vec.at(i).SetYTitle("d#sigma_{tracks}/d#Delta #phi_{#gamma--track} (pb)");
+    }
+    if( axTitleTemp.Contains("isoCone_track_dEta") ){
+      vec.at(i).SetXTitle("#Delta #eta_{#gamma--track}");
+      vec.at(i).SetYTitle("d#sigma_{tracks}/d#Delta #eta_{#gamma--track} (pb)");
+    }
+    if( axTitleTemp.Contains("Bjorken") ){
+      vec.at(i).SetXTitle("real Bjorken x for given gamma-jet pair");
+      vec.at(i).SetYTitle("d#sigma_{J#gamma}/dx (pb)");
+    }
+    if( axTitleTemp.Contains("xSecTriggerGamma") ){
+      vec.at(i).SetXTitle("");
+      vec.at(i).SetYTitle("#sigma_{J#gamma} (pb)");
+    }
+
+    vec.at(i).Write();
+
+  }
 
   gROOT->cd();
 
