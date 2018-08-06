@@ -8,6 +8,8 @@
 #include "PythiaAnalysisHelper.h"
 #include "PythiaAnalysis.h"
 #include "TMath.h"
+#include "TCanvas.h"
+#include "TPaveText.h"
 
 #include "fastjet/ClusterSequence.hh"
 
@@ -58,9 +60,10 @@ int main(int argc, char **argv) {
     printf("\nApplying a boost along z direction with beta_z = %f\n", boostBetaZ); // 0.435 for pPb
   }
 
+  string pdfA, pdfB;
   if (argc >= 10){ // choice of external PDF (using LHAPDF6)
-    string pdfA = argv[9];
-    string pdfB = argv[9];
+    pdfA = argv[9];
+    pdfB = argv[9];
     printf("\nUsing PDF %s for beam A\n", pdfA.c_str());
     p.readString("PDF:pSet = LHAPDF6:" + pdfA);
     if( argc >= 11)
@@ -70,8 +73,11 @@ int main(int argc, char **argv) {
   }
 
   int nEvent = strtol(argv[3], NULL, 10); // number of events
-  printf("\nGenerating %d events per pthat bin\n", nEvent);
-  
+  if( !strcmp(argv[2],"JJ") || !strcmp(argv[2],"GJ") || !strcmp(argv[2],"WeakBoson") )
+    printf("\nGenerating %d events per pthat bin\n", nEvent);
+  else
+    printf("\nGenerating %d events\n", nEvent);
+
   pyHelp.Pass_Parameters_To_Pythia(p, argc, argv); // which energy, scales, optional master switches
 
   int pTHatBins = 0;
@@ -1456,6 +1462,10 @@ int main(int argc, char **argv) {
   TFile file(rootFileName, "RECREATE");
   
   //----------------------------------------------------------------------------------------------------
+  // write info string to file
+  pyHelp.Write_README(p, file, argc, argv, pdfA, pdfB, pTHatBin);
+
+  // store weightSum for normalization later on (in standalone Pythia = number of events)
   for(int iBin=0; iBin < pTHatBins; iBin++){
     vec_weightSum_bin.at(iBin)->Write();
   }

@@ -6,6 +6,8 @@
 #include "TFile.h"
 #include "TMath.h"
 #include "TROOT.h"
+#include "TCanvas.h"
+#include "TPaveText.h"
 #include "fastjet/ClusterSequence.hh"
 
 using fastjet::PseudoJet;
@@ -66,6 +68,55 @@ void PythiaAnalysisHelper::Pass_Parameters_To_Pythia(Pythia8::Pythia &p, int arg
       printf("\nNo sensible argument argv[5] is given -> full pythia events will be generated (default)\n");
   }
   
+  return;
+}
+
+//----------------------------------------------------------------------
+void PythiaAnalysisHelper::Write_README(Pythia8::Pythia &p, TFile &file, int argc, char **argv, string pdfA, string pdfB, double *pTHatBin){
+
+  file.cd();
+  string infoPDFA, infoPDFB, infoEnergyA, infoEnergyB, infoProcess, infoOption, infoRenScale, infoFacScale;
+
+  if( !strcmp(argv[2],"JJ") ) infoProcess = "Using JetJet processes (codes 111-124)";
+  else if( !strcmp(argv[2],"GJ") ) infoProcess = "Using GammaJet processes (codes 201-205)";
+  else if( !strcmp(argv[2],"WeakBoson" ) ) infoProcess = "Using single weak boson production processes (codes 224,225)";
+  else if( !strcmp(argv[2],"MB" ) ) infoProcess = "Using Minimum Bias production processes (codes 101,103-106)";
+  else if( !strcmp(argv[2],"MBVeto" ) ) infoProcess = Form("Using Minimum Bias production processes (codes 101,103-106), but only below pthat = %f GeV, so that other processes can be used for high pt statistics",pTHatBin[0]);
+
+  infoEnergyA = Form("%f", p.event[1].e());
+  infoEnergyB = Form("%f", p.event[2].e());
+
+  if( !strcmp(argv[5],"fullEvents") ) infoOption = "Full events have been processed (including hadronization, MPI etc...)";
+  if( !strcmp(argv[5],"noMPI") ) infoOption = "BEWARE: events have been processed without Multiparton Interaction";
+  if( !strcmp(argv[5],"noMPInoHadro") ) infoOption = "BEWARE: events have been processed without Multiparton Interaction and without hadronization";
+  if( !strcmp(argv[5],"noShower") ) infoOption = "BEWARE: events have been processed without any parton shower, only the naked hard process";
+    
+  if( argc >= 7 ) infoRenScale = Form("Using renormalization scale: #mu_{R} = Q^{2} #times %s", argv[6]);
+  else infoRenScale = "Using renormalization scale: #mu^{2}_{R} = Q^{2} #times 1.00";
+  if( argc >= 8 ) infoFacScale = Form("Using factorization scale: #mu_{F} = Q^{2} #times %s", argv[7]);
+  else infoFacScale = "Using factorization scale: #mu^{2}_{F} = Q^{2} #times 1.00";
+
+  if(argc >= 10) infoPDFA = pdfA;
+  else infoPDFA = "NNPDF2.3 QCD+QED LO";
+
+  if(argc >= 11) infoPDFB = pdfB; 
+  else infoPDFB = "NNPDF2.3 QCD+QED LO";
+
+  TCanvas *c = new TCanvas(Form("README_%s",argv[2]),Form("README_%s",argv[2]));
+  TPaveText *pt = new TPaveText(.01,.01,.99,.99);
+  pt->AddText("Generated with Pythia 8.230 and following config:");
+  pt->AddText(Form("PDF beam A = %s", infoPDFA.c_str()));
+  pt->AddText(Form("PDF beam B = %s", infoPDFB.c_str()));
+  pt->AddText(Form("Energy beam A = %s GeV", infoEnergyA.c_str()));
+  pt->AddText(Form("Energy beam B = %s GeV", infoEnergyB.c_str()));
+  pt->AddText(Form("%s", infoOption.c_str()));
+  pt->AddText(Form("%s", infoRenScale.c_str()));
+  pt->AddText(Form("%s", infoFacScale.c_str()));
+  pt->AddText(Form("%s", infoProcess.c_str()));
+  pt->AddText("Check other READMEs for additional processes that may have been included by merging.");
+  pt->Draw();
+  c->Write();
+
   return;
 }
 

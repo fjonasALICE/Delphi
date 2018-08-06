@@ -7,6 +7,8 @@
 #include "TFile.h"
 #include <vector>
 #include "TMath.h"
+#include "TCanvas.h"
+#include "TPaveText.h"
 #include "fastjet/ClusterSequence.hh"
 
 using std::cout;
@@ -26,6 +28,7 @@ class PythiaAnalysisHelper{
 
   void Set_Pythia_Randomseed(Pythia8::Pythia &p); // set seed with ROOT's TRandom3
   void Pass_Parameters_To_Pythia(Pythia8::Pythia &p, int argc, char **argv); // set stuff with one line; check .cxx for enlightenment
+  void Write_README(Pythia8::Pythia &p, TFile &file, int argc, char **argv, string pdfA, string pdfB, double *pTHatBin);
   void ProcessSwitch(int iBin, double *pTHatBin, char **argv, Pythia8::Pythia &p); // set pTHat bin specific stuff
 
   double CorrectPhiDelta(double a, double b);
