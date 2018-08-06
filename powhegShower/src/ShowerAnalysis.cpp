@@ -29,7 +29,6 @@
 
 void ReadInWeightIDs(Pythia &p, vector<string> &vec_weightsID, bool &isSudaWeight);
 double GetUEPtDensity(Event &event, int iPhoton);
-bool IsPhotonIsolated(Event &event, int iPhoton, const double &etaAbsMax, const double &isoConeRadius, const double &isoPtMax, double UEPtDensity, vector<TH1D> &vec_phi, vector<TH1D> &vec_eta, vector<TH1D> &vec_isoPt, vector<TH1D> &vec_isoPt_corrected, vector<double> &vec_weights);
 
 int main(int, char **);
 int main(int argc, char **argv) {
@@ -274,7 +273,7 @@ int main(int argc, char **argv) {
 	//	  printf("UEPtDensity(p.event, i) = %f\n",UEPtDensity);
 	pyHelp.FillForEachWeight(vec_UEPtDensity, UEPtDensity, vec_weights);
 	// check isolation
-	isPhotonIsolated = IsPhotonIsolated(p.event, i, etaTPC-jetRadius, isoConeRadius, isoPtMax, UEPtDensity, vec_isoCone_track_phi, vec_isoCone_track_eta, vec_isoPt, vec_isoPt_corrected, vec_weights);
+	isPhotonIsolated = pyHelp.IsPhotonIsolatedPowheg(p.event, i, etaTPC-jetRadius, isoConeRadius, isoPtMax, UEPtDensity, vec_isoCone_track_phi, vec_isoCone_track_eta, vec_isoPt, vec_isoPt_corrected, vec_weights);
 
 	// Fill histograms
 	//----------------------------------------------------------------------
@@ -431,35 +430,4 @@ double GetUEPtDensity(Event &event, int iPhoton){
   }
   
   return sumPt/etaBandArea;
-}
-
-//----------------------------------------------------------------------
-// isolation cut: sum energy around photon and abandon event if threshold is reached
-bool IsPhotonIsolated(Event &event, int iPhoton, const double &etaAbsMax, const double &isoConeRadius2, const double &isoPtMax2, double UEPtDensity,
-		      vector<TH1D> &vec_phi, vector<TH1D> &vec_eta, vector<TH1D> &vec_isoPt, vector<TH1D> &vec_isoPt_corrected, vector<double> &vec_weights){
-  double isoCone_dR = 999.;
-  double isoCone_pt = 0.; // reset sum of energy in cone
-  
-  for (int iTrack = 5; iTrack < event.size(); iTrack++) {
-    if ( !event[iTrack].isFinal() ) continue;
-    if ( !event[iTrack].isVisible() ) continue;
-    if ( !event[iTrack].isCharged() ) continue;
-    if ( TMath::Abs(event[iPhoton].eta()) > etaAbsMax+isoConeRadius2 ) continue;
-    //if ( iTrack == iPhoton ) continue; // dont count photon, not necessary for tracks obviously
-
-    // distance between photon and particle at index iTrack
-    isoCone_dR = sqrt( pow(pyHelp.CorrectPhiDelta(event[iTrack].phi(), event[iPhoton].phi()), 2)
-		       + pow(event[iTrack].eta() - event[iPhoton].eta(), 2) );
-	    
-    if(isoCone_dR < isoConeRadius2){
-      isoCone_pt += event[iTrack].pT();
-      pyHelp.FillForEachWeight(vec_phi, event[iTrack].phi() - event[iPhoton].phi(), vec_weights);
-      pyHelp.FillForEachWeight(vec_eta, event[iTrack].eta() - event[iPhoton].eta(), vec_weights);
-    }
-    pyHelp.FillForEachWeight(vec_isoPt, isoCone_pt, vec_weights);
-    pyHelp.FillForEachWeight(vec_isoPt_corrected, isoCone_pt-(UEPtDensity*0.4*0.4*TMath::Pi()), vec_weights);
-  }
-      
-  if( isoCone_pt >= isoPtMax2 ) return false;
-  else return kTRUE;
 }

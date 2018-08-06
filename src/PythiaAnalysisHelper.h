@@ -36,6 +36,7 @@ class PythiaAnalysisHelper{
   double XObs_PbGoing(PseudoJet &hadronjet, PseudoJet &photonjet, double beamEnergy);
 
   bool IsPhotonIsolated(Event &event, int iPhoton, const double &etaAbsMaxPhoton, const double &isoConeRadius, const double &isoPtMax, double UEPtDensity, TH1D *h_phi, TH1D *h_eta, TH1D *h_isoPt, TH1D *h_isoPt_corrected);
+  bool IsPhotonIsolatedPowheg(Event &event, int iPhoton, const double &etaAbsMaxPhoton, const double &isoConeRadius, const double &isoPtMax, double UEPtDensity, vector<TH1D> &vec_phi, vector<TH1D> &vec_eta, vector<TH1D> &vec_isoPt, vector<TH1D> &vec_isoPt_corrected, vector<double> vec_weights);
 
   // fill "normal" spectra
   void Fill_Pi0_Pt(Pythia8::Event &event, float etaMax, bool useRap, TH1 *h); // fill pt of all pi0 in the event within eta range

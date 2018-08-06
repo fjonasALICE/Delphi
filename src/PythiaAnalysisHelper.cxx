@@ -211,6 +211,35 @@ bool PythiaAnalysisHelper::IsPhotonIsolated(Event &event, int iPhoton, const dou
   if( isoCone_pt >= isoPtMax ) return false;
   else return true;
 }
+//----------------------------------------------------------------------
+bool PythiaAnalysisHelper::IsPhotonIsolatedPowheg(Event &event, int iPhoton, const double &etaAbsMaxPhoton, const double &isoConeRadius, const double &isoPtMax, double UEPtDensity, vector<TH1D> &vec_phi, vector<TH1D> &vec_eta, vector<TH1D> &vec_isoPt, vector<TH1D> &vec_isoPt_corrected, vector<double> vec_weights){
+
+  double isoCone_dR = 999.;
+  double isoCone_pt = 0.; // reset sum of energy in cone
+  
+  for (int iTrack = 5; iTrack < event.size(); iTrack++) {
+    if ( !event[iTrack].isFinal() ) continue;
+    if ( !event[iTrack].isVisible() ) continue;
+    if ( !event[iTrack].isCharged() ) continue;
+    if ( TMath::Abs(event[iPhoton].eta()) > etaAbsMaxPhoton ) continue;
+    //if ( iTrack == iPhoton ) continue; // dont count photon, not necessary for tracks obviously
+
+    // distance between photon and particle at index iTrack
+    isoCone_dR = sqrt( pow(CorrectPhiDelta(event[iTrack].phi(), event[iPhoton].phi()), 2)
+		       + pow(event[iTrack].eta() - event[iPhoton].eta(), 2) );
+	    
+    if(isoCone_dR < isoConeRadius){
+      isoCone_pt += event[iTrack].pT();
+      FillForEachWeight(vec_phi, event[iTrack].phi() - event[iPhoton].phi(), vec_weights);
+      FillForEachWeight(vec_eta, event[iTrack].eta() - event[iPhoton].eta(), vec_weights);
+    }
+    FillForEachWeight(vec_isoPt_corrected, isoCone_pt-(UEPtDensity*0.4*0.4*TMath::Pi()), vec_weights);
+    FillForEachWeight(vec_isoPt, isoCone_pt, vec_weights);
+  }
+      
+  if( isoCone_pt >= isoPtMax ) return false;
+  else return true;
+}
 
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------

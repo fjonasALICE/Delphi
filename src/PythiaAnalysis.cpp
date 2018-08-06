@@ -956,7 +956,7 @@ int main(int argc, char **argv) {
 	  double UEPtDensity = 0.;
 	  // printf("UEPtDensity(p.event, i) = %f\n",UEPtDensity);
 	  // check isolation
-	  isPhotonIsolated = pyHelp.IsPhotonIsolated(p.event, i, etaTPC, isoConeRadius, isoPtMax, UEPtDensity, vec_isoCone_track_dPhi_bin.at(iBin), vec_isoCone_track_dEta_bin.at(iBin), vec_isoPt_bin.at(iBin), vec_isoPt_corrected_bin.at(iBin));
+	  isPhotonIsolated = pyHelp.IsPhotonIsolated(p.event, i, etaTPC-jetRadius, isoConeRadius, isoPtMax, UEPtDensity, vec_isoCone_track_dPhi_bin.at(iBin), vec_isoCone_track_dEta_bin.at(iBin), vec_isoPt_bin.at(iBin), vec_isoPt_corrected_bin.at(iBin));
 
 	  if(vJets.size() > 0 && isPhotonIsolated)
 	    for(unsigned int iJet = 0; iJet < vJets.size(); iJet++){
