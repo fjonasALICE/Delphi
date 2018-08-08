@@ -39,6 +39,7 @@ class PythiaAnalysisHelper{
   bool IsPhotonIsolatedPowheg(Event &event, int iPhoton, const double &etaAbsMaxPhoton, const double &isoConeRadius, const double &isoPtMax, double UEPtDensity, vector<TH1D> &vec_phi, vector<TH1D> &vec_eta, vector<TH1D> &vec_isoPt, vector<TH1D> &vec_isoPt_corrected, vector<double> vec_weights);
 
   // fill "normal" spectra
+  void Fill_Electron_Pt(Pythia8::Event &event, float etaMax, bool useRap, TH1 *h);
   void Fill_Pi0_Pt(Pythia8::Event &event, float etaMax, bool useRap, TH1 *h); // fill pt of all pi0 in the event within eta range
   void Fill_Pi0Primary_Pt(Pythia8::Event &event, float etaMax, bool useRap, TH1 *h); // fill pt of all primary pi0 (i.e. secondary corrected)
   void Fill_Eta_Pt(Pythia8::Event &event, float etaMax, bool useRap, TH1 *h); // fill pt of all eta

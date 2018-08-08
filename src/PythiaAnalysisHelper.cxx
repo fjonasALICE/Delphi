@@ -244,6 +244,17 @@ bool PythiaAnalysisHelper::IsPhotonIsolatedPowheg(Event &event, int iPhoton, con
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
+void PythiaAnalysisHelper::Fill_Electron_Pt(Pythia8::Event &event, float etaMax, bool useRap, TH1 *h){
+  for (int i = 5; i < event.size(); i++) {
+    if(useRap){
+      if(event[i].isFinal() && TMath::Abs(event[i].id()) == 11 && TMath::Abs(event[i].y()) < etaMax ) h->Fill(event[i].pT());
+    }else{
+      if(event[i].isFinal() && TMath::Abs(event[i].id()) == 11 && TMath::Abs(event[i].eta()) < etaMax ) h->Fill(event[i].pT());      
+    }
+  }
+  return;
+}
+//----------------------------------------------------------------------
 void PythiaAnalysisHelper::Fill_Pi0_Pt(Pythia8::Event &event, float etaMax, bool useRap, TH1 *h){
   for (int i = 5; i < event.size(); i++) {
     if(useRap){

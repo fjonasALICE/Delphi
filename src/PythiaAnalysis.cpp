@@ -150,6 +150,13 @@ int main(int argc, char **argv) {
   
   TH1D *h_xSecTriggerGamma = new TH1D("h_xSecTriggerGamma","accumulated cross section of trigger photons", 1, -0.5, 0.5);
     
+  // all electrons (+ positrons)
+  TH1D *h_electron_yDefault = new TH1D("h_electron_yDefault","e^{#pm} in |y| < 0.8", ptBins2, ptBinArray);
+  TH1D *h_electron_etaLarge = new TH1D("h_electron_etaLarge","e^{#pm} in |#eta| < 3.00", ptBins2, ptBinArray);
+  TH1D *h_electron_etaTPC   = new TH1D("h_electron_etaTPC"  ,"e^{#pm} in |#eta| < 0.9", ptBins2, ptBinArray);
+  TH1D *h_electron_etaEMCal = new TH1D("h_electron_etaEMCal","e^{#pm} in |#eta| < 0.66", ptBins2, ptBinArray);
+  TH1D *h_electron_etaPHOS  = new TH1D("h_electron_etaPHOS" ,"e^{#pm} in |#eta| < 0.12", ptBins2, ptBinArray);
+
   // all pions without secondary correction
   TH1D *h_pi0_yDefault = new TH1D("h_pi0_yDefault","#pi^{0} in |y| < 0.8", ptBins2, ptBinArray);
   TH1D *h_pi0_etaLarge = new TH1D("h_pi0_etaLarge","#pi^{0} in |#eta| < 3.0", ptBins2, ptBinArray);
@@ -406,6 +413,12 @@ int main(int argc, char **argv) {
   // organise pTHat wise histograms in vectors
   vector <TH2D*> vec_electron_pt_topMotherID_bin;
 
+  vector <TH1D*> vec_electron_yDefault_bin;
+  vector <TH1D*> vec_electron_etaLarge_bin;
+  vector <TH1D*> vec_electron_etaTPC_bin;
+  vector <TH1D*> vec_electron_etaEMCal_bin;
+  vector <TH1D*> vec_electron_etaPHOS_bin;
+  
   vector <TH1D*> vec_pi0_yDefault_bin;
   vector <TH1D*> vec_pi0_etaLarge_bin;
   vector <TH1D*> vec_pi0_etaTPC_bin;
@@ -640,6 +653,13 @@ int main(int argc, char **argv) {
     vec_xBjorken_2_bin.push_back( (TH1D*)h_xBjorken_2->Clone(Form("h_xBjorken_2_bin_%02d",i)) );
 
     vec_xSecTriggerGamma_bin.push_back( (TH1D*)h_xSecTriggerGamma->Clone(Form( "h_xSecTriggerGamma_bin_%02d", i )) );
+
+    // electrons
+    vec_electron_yDefault_bin.push_back( (TH1D*)h_electron_yDefault->Clone(Form("h_electron_yDefault_bin_%02d",i)) );
+    vec_electron_etaLarge_bin.push_back( (TH1D*)h_electron_etaLarge->Clone(Form("h_electron_etaLarge_bin_%02d",i)) );
+    vec_electron_etaTPC_bin.push_back( (TH1D*)h_electron_etaTPC->Clone(Form("h_electron_etaTPC_bin_%02d",i)) );
+    vec_electron_etaEMCal_bin.push_back( (TH1D*)h_electron_etaEMCal->Clone(Form("h_electron_etaEMCal_bin_%02d",i)) );
+    vec_electron_etaPHOS_bin.push_back( (TH1D*)h_electron_etaPHOS->Clone(Form("h_electron_etaPHOS_bin_%02d",i)) );
 
     // pi0 histos
     vec_pi0_yDefault_bin.push_back( (TH1D*)h_pi0_yDefault->Clone(Form("h_pi0_yDefault_bin_%02d",i)) );
@@ -1012,6 +1032,12 @@ int main(int argc, char **argv) {
       //------------------------------------------------------------------------------------------
       pyHelp.Fill_TH2_Electron_TopMotherID(p.event, etaEMCal, vec_electron_pt_topMotherID_bin.at(iBin));
 
+      pyHelp.Fill_Electron_Pt(p.event, yDefault, true, vec_electron_yDefault_bin.at(iBin));
+      pyHelp.Fill_Electron_Pt(p.event, etaLarge, false, vec_electron_etaLarge_bin.at(iBin));
+      pyHelp.Fill_Electron_Pt(p.event, etaTPC, false, vec_electron_etaTPC_bin.at(iBin));
+      pyHelp.Fill_Electron_Pt(p.event, etaEMCal, false, vec_electron_etaEMCal_bin.at(iBin));
+      pyHelp.Fill_Electron_Pt(p.event, etaPHOS, false, vec_electron_etaPHOS_bin.at(iBin));
+      
       pyHelp.Fill_Pi0_Pt(p.event, yDefault, true, vec_pi0_yDefault_bin.at(iBin));
       pyHelp.Fill_Pi0_Pt(p.event, etaLarge, false, vec_pi0_etaLarge_bin.at(iBin));
       pyHelp.Fill_Pi0_Pt(p.event, etaTPC, false, vec_pi0_etaTPC_bin.at(iBin));
@@ -1250,6 +1276,12 @@ int main(int argc, char **argv) {
     
     vec_electron_pt_topMotherID_bin.at(iBin)->Scale(sigma);
 
+    vec_electron_yDefault_bin.at(iBin)->Scale(sigma);
+    vec_electron_etaLarge_bin.at(iBin)->Scale(sigma);
+    vec_electron_etaTPC_bin.at(iBin)->Scale(sigma);
+    vec_electron_etaEMCal_bin.at(iBin)->Scale(sigma);
+    vec_electron_etaPHOS_bin.at(iBin)->Scale(sigma);
+  
     vec_pi0_yDefault_bin.at(iBin)->Scale(sigma);
     vec_pi0_etaLarge_bin.at(iBin)->Scale(sigma);
     vec_pi0_etaTPC_bin.at(iBin)->Scale(sigma);
@@ -1492,6 +1524,11 @@ int main(int argc, char **argv) {
 
   TDirectory *dir_electron = file.mkdir("electron");
   pyHelp.Add_Histos_Scale_Write2File( vec_electron_pt_topMotherID_bin, h2_electron_pt_topMotherID, file, dir_electron, 2*etaEMCal, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_electron_yDefault_bin, h_electron_yDefault, file, dir_electron, 2*yDefault, true);
+  pyHelp.Add_Histos_Scale_Write2File( vec_electron_etaLarge_bin, h_electron_etaLarge, file, dir_electron, 2*etaLarge, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_electron_etaTPC_bin, h_electron_etaTPC, file, dir_electron, 2*etaTPC, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_electron_etaEMCal_bin, h_electron_etaEMCal, file, dir_electron, 2*etaEMCal, false);
+  pyHelp.Add_Histos_Scale_Write2File( vec_electron_etaPHOS_bin, h_electron_etaPHOS, file, dir_electron, 2*etaPHOS, false);
 
   TDirectory *dir_pTHat = file.mkdir("pTHat");
   pyHelp.Add_Histos_Scale_Write2File( vec_pTHat_bin, h_pTHat, file, dir_pTHat, 1., false);
