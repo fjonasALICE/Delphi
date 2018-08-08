@@ -161,22 +161,22 @@ int main(int argc, char **argv) {
 	vec_chjet_pt.push_back( TH1D(Form("h_chjet_pt_%s",vec_weightsID.at(i).c_str()), "charged jet pt", nPtBins, PtBinsMin, PtBinsMax));
 	vec_chjet_pt_leading.push_back( TH1D(Form("h_chjet_pt_leading_%s",vec_weightsID.at(i).c_str()), "leading charged jet pt", nPtBins, PtBinsMin, PtBinsMax));
 
-	vec_isoCone_track_phi.push_back( TH1D(Form("h_isoCone_track_phi_%s",vec_weightsID.at(i).c_str()), "isoCone_track_phi", 100, -1., 1.));
-	vec_isoCone_track_eta.push_back( TH1D(Form("h_isoCone_track_eta_%s",vec_weightsID.at(i).c_str()), "isoCone_track_eta", 100, -1., 1.));
+	vec_isoCone_track_phi.push_back( TH1D(Form("h_isoCone_track_phi_%s",vec_weightsID.at(i).c_str()), "isoCone_track_phi", 40, -1., 1.));
+	vec_isoCone_track_eta.push_back( TH1D(Form("h_isoCone_track_eta_%s",vec_weightsID.at(i).c_str()), "isoCone_track_eta", 40, -1., 1.));
 
-	vec_dPhiJetGamma.push_back( TH1D(Form("h_dPhiJetGamma_%s",vec_weightsID.at(i).c_str()), "#Delta #phi_{J#gamma}", 136, -0.1, 3.3));
-	vec_dPhiJetGamma_noDeltaPhiCut.push_back( TH1D(Form("h_dPhiJetGamma_noDeltaPhiCut_%s",vec_weightsID.at(i).c_str()), "#Delta #phi_{J#gamma} no cut", 170, -0.1, 3.3));
+	vec_dPhiJetGamma.push_back( TH1D(Form("h_dPhiJetGamma_%s",vec_weightsID.at(i).c_str()), "#Delta #phi_{J#gamma}", 68, -0.1, 3.3));
+	vec_dPhiJetGamma_noDeltaPhiCut.push_back( TH1D(Form("h_dPhiJetGamma_noDeltaPhiCut_%s",vec_weightsID.at(i).c_str()), "#Delta #phi_{J#gamma} no cut", 68, -0.1, 3.3));
 
-	vec_xJetGamma.push_back( TH1D(Form("h_xJetGamma_%s",vec_weightsID.at(i).c_str()), "x_{J#gamma} = p_{T}^{Jet} / p_{T}^{#gamma}", 150, 0., 3.));
+	vec_xJetGamma.push_back( TH1D(Form("h_xJetGamma_%s",vec_weightsID.at(i).c_str()), "x_{J#gamma} = p_{T}^{Jet} / p_{T}^{#gamma}", 100, 0., 2.5));
 
 	vec_chJetTrackMult.push_back( TH1D(Form("h_chJetTrackMult_%s",vec_weightsID.at(i).c_str()), "charged track multiplicity within jets", 50, 0.5, 50.5));
 
-	vec_xObs_pGoing.push_back( TH1D(Form("h_xObs_pGoing_%s",vec_weightsID.at(i).c_str()), "xObs_pGoing", 1000, 0., 0.10));
-	vec_xObs_PbGoing.push_back( TH1D(Form("h_xObs_PbGoing_%s",vec_weightsID.at(i).c_str()), "xObs_PbGoing", 1000, 0., 0.10));
-	vec_xBjorken_1.push_back( TH1D(Form("h_xBjorken_1_%s",vec_weightsID.at(i).c_str()), "xBjorken 1", 1000, 0., 0.10));
-	vec_xBjorken_2.push_back( TH1D(Form("h_xBjorken_2_%s",vec_weightsID.at(i).c_str()), "xBjorken 2", 1000, 0., 0.10));
-	vec_xBjorken_1_PDF.push_back( TH1D(Form("h_xBjorken_1_PDF_%s",vec_weightsID.at(i).c_str()), "xBjorken 1 alternative version x1pdf", 1000, 0., 0.10));
-	vec_xBjorken_2_PDF.push_back( TH1D(Form("h_xBjorken_2_PDF_%s",vec_weightsID.at(i).c_str()), "xBjorken 2 alternative version x2pdf", 1000, 0., 0.10));
+	vec_xObs_pGoing.push_back( TH1D(Form("h_xObs_pGoing_%s",vec_weightsID.at(i).c_str()), "xObs_pGoing", 100, 0., 0.10));
+	vec_xObs_PbGoing.push_back( TH1D(Form("h_xObs_PbGoing_%s",vec_weightsID.at(i).c_str()), "xObs_PbGoing", 100, 0., 0.10));
+	vec_xBjorken_1.push_back( TH1D(Form("h_xBjorken_1_%s",vec_weightsID.at(i).c_str()), "xBjorken 1", 100, 0., 0.10));
+	vec_xBjorken_2.push_back( TH1D(Form("h_xBjorken_2_%s",vec_weightsID.at(i).c_str()), "xBjorken 2", 100, 0., 0.10));
+	vec_xBjorken_1_PDF.push_back( TH1D(Form("h_xBjorken_1_PDF_%s",vec_weightsID.at(i).c_str()), "xBjorken 1 alternative version x1pdf", 100, 0., 0.10));
+	vec_xBjorken_2_PDF.push_back( TH1D(Form("h_xBjorken_2_PDF_%s",vec_weightsID.at(i).c_str()), "xBjorken 2 alternative version x2pdf", 100, 0., 0.10));
 
 	vec_isoPt.push_back( TH1D(Form("h_isoPt_%s",vec_weightsID.at(i).c_str()), "Pt summed in iso cone", nPtBins, PtBinsMin, PtBinsMax/5.));
 	vec_UEPtDensity.push_back( TH1D(Form("h_UEPtDensity_%s",vec_weightsID.at(i).c_str()), "UEPtDensity", nPtBins, PtBinsMin, PtBinsMax/5.));

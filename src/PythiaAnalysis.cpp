@@ -133,20 +133,20 @@ int main(int argc, char **argv) {
   // charged jets
   TH1D *h_chJets_pt_etaTPC = new TH1D("h_chjet_pt_etaTPC",Form("charged jet pt in |#eta| < (0.9-R), R=%f",jetRadius), ptBins, ptMin, ptMax);
   TH1D *h_chJets_pt_leading_etaTPC = new TH1D("h_chjet_pt_leading_etaTPC",Form("leading charged jet pt in |#eta| < (0.9-R), R=%f",jetRadius), ptBins, ptMin, ptMax);
-  TH1D *h_dPhiJetGamma   = new TH1D("h_dPhiJetGamma"   ,"#Delta #phi_{J#gamma}", 136, -0.1, 3.3);
-  TH1D *h_xJetGamma      = new TH1D("h_xJetGamma"      ,"x_{J#gamma} = p_{T}^{Jet} / p_{T}^{#gamma}", 150, 0., 3.);
+  TH1D *h_dPhiJetGamma   = new TH1D("h_dPhiJetGamma"   ,"#Delta #phi_{J#gamma}", 68, -0.1, 3.3);
+  TH1D *h_xJetGamma      = new TH1D("h_xJetGamma"      ,"x_{J#gamma} = p_{T}^{Jet} / p_{T}^{#gamma}", 100, 0., 2.5);
   TH1D *h_chJetTrackMult = new TH1D("h_chJetTrackMult" ,"charged track multiplicity in jet", 50, 0.5, 50.5);
-  TH1D *h_xObs_pGoing    = new TH1D("h_xObs_pGoing"    ,"xObs_pGoing", 1000, 0., 0.1);
-  TH1D *h_xObs_PbGoing   = new TH1D("h_xObs_PbGoing"   ,"xObs_PbGoing", 1000, 0., 0.1);
+  TH1D *h_xObs_pGoing    = new TH1D("h_xObs_pGoing"    ,"xObs_pGoing", 100, 0., 0.1);
+  TH1D *h_xObs_PbGoing   = new TH1D("h_xObs_PbGoing"   ,"xObs_PbGoing", 100, 0., 0.1);
 
-  TH1D *h_isoCone_track_dPhi = new TH1D("h_isoCone_track_dPhi","#Delta #phi between photon and iso track", 100, -1., 1.);
-  TH1D *h_isoCone_track_dEta = new TH1D("h_isoCone_track_dEta","#Delta #eta between photon and iso track", 100, -1., 1.);
+  TH1D *h_isoCone_track_dPhi = new TH1D("h_isoCone_track_dPhi","#Delta #phi between photon and iso track", 40, -1., 1.);
+  TH1D *h_isoCone_track_dEta = new TH1D("h_isoCone_track_dEta","#Delta #eta between photon and iso track", 40, -1., 1.);
 
   TH1D *h_isoPt           = new TH1D("h_isoPt"          ,"sum of pt in iso cone", ptBins, ptMin, ptMax);
   TH1D *h_isoPt_corrected = new TH1D("h_isoPt_corrected","sum of pt in iso cone minus UE", ptBins, ptMin, ptMax);
 
-  TH1D *h_xBjorken_1 = new TH1D("h_xBjorken_1" ," Bjorken x from pythia's function x1()", 1000, 0., 0.1);
-  TH1D *h_xBjorken_2 = new TH1D("h_xBjorken_2" ," Bjorken x from pythia's function x2()", 1000, 0., 0.1);
+  TH1D *h_xBjorken_1 = new TH1D("h_xBjorken_1" ," Bjorken x from pythia's function x1()", 100, 0., 0.1);
+  TH1D *h_xBjorken_2 = new TH1D("h_xBjorken_2" ," Bjorken x from pythia's function x2()", 100, 0., 0.1);
   
   TH1D *h_xSecTriggerGamma = new TH1D("h_xSecTriggerGamma","accumulated cross section of trigger photons", 1, -0.5, 0.5);
     
