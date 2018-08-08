@@ -50,6 +50,9 @@ double pTHatBin_100GeV[pTHatBins_100GeV+1]= { 9.  , 12. , 16. , 21. , 28.,
 // kinematic range
 const double ptMin = 0., ptMax = 300.;
 const int ptBins = 300;
+const int ptBins2 = 97;
+
+
 const double yDefault = 0.8,
   etaLarge = 3.,
   etaTPC = 0.9,
