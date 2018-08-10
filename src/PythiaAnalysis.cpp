@@ -77,8 +77,18 @@ int main(int argc, char **argv) {
 
   int pTHatBins = 0;
   double pTHatBin[100];
+  // pthat bin definition from ALICE JJ production at 8 TeV
+  const int pTHatBins_250GeV = 18;
+  double pTHatBin_250GeV[pTHatBins_250GeV+1] = { 9.  , 12. , 16. , 21. , 28.,
+						 36. , 45. , 57. , 70. , 85.,
+						 99. , 115., 132., 150., 169.,
+						 190., 212., 235 , 10000. }; 
+
+  const int pTHatBins_100GeV = 8;
+  double pTHatBin_100GeV[pTHatBins_100GeV+1]= { 9.  , 12. , 16. , 21. , 28.,
+						36. , 45. , 57., 10000. }; 
   // pthat bin use (ignore for MB production)
-  if(usePtHatBin_100GeV){
+  if(useGammaJetCorrelations){
     pTHatBins = pTHatBins_100GeV;
     std::copy(pTHatBin_100GeV,pTHatBin_100GeV+11,pTHatBin);    
   }else{
@@ -714,7 +724,7 @@ int main(int argc, char **argv) {
     vec_decay_photons_etaEMCal_bin.push_back( (TH1D*)h_decay_photons_etaEMCal->Clone(Form("h_decay_photons_etaEMCal_bin_%02d",i)) );
     vec_decay_photons_etaPHOS_bin.push_back( (TH1D*)h_decay_photons_etaPHOS->Clone(Form("h_decay_photons_etaPHOS_bin_%02d",i)) );
 
-    if(applyPhotonIso){
+    if(producePhotonIsoSpectra){
       // isolated photon histos TPC
       vec_iso_charged2GeV_R03_photons_etaTPC_bin.push_back( (TH1D*)h_iso_charged2GeV_R03_photons_etaTPC->Clone(Form("h_iso_charged2GeV_R03_photons_etaTPC_bin_%02d",i)) );
       vec_iso_charged2GeV_R04_photons_etaTPC_bin.push_back( (TH1D*)h_iso_charged2GeV_R04_photons_etaTPC->Clone(Form("h_iso_charged2GeV_R04_photons_etaTPC_bin_%02d",i)) );
@@ -825,7 +835,7 @@ int main(int argc, char **argv) {
     vec_invXsec_decay_photons_etaPHOS_bin.push_back( (TH1D*)h_decay_photons_etaPHOS->Clone(Form("h_invXsec_decay_photons_etaPHOS_bin_%02d",i)) );
 
 
-    if(applyPhotonIso){
+    if(producePhotonIsoSpectra){
       // isolated photon histos TPC
       vec_invXsec_iso_charged2GeV_R03_photons_etaTPC_bin.push_back( (TH1D*)h_iso_charged2GeV_R03_photons_etaTPC->Clone(Form("h_invXsec_iso_charged2GeV_R03_photons_etaTPC_bin_%02d",i)) );
       vec_invXsec_iso_charged2GeV_R04_photons_etaTPC_bin.push_back( (TH1D*)h_iso_charged2GeV_R04_photons_etaTPC->Clone(Form("h_invXsec_iso_charged2GeV_R04_photons_etaTPC_bin_%02d",i)) );
@@ -923,7 +933,7 @@ int main(int argc, char **argv) {
       std::vector<PseudoJet> vJets;
       std::vector<PseudoJet> vPseudo;
       ClusterSequence *cs = 0;
-      if(useChargedJetsGammaCorrelations){
+      if(useGammaJetCorrelations){
 	for (int i = 5; i < p.event.size(); i++) {
 	  if (p.event[i].isFinal() && p.event[i].isCharged()) {
 	    if (TMath::Abs(p.event[i].eta()) < etaTPC){
@@ -943,82 +953,82 @@ int main(int argc, char **argv) {
 	      vec_chJets_pt_leading_etaTPC_bin.at(iBin)->Fill(vJets.at(j).pt());
 	  }
 	}	
-      }
 
-      photonPtMax  = -1.;
-      photonPtTemp = -1.;
-      iPhoton = -1;
-      // search for hardest photon in this event
-      //----------------------------------------------------------------------
-      for (int i = 5; i < p.event.size(); i++) {
-        if (p.event[i].id() == 22 && p.event[i].isFinal() && // final photon
-            p.event[i].status() < 90 &&                      // no decay photons allowed, only direct photons
-            TMath::Abs(p.event[i].eta()) < (etaTPC-jetRadius)){// in maximal TPC-minus-iso-cone-radius acceptance
+	photonPtMax  = -1.;
+	photonPtTemp = -1.;
+	iPhoton = -1;
+	// search for hardest photon in this event
+	//----------------------------------------------------------------------
+	for (int i = 5; i < p.event.size(); i++) {
+	  if (p.event[i].id() == 22 && p.event[i].isFinal() && // final photon
+	      p.event[i].status() < 90 &&                      // no decay photons allowed, only direct photons
+	      TMath::Abs(p.event[i].eta()) < (etaTPC-jetRadius)){// in maximal TPC-minus-iso-cone-radius acceptance
 	  
-      	  // find photonPtMax
-      	  photonPtTemp = p.event[i].pT();
-      	  if (photonPtTemp > photonPtMax) {
-      	    photonPtMax = photonPtTemp;
-      	    iPhoton = i; // remember index of hardest photon
-      	  }
-      	}
-      }
-
-      // loop over all direct photons
-      //----------------------------------------------------------------------
-      for (int i = 5; i < p.event.size(); i++) {
-	bool isPhotonIsolated;
-	if (p.event[i].id() == 22 && p.event[i].isFinal() && // final photon
-	    p.event[i].status() < 90 &&                      // no decay photons allowed, only direct photons
-	    TMath::Abs(p.event[i].eta()) < (etaTPC-jetRadius)){       // in maximal TPC-minus-iso-cone-radius acceptance
-
-          // photon as pseudojet for analysis
-          PseudoJet photonJet(p.event[i].px(), p.event[i].py(), p.event[i].pz(), p.event[i].e());
-	  if(photonJet.pt() < 15.) continue;
-	  if(photonJet.pt() > 30.) continue;
-	  // calculate ue pt density for a given photon i NOT IMPLEMENTED IN THE MOMENT
-	  double UEPtDensity = 0.;
-	  // printf("UEPtDensity(p.event, i) = %f\n",UEPtDensity);
-	  // check isolation
-	  isPhotonIsolated = pyHelp.IsPhotonIsolated(p.event, i, etaTPC-jetRadius, isoConeRadius, isoPtMax, UEPtDensity, vec_isoCone_track_dPhi_bin.at(iBin), vec_isoCone_track_dEta_bin.at(iBin), vec_isoPt_bin.at(iBin), vec_isoPt_corrected_bin.at(iBin));
-
-	  if(vJets.size() > 0 && isPhotonIsolated)
-	    for(unsigned int iJet = 0; iJet < vJets.size(); iJet++){
-	      bool isJetSeparated = ( TMath::Abs(photonJet.delta_phi_to(vJets.at(iJet))) > TMath::Pi()/2. );
-	      if(vJets.at(iJet).pt() < 10.) break; // vJets are sorted by pt, break is ok
-	      if(iJet == 0) vec_xSecTriggerGamma_bin.at(iBin)->Fill(0.);  // if there is at least one jet, count trigger photons, but only once for all jets connected to this photon; can be used to normalize histograms per trigger photon in the end
-	      // gamma-jet correlation	 
-	      vec_dPhiJetGamma_bin.at(iBin)->Fill(TMath::Abs(photonJet.delta_phi_to(vJets.at(iJet))));
-	      if(!isJetSeparated) continue;
-	      // x_Jet-gamma
-	      vector<PseudoJet> vec_jetConst = vJets.at(iJet).constituents();
-	      vec_xJetGamma_bin.at(iBin)->Fill(vJets.at(iJet).pt()/photonJet.pt());
-	      // charged particle multiplicity in jets
-	      vec_chJetTrackMult_bin.at(iBin)->Fill(vec_jetConst.size());
-	      // x_obs p-going direction
-	      vec_xObs_pGoing_bin.at(iBin)->Fill(pyHelp.XObs_pGoing(vJets.at(iJet), photonJet, p.info.eB()));
-	      // x_obs Pb-going direction
-	      vec_xObs_PbGoing_bin.at(iBin)->Fill(pyHelp.XObs_PbGoing(vJets.at(iJet), photonJet, p.info.eB()));
-	      // real Bjorken x
-	      vec_xBjorken_1_bin.at(iBin)->Fill(p.info.x1());
-	      vec_xBjorken_2_bin.at(iBin)->Fill(p.info.x2());
+	    // find photonPtMax
+	    photonPtTemp = p.event[i].pT();
+	    if (photonPtTemp > photonPtMax) {
+	      photonPtMax = photonPtTemp;
+	      iPhoton = i; // remember index of hardest photon
 	    }
+	  }
+	}
 
-	  // print scales of event
-	  // printf("---------------------------------------\n");
-	  // printf("p.info.pTHat()   = %f\n", p.info.pTHat());
-	  // printf("p.info.QFac()    = %f\n", p.info.QFac());
-	  // printf("p.info.QRen()    = %f\n", p.info.QRen());
-	  // printf("p.info.scalup()  = %f\n", p.info.scalup());
-	  // printf("\n");
+	// loop over all direct photons
+	//----------------------------------------------------------------------
+	for (int i = 5; i < p.event.size(); i++) {
+	  bool isPhotonIsolated;
+	  if (p.event[i].id() == 22 && p.event[i].isFinal() && // final photon
+	      p.event[i].status() < 90 &&                      // no decay photons allowed, only direct photons
+	      TMath::Abs(p.event[i].eta()) < (etaTPC-jetRadius)){       // in maximal TPC-minus-iso-cone-radius acceptance
+
+	    // photon as pseudojet for analysis
+	    PseudoJet photonJet(p.event[i].px(), p.event[i].py(), p.event[i].pz(), p.event[i].e());
+	    if(photonJet.pt() < 15.) continue;
+	    if(photonJet.pt() > 30.) continue;
+	    // calculate ue pt density for a given photon i NOT IMPLEMENTED IN THE MOMENT
+	    double UEPtDensity = 0.;
+	    // printf("UEPtDensity(p.event, i) = %f\n",UEPtDensity);
+	    // check isolation
+	    isPhotonIsolated = pyHelp.IsPhotonIsolated(p.event, i, etaTPC-jetRadius, isoConeRadius, isoPtMax, UEPtDensity, vec_isoCone_track_dPhi_bin.at(iBin), vec_isoCone_track_dEta_bin.at(iBin), vec_isoPt_bin.at(iBin), vec_isoPt_corrected_bin.at(iBin));
+
+	    if(vJets.size() > 0 && isPhotonIsolated)
+	      for(unsigned int iJet = 0; iJet < vJets.size(); iJet++){
+		bool isJetSeparated = ( TMath::Abs(photonJet.delta_phi_to(vJets.at(iJet))) > TMath::Pi()/2. );
+		if(vJets.at(iJet).pt() < 10.) break; // vJets are sorted by pt, break is ok
+		if(iJet == 0) vec_xSecTriggerGamma_bin.at(iBin)->Fill(0.);  // if there is at least one jet, count trigger photons, but only once for all jets connected to this photon; can be used to normalize histograms per trigger photon in the end
+		// gamma-jet correlation	 
+		vec_dPhiJetGamma_bin.at(iBin)->Fill(TMath::Abs(photonJet.delta_phi_to(vJets.at(iJet))));
+		if(!isJetSeparated) continue;
+		// x_Jet-gamma
+		vector<PseudoJet> vec_jetConst = vJets.at(iJet).constituents();
+		vec_xJetGamma_bin.at(iBin)->Fill(vJets.at(iJet).pt()/photonJet.pt());
+		// charged particle multiplicity in jets
+		vec_chJetTrackMult_bin.at(iBin)->Fill(vec_jetConst.size());
+		// x_obs p-going direction
+		vec_xObs_pGoing_bin.at(iBin)->Fill(pyHelp.XObs_pGoing(vJets.at(iJet), photonJet, p.info.eB()));
+		// x_obs Pb-going direction
+		vec_xObs_PbGoing_bin.at(iBin)->Fill(pyHelp.XObs_PbGoing(vJets.at(iJet), photonJet, p.info.eB()));
+		// real Bjorken x
+		vec_xBjorken_1_bin.at(iBin)->Fill(p.info.x1());
+		vec_xBjorken_2_bin.at(iBin)->Fill(p.info.x2());
+	      }
+
+	    // print scales of event
+	    // printf("---------------------------------------\n");
+	    // printf("p.info.pTHat()   = %f\n", p.info.pTHat());
+	    // printf("p.info.QFac()    = %f\n", p.info.QFac());
+	    // printf("p.info.QRen()    = %f\n", p.info.QRen());
+	    // printf("p.info.scalup()  = %f\n", p.info.scalup());
+	    // printf("\n");
 	  
 	  
-	} // if direct photon in acceptance
-      } // particle for-loop
+	  } // if direct photon in acceptance
+	} // particle for-loop
+	delete cs;           
+      } // end of "if(useGammaJetCorr)
       //------------------------------------------------------------------------------------------
       //----- END OF jets + photon correlation ---------------------------------------------------
       //------------------------------------------------------------------------------------------
-      delete cs;     
 
       //------------------------------------------------------------------------------------------
       pyHelp.Fill_TH2_Electron_TopMotherID(p.event, etaEMCal, vec_electron_pt_topMotherID_bin.at(iBin));
@@ -1083,7 +1093,7 @@ int main(int argc, char **argv) {
       pyHelp.Fill_Decay_Photon_Pt(p.event, etaEMCal, vec_decay_photons_etaEMCal_bin.at(iBin));
       pyHelp.Fill_Decay_Photon_Pt(p.event, etaPHOS, vec_decay_photons_etaPHOS_bin.at(iBin));
 
-      if(applyPhotonIso){
+      if(producePhotonIsoSpectra){
 	// fill isolated photons: considers only direct photons
 	// arguments = (p.event, etaAcc, vec_histo, bool onlyCharged?, iso cone radius, iso pt)
 	pyHelp.Fill_Direct_Iso_Photon_Pt(p.event, etaTPC, vec_iso_charged2GeV_R03_photons_etaTPC_bin.at(iBin), true, 0.3, 2.);
@@ -1186,7 +1196,7 @@ int main(int argc, char **argv) {
       pyHelp.Fill_invXsec_Decay_Photon_Pt(p.event, etaEMCal, vec_invXsec_decay_photons_etaEMCal_bin.at(iBin));
       pyHelp.Fill_invXsec_Decay_Photon_Pt(p.event, etaPHOS, vec_invXsec_decay_photons_etaPHOS_bin.at(iBin));
 
-      if(applyPhotonIso){
+      if(producePhotonIsoSpectra){
 	// fill isolated photons: considers only direct photons
 	// arguments = (p.event, etaAcc, vec_invXsec_histo, bool onlyCharged?, iso cone radius, iso pt)
 	pyHelp.Fill_invXsec_Direct_Iso_Photon_Pt(p.event, etaTPC, vec_invXsec_iso_charged2GeV_R03_photons_etaTPC_bin.at(iBin), true, 0.3, 2.);
@@ -1327,7 +1337,7 @@ int main(int argc, char **argv) {
     vec_decay_photons_etaEMCal_bin.at(iBin)->Scale(sigma);
     vec_decay_photons_etaPHOS_bin.at(iBin)->Scale(sigma);
 
-    if(applyPhotonIso){
+    if(producePhotonIsoSpectra){
       vec_iso_charged2GeV_R03_photons_etaTPC_bin.at(iBin)->Scale(sigma);
       vec_iso_charged2GeV_R04_photons_etaTPC_bin.at(iBin)->Scale(sigma);
       vec_iso_charged2GeV_R05_photons_etaTPC_bin.at(iBin)->Scale(sigma);
@@ -1428,7 +1438,7 @@ int main(int argc, char **argv) {
     vec_invXsec_decay_photons_etaPHOS_bin.at(iBin)->Scale(sigma);
 
 
-    if(applyPhotonIso){
+    if(producePhotonIsoSpectra){
       vec_invXsec_iso_charged2GeV_R03_photons_etaTPC_bin.at(iBin)->Scale(sigma);
       vec_invXsec_iso_charged2GeV_R04_photons_etaTPC_bin.at(iBin)->Scale(sigma);
       vec_invXsec_iso_charged2GeV_R05_photons_etaTPC_bin.at(iBin)->Scale(sigma);
@@ -1584,7 +1594,7 @@ int main(int argc, char **argv) {
   pyHelp.Add_Histos_Scale_Write2File( vec_decay_photons_etaEMCal_bin, h_decay_photons_etaEMCal, file, dir_gamma, 2*etaEMCal, false);
   pyHelp.Add_Histos_Scale_Write2File( vec_decay_photons_etaPHOS_bin, h_decay_photons_etaPHOS, file, dir_gamma, 2*etaPHOS, false);
 
-  if(applyPhotonIso){
+  if(producePhotonIsoSpectra){
     TDirectory *dir_isoGamma = file.mkdir("isoGamma");
     pyHelp.Add_Histos_Scale_Write2File( vec_iso_charged2GeV_R03_photons_etaTPC_bin, h_iso_charged2GeV_R03_photons_etaTPC, file, dir_isoGamma, 2*etaTPC, false);
     pyHelp.Add_Histos_Scale_Write2File( vec_iso_charged2GeV_R04_photons_etaTPC_bin, h_iso_charged2GeV_R04_photons_etaTPC, file, dir_isoGamma, 2*etaTPC, false);
@@ -1693,7 +1703,7 @@ int main(int argc, char **argv) {
   pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_decay_photons_etaEMCal_bin, h_invXsec_decay_photons_etaEMCal, file, dir_gamma_invXsec, 2.*etaEMCal, false, true);
   pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_decay_photons_etaPHOS_bin, h_invXsec_decay_photons_etaPHOS, file, dir_gamma_invXsec, 2.*etaPHOS, false, true);
 
-  if(applyPhotonIso){
+  if(producePhotonIsoSpectra){
     TDirectory *dir_isoGamma_invXsec = file.mkdir("isoGamma_invXsec");
     pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged2GeV_R03_photons_etaTPC_bin, h_invXsec_iso_charged2GeV_R03_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC, false, true);
     pyHelp.Add_Histos_Scale_Write2File( vec_invXsec_iso_charged2GeV_R04_photons_etaTPC_bin, h_invXsec_iso_charged2GeV_R04_photons_etaTPC, file, dir_isoGamma_invXsec, 2.*etaTPC, false, true);
