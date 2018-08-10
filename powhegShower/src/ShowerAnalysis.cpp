@@ -51,8 +51,6 @@ int main(int argc, char **argv) {
   vector<PseudoJet> vJets;
   ClusterSequence *cs = 0;
   
-  const int nPtBins = 1000;
-  const double PtBinsMin = 0., PtBinsMax = 100.;
   // vectors of histograms for different weights (e.g. for scale/pdf variation)
   vector<TH1D> vec_directphoton_pt; // = no decay photons
   vector<TH1D> vec_directphoton_pt_leading; // only hardest direct photon in event
@@ -149,38 +147,38 @@ int main(int argc, char **argv) {
       ReadInWeightIDs(p, vec_weightsID, isSudaWeight);
       // book histograms for each weight
       for(long unsigned int i = 0; i < vec_weightsID.size(); i++){
-	vec_directphoton_pt.push_back( TH1D(Form("h_directphoton_pt_%s",vec_weightsID.at(i).c_str()), "direct photon pt", nPtBins, PtBinsMin, PtBinsMax));
-	vec_directphoton_pt_leading.push_back( TH1D(Form("h_directphoton_pt_leading_%s",vec_weightsID.at(i).c_str()), "leading direct photon pt", nPtBins, PtBinsMin, PtBinsMax));
-	vec_directphoton_pt_leading_bornveto00.push_back( TH1D(Form("h_directphoton_pt_leading_bornveto00%s",vec_weightsID.at(i).c_str()), "leading direct photon pt bornveto00", nPtBins, PtBinsMin, PtBinsMax));
-	vec_directphoton_pt_leading_bornveto20.push_back( TH1D(Form("h_directphoton_pt_leading_bornveto20%s",vec_weightsID.at(i).c_str()), "leading direct photon pt bornveto20", nPtBins, PtBinsMin, PtBinsMax));
-	vec_directphoton_pt_leading_bornveto40.push_back( TH1D(Form("h_directphoton_pt_leading_bornveto40%s",vec_weightsID.at(i).c_str()), "leading direct photon pt bornveto40", nPtBins, PtBinsMin, PtBinsMax));
+	vec_directphoton_pt.push_back( TH1D(Form("h_directphoton_pt_%s",vec_weightsID.at(i).c_str()), "direct photon pt", pyHelp.ptBins, pyHelp.ptBinArray));
+	vec_directphoton_pt_leading.push_back( TH1D(Form("h_directphoton_pt_leading_%s",vec_weightsID.at(i).c_str()), "leading direct photon pt", pyHelp.ptBins, pyHelp.ptBinArray));
+	vec_directphoton_pt_leading_bornveto00.push_back( TH1D(Form("h_directphoton_pt_leading_bornveto00%s",vec_weightsID.at(i).c_str()), "leading direct photon pt bornveto00", pyHelp.ptBins, pyHelp.ptBinArray));
+	vec_directphoton_pt_leading_bornveto20.push_back( TH1D(Form("h_directphoton_pt_leading_bornveto20%s",vec_weightsID.at(i).c_str()), "leading direct photon pt bornveto20", pyHelp.ptBins, pyHelp.ptBinArray));
+	vec_directphoton_pt_leading_bornveto40.push_back( TH1D(Form("h_directphoton_pt_leading_bornveto40%s",vec_weightsID.at(i).c_str()), "leading direct photon pt bornveto40", pyHelp.ptBins, pyHelp.ptBinArray));
 	  
-	vec_isodirectphoton_pt.push_back( TH1D(Form("h_isodirectphoton_pt_%s",vec_weightsID.at(i).c_str()), "direct photon pt", nPtBins, PtBinsMin, PtBinsMax));
-	vec_isodirectphoton_pt_leading.push_back( TH1D(Form("h_isodirectphoton_pt_leading_%s",vec_weightsID.at(i).c_str()), "leading direct photon pt", nPtBins, PtBinsMin, PtBinsMax));
-	  
-	vec_chjet_pt.push_back( TH1D(Form("h_chjet_pt_%s",vec_weightsID.at(i).c_str()), "charged jet pt", nPtBins, PtBinsMin, PtBinsMax));
-	vec_chjet_pt_leading.push_back( TH1D(Form("h_chjet_pt_leading_%s",vec_weightsID.at(i).c_str()), "leading charged jet pt", nPtBins, PtBinsMin, PtBinsMax));
+	vec_isodirectphoton_pt.push_back( TH1D(Form("h_isodirectphoton_pt_%s",vec_weightsID.at(i).c_str()), "direct photon pt", pyHelp.ptBins, pyHelp.ptBinArray));
+	vec_isodirectphoton_pt_leading.push_back( TH1D(Form("h_isodirectphoton_pt_leading_%s",vec_weightsID.at(i).c_str()), "leading direct photon pt", pyHelp.ptBins, pyHelp.ptBinArray));
+	
+	vec_chjet_pt.push_back( TH1D(Form("h_chjet_pt_%s",vec_weightsID.at(i).c_str()), "charged jet pt", pyHelp.ptBins, pyHelp.ptBinArray));
+	vec_chjet_pt_leading.push_back( TH1D(Form("h_chjet_pt_leading_%s",vec_weightsID.at(i).c_str()), "leading charged jet pt", pyHelp.ptBins, pyHelp.ptBinArray));
 
-	vec_isoCone_track_phi.push_back( TH1D(Form("h_isoCone_track_phi_%s",vec_weightsID.at(i).c_str()), "isoCone_track_phi", 40, -1., 1.));
-	vec_isoCone_track_eta.push_back( TH1D(Form("h_isoCone_track_eta_%s",vec_weightsID.at(i).c_str()), "isoCone_track_eta", 40, -1., 1.));
+	vec_dPhiJetGamma.push_back( TH1D(Form("h_dPhiJetGamma_%s",vec_weightsID.at(i).c_str()), "#Delta #phi_{J#gamma}", pyHelp.dPhiJetGamma_nBins, pyHelp.dPhiJetGamma_min, pyHelp.dPhiJetGamma_max));
+	vec_dPhiJetGamma_noDeltaPhiCut.push_back( TH1D(Form("h_dPhiJetGamma_noDeltaPhiCut_%s",vec_weightsID.at(i).c_str()), "#Delta #phi_{J#gamma} no cut", pyHelp.dPhiJetGamma_nBins, pyHelp.dPhiJetGamma_min, pyHelp.dPhiJetGamma_max));
 
-	vec_dPhiJetGamma.push_back( TH1D(Form("h_dPhiJetGamma_%s",vec_weightsID.at(i).c_str()), "#Delta #phi_{J#gamma}", 68, -0.1, 3.3));
-	vec_dPhiJetGamma_noDeltaPhiCut.push_back( TH1D(Form("h_dPhiJetGamma_noDeltaPhiCut_%s",vec_weightsID.at(i).c_str()), "#Delta #phi_{J#gamma} no cut", 68, -0.1, 3.3));
+	vec_xJetGamma.push_back( TH1D(Form("h_xJetGamma_%s",vec_weightsID.at(i).c_str()), "x_{J#gamma} = p_{T}^{Jet} / p_{T}^{#gamma}", pyHelp.dxJetGamma_nBins, pyHelp.dxJetGamma_min, pyHelp.dxJetGamma_max));
 
-	vec_xJetGamma.push_back( TH1D(Form("h_xJetGamma_%s",vec_weightsID.at(i).c_str()), "x_{J#gamma} = p_{T}^{Jet} / p_{T}^{#gamma}", 100, 0., 2.5));
+	vec_chJetTrackMult.push_back( TH1D(Form("h_chJetTrackMult_%s",vec_weightsID.at(i).c_str()), "charged track multiplicity within jets", pyHelp.chJetTrackMult_nBins, pyHelp.chJetTrackMult_min, pyHelp.chJetTrackMult_max));
 
-	vec_chJetTrackMult.push_back( TH1D(Form("h_chJetTrackMult_%s",vec_weightsID.at(i).c_str()), "charged track multiplicity within jets", 50, 0.5, 50.5));
+	vec_xObs_pGoing.push_back( TH1D(Form("h_xObs_pGoing_%s",vec_weightsID.at(i).c_str()), "xObs_pGoing", pyHelp.xObs_nBins, pyHelp.xObs_min, pyHelp.xObs_max));
+	vec_xObs_PbGoing.push_back( TH1D(Form("h_xObs_PbGoing_%s",vec_weightsID.at(i).c_str()), "xObs_PbGoing", pyHelp.xObs_nBins, pyHelp.xObs_min, pyHelp.xObs_max));
+	vec_xBjorken_1.push_back( TH1D(Form("h_xBjorken_1_%s",vec_weightsID.at(i).c_str()), "xBjorken 1", pyHelp.xObs_nBins, pyHelp.xObs_min, pyHelp.xObs_max));
+	vec_xBjorken_2.push_back( TH1D(Form("h_xBjorken_2_%s",vec_weightsID.at(i).c_str()), "xBjorken 2", pyHelp.xObs_nBins, pyHelp.xObs_min, pyHelp.xObs_max));
+	vec_xBjorken_1_PDF.push_back( TH1D(Form("h_xBjorken_1_PDF_%s",vec_weightsID.at(i).c_str()), "xBjorken 1 alternative version x1pdf", pyHelp.xObs_nBins, pyHelp.xObs_min, pyHelp.xObs_max));
+	vec_xBjorken_2_PDF.push_back( TH1D(Form("h_xBjorken_2_PDF_%s",vec_weightsID.at(i).c_str()), "xBjorken 2 alternative version x2pdf", pyHelp.xObs_nBins, pyHelp.xObs_min, pyHelp.xObs_max));
 
-	vec_xObs_pGoing.push_back( TH1D(Form("h_xObs_pGoing_%s",vec_weightsID.at(i).c_str()), "xObs_pGoing", 100, 0., 0.10));
-	vec_xObs_PbGoing.push_back( TH1D(Form("h_xObs_PbGoing_%s",vec_weightsID.at(i).c_str()), "xObs_PbGoing", 100, 0., 0.10));
-	vec_xBjorken_1.push_back( TH1D(Form("h_xBjorken_1_%s",vec_weightsID.at(i).c_str()), "xBjorken 1", 100, 0., 0.10));
-	vec_xBjorken_2.push_back( TH1D(Form("h_xBjorken_2_%s",vec_weightsID.at(i).c_str()), "xBjorken 2", 100, 0., 0.10));
-	vec_xBjorken_1_PDF.push_back( TH1D(Form("h_xBjorken_1_PDF_%s",vec_weightsID.at(i).c_str()), "xBjorken 1 alternative version x1pdf", 100, 0., 0.10));
-	vec_xBjorken_2_PDF.push_back( TH1D(Form("h_xBjorken_2_PDF_%s",vec_weightsID.at(i).c_str()), "xBjorken 2 alternative version x2pdf", 100, 0., 0.10));
+	vec_isoCone_track_phi.push_back( TH1D(Form("h_isoCone_track_phi_%s",vec_weightsID.at(i).c_str()), "isoCone_track_phi", pyHelp.isoCone_track_nBins, pyHelp.isoCone_track_min, pyHelp.isoCone_track_max));
+	vec_isoCone_track_eta.push_back( TH1D(Form("h_isoCone_track_eta_%s",vec_weightsID.at(i).c_str()), "isoCone_track_eta", pyHelp.isoCone_track_nBins, pyHelp.isoCone_track_min, pyHelp.isoCone_track_max));
 
-	vec_isoPt.push_back( TH1D(Form("h_isoPt_%s",vec_weightsID.at(i).c_str()), "Pt summed in iso cone", nPtBins, PtBinsMin, PtBinsMax/5.));
-	vec_UEPtDensity.push_back( TH1D(Form("h_UEPtDensity_%s",vec_weightsID.at(i).c_str()), "UEPtDensity", nPtBins, PtBinsMin, PtBinsMax/5.));
-	vec_isoPt_corrected.push_back( TH1D(Form("h_isoPt_corrected_%s",vec_weightsID.at(i).c_str()), "Pt summed in iso cone", 2*nPtBins, -PtBinsMax/5., PtBinsMax/5.));
+	vec_isoPt.push_back( TH1D(Form("h_isoPt_%s",vec_weightsID.at(i).c_str()), "Pt summed in iso cone", pyHelp.ptBins, pyHelp.ptBinArray));
+	vec_UEPtDensity.push_back( TH1D(Form("h_UEPtDensity_%s",vec_weightsID.at(i).c_str()), "UEPtDensity", pyHelp.ptBins, pyHelp.ptBinArray));
+	vec_isoPt_corrected.push_back( TH1D(Form("h_isoPt_corrected_%s",vec_weightsID.at(i).c_str()), "Pt summed in iso cone", pyHelp.ptBins, pyHelp.ptBinArray));
 	vec_xSecTriggerGamma.push_back(TH1D(Form("h_xSecTriggerGamma_%s",vec_weightsID.at(i).c_str()),"accumulated cross section of trigger photons", 1, -0.5, 0.5));
 		  
 	AreWeightsHistosBooked = true;

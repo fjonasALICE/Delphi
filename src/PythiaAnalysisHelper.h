@@ -83,8 +83,6 @@ class PythiaAnalysisHelper{
   void Add_Histos_Scale_Write2File( std::vector <TH2D*> &vec_temp_histo, TH2* final_histo, TFile &file, TDirectory *dir, double etaRange, bool useRap, bool isInvariantXsec = false); // adds temp. histos from pTHat bins to final; normalize for pt bin width and eta range (= no 2*Pi applied here!)
   void FillForEachWeight(vector<TH1D> &vec_h, double val, vector<double> &vec_weights);
 
-  
- private:
 
   const char *electronMotherName[17] = {"all",
 					"neg","pos",
@@ -96,6 +94,46 @@ class PythiaAnalysisHelper{
 					"#pi^{0}"     ,"#eta",
 					"#omega"      ,"K^{0}_{s}",
 					"#Phi,#rho,J/#Psi"};
+
+  static const int ptBins = 97;
+
+  double ptBinArray[ptBins+1] = {0.0,0.2,0.4,0.6,0.8,
+					1.0,1.5,2.0,2.5,3.0,3.5,4.0,4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,
+					10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,
+					30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,105,110,115,120,125,130,135,140,145,150,155,160,165,170,175,180,185,190,195,200,205,210,215,220,225,230,235,240,245,250,255,260,265,270,275,280,285,290,295,
+					300};
+  //  double ptBinArray[ptBins+1];
+  /* for(int i=0; i < ptBins+1; i++){ */
+  /*   if(i <= 4)        ptBinArray[i] = 0.2*i; // 0.0 - 0.8 */
+  /*   if(i >= 5 && i <= 22)  ptBinArray[i] = 0.5*i - 1.5; // 1.0 - 10.0 */
+  /*   if(i >= 23 && i <= 42) ptBinArray[i] = 1.0*i - 13.;; // 10 - 30 */
+  /*   if(i >= 43)      ptBinArray[i] = 5.0*i - 185.; // 30 - 300 */
+  /*   //cout << "ptBinArray[" << i << "] = " << ptBinArray[i] << endl; */
+  /* } */
+
+
+  const int dPhiJetGamma_nBins = 68;
+  const double dPhiJetGamma_min = 0.1;
+  const double dPhiJetGamma_max = 3.3;
+
+  const int dxJetGamma_nBins = 100;
+  const double dxJetGamma_min = 0.0;
+  const double dxJetGamma_max = 2.5;
+
+  const int chJetTrackMult_nBins = 50;
+  const double chJetTrackMult_min = 0.5;
+  const double chJetTrackMult_max = 50.5;
+
+  const int xObs_nBins = 100;
+  const double xObs_min = 0.0;
+  const double xObs_max = 0.1;
+
+  const int isoCone_track_nBins = 40;
+  const double isoCone_track_min = -1;
+  const double isoCone_track_max = 1.;
+
+  
+ private:
 
 };
 

@@ -25,8 +25,8 @@ PythiaAnalysisHelper pyHelp;
 
 int pTHatStartBin = 0; // option to skip the first pthat bins
 bool applyPhotonIso = false;
-bool useChargedJetsGammaCorrelations = false;
-bool usePtHatBin_100GeV = false;
+bool useChargedJetsGammaCorrelations = true;
+bool usePtHatBin_100GeV = true;
 
 char rootFileName[1024]; // output file name
 
@@ -48,9 +48,8 @@ double pTHatBin_100GeV[pTHatBins_100GeV+1]= { 9.  , 12. , 16. , 21. , 28.,
 					      10000. }; 
 
 // kinematic range
-const double ptMin = 0., ptMax = 300.;
-const int ptBins = 300;
-const int ptBins2 = 97;
+//const double ptMin = 0., ptMax = 300.;
+//const int ptBins = 97;
 
 
 const double yDefault = 0.8,
