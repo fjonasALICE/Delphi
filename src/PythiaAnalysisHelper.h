@@ -113,7 +113,7 @@ class PythiaAnalysisHelper{
 
 
   const int dPhiJetGamma_nBins = 68;
-  const double dPhiJetGamma_min = 0.1;
+  const double dPhiJetGamma_min = -0.1;
   const double dPhiJetGamma_max = 3.3;
 
   const int dxJetGamma_nBins = 100;
