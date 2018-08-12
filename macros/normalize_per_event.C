@@ -1,4 +1,4 @@
-void normalize_weightSum(const char* rootInFileName, bool chooseGammaJetCorr=kFALSE){
+void normalize_per_event(const char* rootInFileName, bool chooseGammaJetCorr=kFALSE){
 
   //  char rootOutFileName[1024];
   TString rootOutFileName = TString(rootInFileName);
