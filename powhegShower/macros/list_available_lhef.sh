@@ -1,5 +1,5 @@
 #!/bin/bash
 
-ls -dl ../lhefGen/lhef/*/*/*
+ls -dl /lustre/nyx/alice/users/hpoppenb/POWHEG-BOX-V2/directphoton/lhefGen/lhef/*/*/*
 
 exit $?
