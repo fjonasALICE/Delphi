@@ -235,8 +235,10 @@ int main(int argc, char **argv) {
     // set up pseudojets and set up background density in eta band
     //----------------------------------------------------------------------
     for (int i = 5; i < p.event.size(); i++) {
+      if( i == iPhoton ) continue; // never consider the photon itself for the jet
       if (p.event[i].isFinal() && p.event[i].isCharged()) {
-	if (TMath::Abs(p.event[i].eta()) < etaTPC){
+      //if (p.event[i].isFinal()) { // TEST for full jets
+ 	if (TMath::Abs(p.event[i].eta()) < etaTPC){
 	  vPseudo.push_back(PseudoJet(p.event[i].px(),p.event[i].py(),p.event[i].pz(),p.event[i].e()));
 	}
       }
