@@ -90,7 +90,7 @@ int main(int argc, char **argv) {
   // pthat bin use (ignore for MB production)
   if(useGammaJetCorrelations){
     pTHatBins = pTHatBins_100GeV;
-    std::copy(pTHatBin_100GeV,pTHatBin_100GeV+11,pTHatBin);    
+    std::copy(pTHatBin_100GeV,pTHatBin_100GeV+9,pTHatBin);    
   }else{
     pTHatBins = pTHatBins_250GeV;
     std::copy(pTHatBin_250GeV,pTHatBin_250GeV+19,pTHatBin);    

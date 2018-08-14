@@ -1,3 +1,4 @@
 8TeV pPb: 10000 JJ noMPI events per pthat bin take 30 min
 8TeV pPb: 10000 JJ (full) events per pthat bin take 140 min
 8TeV pPb: 200000 MB events bin take 30 min
+5TeV pPb: 300000 events JJ (noMPI,GammaJetBinning) take 300 min
