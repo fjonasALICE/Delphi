@@ -56,6 +56,7 @@ int main(int argc, char **argv) {
   vector<TH1D> vec_directphoton_pt_leading; // only hardest direct photon in event
   vector<TH1D> vec_directphoton_pt_leading_bornveto00; // born veto off
   vector<TH1D> vec_directphoton_pt_leading_bornveto20; // hard born veto
+  vector<TH1D> vec_directphoton_pt_leading_bornveto30; // medium born veto
   vector<TH1D> vec_directphoton_pt_leading_bornveto40; // soft born veto
   vector<TH1D> vec_isodirectphoton_pt, vec_isodirectphoton_pt_leading;
   vector<TH1D> vec_chjet_pt, vec_chjet_pt_leading;
@@ -65,14 +66,14 @@ int main(int argc, char **argv) {
   vector<TH1D> vec_chJetTrackMult;
   vector<TH1D> vec_xObs_pGoing, vec_xObs_PbGoing;
   vector<TH1D> vec_xBjorken_1, vec_xBjorken_2;
-  vector<TH1D> vec_xBjorken_1_PDF, vec_xBjorken_2_PDF;
   vector<TH1D> vec_xSecTriggerGamma;
   vector<TH1D> vec_isoPt, vec_UEPtDensity, vec_isoPt_corrected;
-  TH1D *h_nEvents = new TH1D("h_nEvents", "number of events", 4, 0.5, 4.5);
+  TH1D *h_nEvents = new TH1D("h_nEvents", "number of events", 5, 0.5, 5.5);
   h_nEvents->GetXaxis()->SetBinLabel(1, "bornveto2.5(std)");
   h_nEvents->GetXaxis()->SetBinLabel(2, "bornveto0.0(off)");
   h_nEvents->GetXaxis()->SetBinLabel(3, "bornveto2.0");
   h_nEvents->GetXaxis()->SetBinLabel(4, "bornveto3.0");
+  h_nEvents->GetXaxis()->SetBinLabel(5, "bornveto4.0");
   
   // prepare bookkeeping of weights
   //----------------------------------------------------------------------
@@ -140,6 +141,7 @@ int main(int argc, char **argv) {
     h_nEvents->Fill(2.);
     h_nEvents->Fill(3.);
     h_nEvents->Fill(4.);
+    h_nEvents->Fill(5.);
 
     // only once: read in weight IDs and book histograms for each weight
     //----------------------------------------------------------------------
@@ -149,9 +151,10 @@ int main(int argc, char **argv) {
       for(long unsigned int i = 0; i < vec_weightsID.size(); i++){
 	vec_directphoton_pt.push_back( TH1D(Form("h_directphoton_pt_%s",vec_weightsID.at(i).c_str()), "direct photon pt", pyHelp.ptBins, pyHelp.ptBinArray));
 	vec_directphoton_pt_leading.push_back( TH1D(Form("h_directphoton_pt_leading_%s",vec_weightsID.at(i).c_str()), "leading direct photon pt", pyHelp.ptBins, pyHelp.ptBinArray));
-	vec_directphoton_pt_leading_bornveto00.push_back( TH1D(Form("h_directphoton_pt_leading_bornveto00%s",vec_weightsID.at(i).c_str()), "leading direct photon pt bornveto00", pyHelp.ptBins, pyHelp.ptBinArray));
-	vec_directphoton_pt_leading_bornveto20.push_back( TH1D(Form("h_directphoton_pt_leading_bornveto20%s",vec_weightsID.at(i).c_str()), "leading direct photon pt bornveto20", pyHelp.ptBins, pyHelp.ptBinArray));
-	vec_directphoton_pt_leading_bornveto40.push_back( TH1D(Form("h_directphoton_pt_leading_bornveto40%s",vec_weightsID.at(i).c_str()), "leading direct photon pt bornveto40", pyHelp.ptBins, pyHelp.ptBinArray));
+	vec_directphoton_pt_leading_bornveto00.push_back( TH1D(Form("h_directphoton_pt_leading_bornveto00%s",vec_weightsID.at(i).c_str()), "leading direct photon pt bornveto off", pyHelp.ptBins, pyHelp.ptBinArray));
+	vec_directphoton_pt_leading_bornveto20.push_back( TH1D(Form("h_directphoton_pt_leading_bornveto20%s",vec_weightsID.at(i).c_str()), "leading direct photon pt bornveto 2.0", pyHelp.ptBins, pyHelp.ptBinArray));
+	vec_directphoton_pt_leading_bornveto30.push_back( TH1D(Form("h_directphoton_pt_leading_bornveto30%s",vec_weightsID.at(i).c_str()), "leading direct photon pt bornveto 3.0", pyHelp.ptBins, pyHelp.ptBinArray));
+	vec_directphoton_pt_leading_bornveto40.push_back( TH1D(Form("h_directphoton_pt_leading_bornveto40%s",vec_weightsID.at(i).c_str()), "leading direct photon pt bornveto 4.0", pyHelp.ptBins, pyHelp.ptBinArray));
 	  
 	vec_isodirectphoton_pt.push_back( TH1D(Form("h_isodirectphoton_pt_%s",vec_weightsID.at(i).c_str()), "direct photon pt", pyHelp.ptBins, pyHelp.ptBinArray));
 	vec_isodirectphoton_pt_leading.push_back( TH1D(Form("h_isodirectphoton_pt_leading_%s",vec_weightsID.at(i).c_str()), "leading direct photon pt", pyHelp.ptBins, pyHelp.ptBinArray));
@@ -170,8 +173,6 @@ int main(int argc, char **argv) {
 	vec_xObs_PbGoing.push_back( TH1D(Form("h_xObs_PbGoing_%s",vec_weightsID.at(i).c_str()), "xObs_PbGoing", pyHelp.xObs_nBins, pyHelp.xObs_min, pyHelp.xObs_max));
 	vec_xBjorken_1.push_back( TH1D(Form("h_xBjorken_1_%s",vec_weightsID.at(i).c_str()), "xBjorken 1", pyHelp.xObs_nBins, pyHelp.xObs_min, pyHelp.xObs_max));
 	vec_xBjorken_2.push_back( TH1D(Form("h_xBjorken_2_%s",vec_weightsID.at(i).c_str()), "xBjorken 2", pyHelp.xObs_nBins, pyHelp.xObs_min, pyHelp.xObs_max));
-	vec_xBjorken_1_PDF.push_back( TH1D(Form("h_xBjorken_1_PDF_%s",vec_weightsID.at(i).c_str()), "xBjorken 1 alternative version x1pdf", pyHelp.xObs_nBins, pyHelp.xObs_min, pyHelp.xObs_max));
-	vec_xBjorken_2_PDF.push_back( TH1D(Form("h_xBjorken_2_PDF_%s",vec_weightsID.at(i).c_str()), "xBjorken 2 alternative version x2pdf", pyHelp.xObs_nBins, pyHelp.xObs_min, pyHelp.xObs_max));
 
 	vec_isoCone_track_phi.push_back( TH1D(Form("h_isoCone_track_phi_%s",vec_weightsID.at(i).c_str()), "isoCone_track_phi", pyHelp.isoCone_track_nBins, pyHelp.isoCone_track_min, pyHelp.isoCone_track_max));
 	vec_isoCone_track_eta.push_back( TH1D(Form("h_isoCone_track_eta_%s",vec_weightsID.at(i).c_str()), "isoCone_track_eta", pyHelp.isoCone_track_nBins, pyHelp.isoCone_track_min, pyHelp.isoCone_track_max));
@@ -222,13 +223,16 @@ int main(int argc, char **argv) {
       else pyHelp.FillForEachWeight(vec_directphoton_pt_leading_bornveto20, p.event[iPhoton].pT(), vec_weights);
 	
       if(ptMax > p.info.getScalesAttribute("uborns")*3.0) h_nEvents->Fill(4.,-1.);
+      else pyHelp.FillForEachWeight(vec_directphoton_pt_leading_bornveto30, p.event[iPhoton].pT(), vec_weights);
+
+      if(ptMax > p.info.getScalesAttribute("uborns")*4.0) h_nEvents->Fill(5.,-1.);
       else pyHelp.FillForEachWeight(vec_directphoton_pt_leading_bornveto40, p.event[iPhoton].pT(), vec_weights);
 
       // use following line to ignore events with extreme weights that can cause ugly fluctuations
       // but make sure the cross section does not decrease significantly
       if(ptMax > p.info.getScalesAttribute("uborns")*2.5){
 	h_nEvents->Fill(1.,-1.);
-	continue; // jump to next event = veto event if hardest photon is 3 times harder than born scale
+	continue; // jump to next event = veto event if hardest photon is x times harder than born scale
       }
     }
       
@@ -307,8 +311,6 @@ int main(int argc, char **argv) {
 	    // real Bjorken x
 	    pyHelp.FillForEachWeight(vec_xBjorken_1, p.info.x1() , vec_weights);
 	    pyHelp.FillForEachWeight(vec_xBjorken_2, p.info.x2() , vec_weights);
-	    pyHelp.FillForEachWeight(vec_xBjorken_1_PDF, p.info.x1pdf() , vec_weights);
-	    pyHelp.FillForEachWeight(vec_xBjorken_2_PDF, p.info.x2pdf() , vec_weights);
 	  }
 
 	// print scales of event
@@ -337,15 +339,16 @@ int main(int argc, char **argv) {
   pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_directphoton_pt_leading, file, etaTPC-jetRadius);
   pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_directphoton_pt_leading_bornveto00, file, etaTPC-jetRadius);
   pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_directphoton_pt_leading_bornveto20, file, etaTPC-jetRadius);
+  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_directphoton_pt_leading_bornveto30, file, etaTPC-jetRadius);
   pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_directphoton_pt_leading_bornveto40, file, etaTPC-jetRadius);
   pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_isodirectphoton_pt, file, etaTPC-jetRadius);
   pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_isodirectphoton_pt_leading, file, etaTPC-jetRadius);
   pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_chjet_pt, file, etaTPC-jetRadius);
   pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_chjet_pt_leading, file, etaTPC-jetRadius);
   
-  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_isoCone_track_phi, file, 1.);
-  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_isoCone_track_eta, file, 1.);
-  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_dPhiJetGamma_noDeltaPhiCut, file, 1.);
+  // pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_isoCone_track_phi, file, 1.);
+  // pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_isoCone_track_eta, file, 1.);
+  // pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_dPhiJetGamma_noDeltaPhiCut, file, 1.);
   pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_dPhiJetGamma, file, 1.);
   pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_xJetGamma, file, 1.);
   pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_chJetTrackMult, file, 1.);
@@ -353,11 +356,9 @@ int main(int argc, char **argv) {
   pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_xObs_PbGoing, file, 1.);
   pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_xBjorken_1, file, 1.);
   pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_xBjorken_2, file, 1.);
-  // pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_xBjorken_1_PDF, file, 1.); // second version to call bjorken x gives same results
-  // pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_xBjorken_2_PDF, file, 1.);
-  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_isoPt, file, 1.);
-  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_UEPtDensity, file, 1.);
-  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_isoPt_corrected, file, 1.);
+  // pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_isoPt, file, 1.);
+  // pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_UEPtDensity, file, 1.);
+  // pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_isoPt_corrected, file, 1.);
   pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_xSecTriggerGamma, file, 1.);
   
   file.Close();
