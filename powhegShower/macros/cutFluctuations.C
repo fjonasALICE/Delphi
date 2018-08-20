@@ -17,6 +17,7 @@ void cutFluctuations(TString dirName="bktmin3_bsup23_radfac50_betaZ0.435_noMPI",
   vector <TH1D*> vec_h_isodirectphoton_pt_central;
   vector <TH1D*> vec_h_dPhiJetGamma_central;
   vector <TH1D*> vec_h_xObs_pGoing_central;
+  vector <TH1D*> vec_h_xObs_PbGoing_central;
 
   vector <TFile*> vec_rootInFile;
   TH1D *tempHist = 0x0;
@@ -30,6 +31,8 @@ void cutFluctuations(TString dirName="bktmin3_bsup23_radfac50_betaZ0.435_noMPI",
     vec_h_dPhiJetGamma_central.push_back((TH1D*)tempHist->Clone("h_dPhiJetGamma_central"));
     tempHist = (TH1D*)vec_rootInFile.at(i)->Get("h_xObs_pGoing_central");
     vec_h_xObs_pGoing_central.push_back((TH1D*)tempHist->Clone("h_xObs_pGoing_central"));
+    tempHist = (TH1D*)vec_rootInFile.at(i)->Get("h_xObs_PbGoing_central");
+    vec_h_xObs_PbGoing_central.push_back((TH1D*)tempHist->Clone("h_xObs_PbGoing_central"));
 
     vec_rootInFile.at(i)->Close();
   }
@@ -45,6 +48,9 @@ void cutFluctuations(TString dirName="bktmin3_bsup23_radfac50_betaZ0.435_noMPI",
   TH1D *histMeanBin_xObs_pGoing_central = (TH1D*)vec_h_xObs_pGoing_central.at(0)->Clone("histMeanBin_xObs_pGoing_central");
   histMeanBin_xObs_pGoing_central->SetTitle("histMeanBin_xObs_pGoing_central");
   histMeanBin_xObs_pGoing_central->Reset();
+  TH1D *histMeanBin_xObs_PbGoing_central = (TH1D*)vec_h_xObs_PbGoing_central.at(0)->Clone("histMeanBin_xObs_PbGoing_central");
+  histMeanBin_xObs_PbGoing_central->SetTitle("histMeanBin_xObs_PbGoing_central");
+  histMeanBin_xObs_PbGoing_central->Reset();
   double tempMeanYield;
 
   for(int iBin = 0; iBin < vec_rootInFileName.size(); iBin++){
@@ -80,6 +86,19 @@ void cutFluctuations(TString dirName="bktmin3_bsup23_radfac50_betaZ0.435_noMPI",
     }
     tempMeanYield /= vec_rootInFileName.size();
     histMeanBin_xObs_pGoing_central->SetBinContent(iBin,tempMeanYield);
+  }
+
+  for(int iBin = 0; iBin < vec_rootInFileName.size(); iBin++){
+    tempMeanYield = 0.;
+    if(vec_h_xObs_PbGoing_central.at(iBin)->GetBinCenter(iBin) < 0.0 ||
+       vec_h_xObs_PbGoing_central.at(iBin)->GetBinCenter(iBin) > 0.03){
+      continue;
+    }
+    for(int i = 0; i < vec_rootInFileName.size(); i++){
+      tempMeanYield += vec_h_xObs_PbGoing_central.at(i)->GetBinContent(iBin);
+    }
+    tempMeanYield /= vec_rootInFileName.size();
+    histMeanBin_xObs_PbGoing_central->SetBinContent(iBin,tempMeanYield);
   }
 
 
@@ -168,7 +187,14 @@ void cutFluctuations(TString dirName="bktmin3_bsup23_radfac50_betaZ0.435_noMPI",
     else vec_ratio_xObs_pGoing_central.at(i)->Draw("same");
   }
 
+  // for PbGoing dont draw, only calculate ratio
+  vector <TH1D*> vec_ratio_xObs_PbGoing_central;
+  for(int i = 0; i < vec_rootInFileName.size(); i++){
+    vec_ratio_xObs_PbGoing_central.push_back((TH1D*)vec_h_xObs_PbGoing_central.at(i)->Clone("ratio_xObs_PbGoing_central"));
+    vec_ratio_xObs_PbGoing_central.at(i)->Divide(histMeanBin_xObs_PbGoing_central);
+  }
 
+  
 
   //----------------------------------------------------------------------
   //----------------------------------------------------------------------
@@ -202,10 +228,25 @@ void cutFluctuations(TString dirName="bktmin3_bsup23_radfac50_betaZ0.435_noMPI",
     }
   }
 
+  for(int i = 0; i < vec_rootInFileName.size(); i++){
+    double minimum_ratio_xObs_PbGoing_central = vec_ratio_xObs_PbGoing_central.at(i)->GetMinimum();
+    double maximum_ratio_xObs_PbGoing_central = vec_ratio_xObs_PbGoing_central.at(i)->GetMaximum();
+    if(minimum_ratio_xObs_PbGoing_central < 0.){
+      vec_vetoName.push_back(vec_rootInFileName.at(i));
+      printf("vetoed file %s with ratio_xObs_PbGoing minimum = %f\n",vec_rootInFileName.at(i).Data(), minimum_ratio_xObs_PbGoing_central);
+      continue;
+    }
+    if(maximum_ratio_xObs_PbGoing_central > vetoFac){
+      vec_vetoName.push_back(vec_rootInFileName.at(i));
+      printf("vetoed file %s with ratio_xObs_PbGoing maximum = %f\n",vec_rootInFileName.at(i).Data(), maximum_ratio_xObs_PbGoing_central);
+      continue;
+    }
+  }
+
   //----------------------------------------------------------------------
   //----------------------------------------------------------------------
   ofstream myfile;
-  myfile.open(Form("do_hadd_vetoed.sh",dirName.Data()), ios::trunc | ios::out);
+  myfile.open("do_hadd_vetoed.sh", ios::trunc | ios::out);
   myfile << Form("hadd -f %s",outFileName.Data());
   for(int i = 0; i < vec_rootInFileName.size(); i++){
     bool isVetoed = false;
