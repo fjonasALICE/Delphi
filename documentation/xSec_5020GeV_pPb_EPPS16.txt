@@ -1,0 +1,15 @@
+ *-------  PYTHIA Event and Cross Section Statistics  -------------------------------------------------------------*
+ |                                                                                                                 |
+ | Subprocess                                    Code |            Number of events       |      sigma +- delta    |
+ |                                                    |       Tried   Selected   Accepted |     (estimated) (mb)   |
+ |                                                    |                                   |                        |
+ |-----------------------------------------------------------------------------------------------------------------|
+ |                                                    |                                   |                        |
+ | non-diffractive                                101 |      708256     708256     708256 |   4.803e+01  2.091e-07 |
+ | A B -> X B single diffractive                  103 |       89196      89196      89196 |   6.065e+00  3.328e-08 |
+ | A B -> A X single diffractive                  104 |       89067      89067      89067 |   6.065e+00  3.343e-08 |
+ | A B -> X X double diffractive                  105 |      113481     113481     113481 |   7.733e+00  1.807e-08 |
+ |                                                    |                                   |                        |
+ | sum                                                |     1000000    1000000    1000000 |   6.789e+01  2.151e-07 |
+ |                                                                                                                 |
+ *-------  End PYTHIA Event and Cross Section Statistics ----------------------------------------------------------*
