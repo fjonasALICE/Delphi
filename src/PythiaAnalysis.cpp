@@ -1251,6 +1251,8 @@ int main(int argc, char **argv) {
 
     double sigma = p.info.sigmaGen()*1e9; // cross section in picobarn
     //    double sigma_per_event = sigma/p.info.weightSum(); // weightSum = number of events in standard Pythia8
+    cout << "sigma = " << sigma << endl;
+    cout << "weightSum = " << p.info.weightSum() << endl;
 
     vec_weightSum_bin.at(iBin)->SetBinContent(1,p.info.weightSum());
     h_weightSum->SetBinContent(1,h_weightSum->GetBinContent(1)+p.info.weightSum());

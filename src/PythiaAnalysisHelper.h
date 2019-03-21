@@ -96,18 +96,18 @@ class PythiaAnalysisHelper{
 					"#Phi,#rho,J/#Psi"};
 
   // default binning from Nico's suggestion
-  /*  static const int ptBins = 97;
+  static const int ptBins = 97;
   double ptBinArray[ptBins+1] = {0.0,0.2,0.4,0.6,0.8,
 				 1.0,1.5,2.0,2.5,3.0,3.5,4.0,4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,
 				 10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,
 				 30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,105,110,115,120,125,130,135,140,145,150,155,160,165,170,175,180,185,190,195,200,205,210,215,220,225,230,235,240,245,250,255,260,265,270,275,280,285,290,295,
-				 300};*/
+				 300};
 
 
-  // Erwann binning
-  static const int ptBins = 9;
-  double ptBinArray[ptBins+1] = {10., 12., 14., 16., 18.,
-				 20., 25., 30., 40., 60.};
+  // Erwann/Marco binning
+  static const int ptBinsMarco = 9;
+  double ptBinArrayMarco[ptBinsMarco+1] = {10., 12., 14., 16., 18.,
+					   20., 25., 30., 40., 60.};
   
   
   // binning for Florian's omega analysis

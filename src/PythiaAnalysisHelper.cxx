@@ -124,8 +124,9 @@ void PythiaAnalysisHelper::Write_README(Pythia8::Pythia &p, TFile &file, int arg
 void PythiaAnalysisHelper::ProcessSwitch(int iBin, double *pTHatBin, char **argv, Pythia8::Pythia &p){
 
   if( !strcmp(argv[2],"MB") || !strcmp(argv[2],"MBVeto")){
-    p.readString("SoftQCD:inelastic= on");
-    return;
+    //p.readString("SoftQCD:inelastic= on"); // includes also double- and single diffractive events, only necessary for lowest pt
+    p.readString("SoftQCD:nonDiffractive= on");
+  return;
   }
   else if( !strcmp(argv[2],"JJ") ){
     p.readString("HardQCD:all = on");
@@ -193,7 +194,7 @@ bool PythiaAnalysisHelper::IsPhotonIsolated(Event &event, int iPhoton, const dou
     if ( !event[iTrack].isVisible() ) continue;
     if ( !event[iTrack].isCharged() ) continue;
     if ( TMath::Abs(event[iPhoton].eta()) > etaAbsMaxPhoton ) continue;
-    //if ( iTrack == iPhoton ) continue; // dont count photon, not necessary for tracks obviously
+    if ( iTrack == iPhoton ) continue; // dont count photon, not necessary for tracks obviously
 
     // distance between photon and particle at index iTrack
     isoCone_dR = sqrt( pow(CorrectPhiDelta(event[iTrack].phi(), event[iPhoton].phi()), 2)
@@ -222,7 +223,7 @@ bool PythiaAnalysisHelper::IsPhotonIsolatedPowheg(Event &event, int iPhoton, con
     if ( !event[iTrack].isVisible() ) continue;
     if ( !event[iTrack].isCharged() ) continue;
     if ( TMath::Abs(event[iPhoton].eta()) > etaAbsMaxPhoton ) continue;
-    //if ( iTrack == iPhoton ) continue; // dont count photon, not necessary for tracks obviously
+    if ( iTrack == iPhoton ) continue; // dont count photon, not necessary for tracks obviously
 
     // distance between photon and particle at index iTrack
     isoCone_dR = sqrt( pow(CorrectPhiDelta(event[iTrack].phi(), event[iPhoton].phi()), 2)
@@ -826,6 +827,7 @@ void PythiaAnalysisHelper::Add_Histos_Scale_Write2File_Powheg( std::vector <TH1D
     vec.at(i).Scale(1./invScaleFac, "width");
     vec.at(i).SetXTitle("p_{T} (GeV/#it{c})");
     vec.at(i).SetYTitle("#frac{d^{2}#sigma}{dp_{T}d#eta} (pb)");
+    if(invScaleFac == 1.)     vec.at(i).SetYTitle("#frac{d#sigma}{dp_{T}} (pb)");
 
     // special treatment for gamma jet correlations histos
     TString axTitleTemp = vec.at(i).GetName();
