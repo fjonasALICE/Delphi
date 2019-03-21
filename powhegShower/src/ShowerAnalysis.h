@@ -26,11 +26,11 @@ using fastjet::antikt_algorithm;
 
 PythiaAnalysisHelper pyHelp;
 
-const double etaTPC = 0.9;
+const double etaDetector = 0.67;
 
 // jet & iso stuff
 const double isoConeRadius = 0.4;
-const double isoPtMax=1.5;
+const double isoPtMax=2.0;
 const double jetRadius = 0.4;
 const JetDefinition jetDef_miguel(antikt_algorithm, jetRadius);
 

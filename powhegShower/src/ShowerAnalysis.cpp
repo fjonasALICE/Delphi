@@ -53,12 +53,13 @@ int main(int argc, char **argv) {
   
   // vectors of histograms for different weights (e.g. for scale/pdf variation)
   vector<TH1D> vec_directphoton_pt; // = no decay photons
+  vector<TH1D> vec_directphoton_pt_FOCAL; // FOCAL acceptance
   vector<TH1D> vec_directphoton_pt_leading; // only hardest direct photon in event
   vector<TH1D> vec_directphoton_pt_leading_bornveto00; // born veto off
   vector<TH1D> vec_directphoton_pt_leading_bornveto20; // hard born veto
   vector<TH1D> vec_directphoton_pt_leading_bornveto30; // medium born veto
   vector<TH1D> vec_directphoton_pt_leading_bornveto40; // soft born veto
-  vector<TH1D> vec_isodirectphoton_pt, vec_isodirectphoton_pt_leading;
+  vector<TH1D> vec_isodirectphoton_pt, vec_isodirectphoton_pt_marcoBinning, vec_isodirectphoton_pt_bornveto30, vec_isodirectphoton_pt_leading;
   vector<TH1D> vec_chjet_pt, vec_chjet_pt_leading;
   vector<TH1D> vec_isoCone_track_phi, vec_isoCone_track_eta;
   vector<TH1D> vec_dPhiJetGamma, vec_dPhiJetGamma_noDeltaPhiCut;
@@ -131,7 +132,9 @@ int main(int argc, char **argv) {
       if (p.info.atEndOfFile()) break;
       continue;
     }
-      
+
+    bool veto_born_30 = false;
+    
     p.event.bst(0., 0., boostBetaZ);
     if(h_nEvents->GetBinContent(2) == 1)
       cout << "energy of beam a = " << p.event[1].e() << endl
@@ -150,6 +153,7 @@ int main(int argc, char **argv) {
       // book histograms for each weight
       for(long unsigned int i = 0; i < vec_weightsID.size(); i++){
 	vec_directphoton_pt.push_back( TH1D(Form("h_directphoton_pt_%s",vec_weightsID.at(i).c_str()), "direct photon pt", pyHelp.ptBins, pyHelp.ptBinArray));
+	vec_directphoton_pt_FOCAL.push_back( TH1D(Form("h_directphoton_pt_FOCAL_%s",vec_weightsID.at(i).c_str()), "direct photon pt in 3.3 < #eta < 5.3 (FOCAL)", pyHelp.ptBins, pyHelp.ptBinArray));
 	vec_directphoton_pt_leading.push_back( TH1D(Form("h_directphoton_pt_leading_%s",vec_weightsID.at(i).c_str()), "leading direct photon pt", pyHelp.ptBins, pyHelp.ptBinArray));
 	vec_directphoton_pt_leading_bornveto00.push_back( TH1D(Form("h_directphoton_pt_leading_bornveto00%s",vec_weightsID.at(i).c_str()), "leading direct photon pt bornveto off", pyHelp.ptBins, pyHelp.ptBinArray));
 	vec_directphoton_pt_leading_bornveto20.push_back( TH1D(Form("h_directphoton_pt_leading_bornveto20%s",vec_weightsID.at(i).c_str()), "leading direct photon pt bornveto 2.0", pyHelp.ptBins, pyHelp.ptBinArray));
@@ -157,6 +161,8 @@ int main(int argc, char **argv) {
 	vec_directphoton_pt_leading_bornveto40.push_back( TH1D(Form("h_directphoton_pt_leading_bornveto40%s",vec_weightsID.at(i).c_str()), "leading direct photon pt bornveto 4.0", pyHelp.ptBins, pyHelp.ptBinArray));
 	  
 	vec_isodirectphoton_pt.push_back( TH1D(Form("h_isodirectphoton_pt_%s",vec_weightsID.at(i).c_str()), "direct photon pt", pyHelp.ptBins, pyHelp.ptBinArray));
+	vec_isodirectphoton_pt_marcoBinning.push_back( TH1D(Form("h_isodirectphoton_pt_marcoBinning_%s",vec_weightsID.at(i).c_str()), "direct photon pt", pyHelp.ptBinsMarco, pyHelp.ptBinArrayMarco));
+	vec_isodirectphoton_pt_bornveto30.push_back( TH1D(Form("h_isodirectphoton_pt_bornveto30_%s",vec_weightsID.at(i).c_str()), "direct photon pt born veto 3.0", pyHelp.ptBins, pyHelp.ptBinArray));
 	vec_isodirectphoton_pt_leading.push_back( TH1D(Form("h_isodirectphoton_pt_leading_%s",vec_weightsID.at(i).c_str()), "leading direct photon pt", pyHelp.ptBins, pyHelp.ptBinArray));
 	
 	vec_chjet_pt.push_back( TH1D(Form("h_chjet_pt_%s",vec_weightsID.at(i).c_str()), "charged jet pt", pyHelp.ptBins, pyHelp.ptBinArray));
@@ -198,13 +204,23 @@ int main(int argc, char **argv) {
     ptTemp = -1.;
     iPhoton = -1;
     vector<PseudoJet> vPseudo;
-      
+
+    // FOCAL test
+    /*    for (int i = 5; i < p.event.size(); i++) {
+      if (p.event[i].id() == 22 && p.event[i].isFinal() && // final photon
+	  p.event[i].status() < 90 &&                      // no decay photons allowed, only direct photons
+	  p.event[i].eta() > 3.3 &&
+	  p.event[i].eta() < 5.3){
+	pyHelp.FillForEachWeight(vec_directphoton_pt_FOCAL, p.event[iPhoton].pT(), vec_weights);
+      }
+      }*/
+	  
     // search for hardest photon in this event
     //----------------------------------------------------------------------
     for (int i = 5; i < p.event.size(); i++) {
       if (p.event[i].id() == 22 && p.event[i].isFinal() && // final photon
 	  p.event[i].status() < 90 &&                      // no decay photons allowed, only direct photons
-	  TMath::Abs(p.event[i].eta()) < etaTPC-jetRadius){// in maximal TPC-minus-iso-cone-radius acceptance
+	  TMath::Abs(p.event[i].eta()) < etaDetector-jetRadius){// in maximal TPC-minus-iso-cone-radius acceptance
 	  
 	// find ptMax
 	ptTemp = p.event[i].pT();
@@ -222,7 +238,9 @@ int main(int argc, char **argv) {
       if(ptMax > p.info.getScalesAttribute("uborns")*2.0) h_nEvents->Fill(3.,-1.);
       else pyHelp.FillForEachWeight(vec_directphoton_pt_leading_bornveto20, p.event[iPhoton].pT(), vec_weights);
 	
-      if(ptMax > p.info.getScalesAttribute("uborns")*3.0) h_nEvents->Fill(4.,-1.);
+      if(ptMax > p.info.getScalesAttribute("uborns")*3.0){ h_nEvents->Fill(4.,-1.);
+	veto_born_30=true;
+      }
       else pyHelp.FillForEachWeight(vec_directphoton_pt_leading_bornveto30, p.event[iPhoton].pT(), vec_weights);
 
       if(ptMax > p.info.getScalesAttribute("uborns")*4.0) h_nEvents->Fill(5.,-1.);
@@ -242,7 +260,7 @@ int main(int argc, char **argv) {
       if( i == iPhoton ) continue; // never consider the photon itself for the jet
       if (p.event[i].isFinal() && p.event[i].isCharged()) {
       //if (p.event[i].isFinal()) { // TEST for full jets
- 	if (TMath::Abs(p.event[i].eta()) < etaTPC){
+ 	if (TMath::Abs(p.event[i].eta()) < etaDetector){
 	  vPseudo.push_back(PseudoJet(p.event[i].px(),p.event[i].py(),p.event[i].pz(),p.event[i].e()));
 	}
       }
@@ -253,7 +271,7 @@ int main(int argc, char **argv) {
     //----------------------------------------------------------------------
     if (vJets.size() != 0) {
       for(unsigned int j = 0; j < vJets.size(); j++){
-	if(TMath::Abs(vJets.at(j).eta()) > etaTPC-jetRadius) continue;
+	if(TMath::Abs(vJets.at(j).eta()) > etaDetector-jetRadius) continue;
 	pyHelp.FillForEachWeight(vec_chjet_pt, vJets.at(j).pt(), vec_weights);
 	if(j == 0)
 	  pyHelp.FillForEachWeight(vec_chjet_pt_leading, vJets.at(j).pt(), vec_weights);
@@ -266,18 +284,18 @@ int main(int argc, char **argv) {
       bool isPhotonIsolated;
       if (p.event[i].id() == 22 && p.event[i].isFinal() && // final photon
 	  p.event[i].status() < 90 &&                      // no decay photons allowed, only direct photons
-	  TMath::Abs(p.event[i].eta()) < etaTPC-jetRadius){       // in maximal TPC-minus-iso-cone-radius acceptance
+	  TMath::Abs(p.event[i].eta()) < etaDetector-jetRadius){       // in maximal TPC-minus-iso-cone-radius acceptance
 
 	// photon as pseudojet for analysis
 	PseudoJet photonJet(p.event[i].px(), p.event[i].py(), p.event[i].pz(), p.event[i].e());
-	if(photonJet.pt() < 15.) continue;
-	if(photonJet.pt() > 30.) continue;
+	//	if(photonJet.pt() < 15.) continue;
+	//if(photonJet.pt() > 30.) continue;
 	// calculate ue pt density for a given photon i
 	double UEPtDensity = 0.;
 	//	  printf("UEPtDensity(p.event, i) = %f\n",UEPtDensity);
 	pyHelp.FillForEachWeight(vec_UEPtDensity, UEPtDensity, vec_weights);
 	// check isolation
-	isPhotonIsolated = pyHelp.IsPhotonIsolatedPowheg(p.event, i, etaTPC-jetRadius, isoConeRadius, isoPtMax, UEPtDensity, vec_isoCone_track_phi, vec_isoCone_track_eta, vec_isoPt, vec_isoPt_corrected, vec_weights);
+	isPhotonIsolated = pyHelp.IsPhotonIsolatedPowheg(p.event, i, etaDetector-jetRadius, isoConeRadius, isoPtMax, UEPtDensity, vec_isoCone_track_phi, vec_isoCone_track_eta, vec_isoPt, vec_isoPt_corrected, vec_weights);
 
 	// Fill histograms
 	//----------------------------------------------------------------------
@@ -286,6 +304,8 @@ int main(int argc, char **argv) {
 
 	if(isPhotonIsolated){
 	  pyHelp.FillForEachWeight(vec_isodirectphoton_pt, p.event[i].pT(), vec_weights);
+	  pyHelp.FillForEachWeight(vec_isodirectphoton_pt_marcoBinning, p.event[i].pT(), vec_weights);
+	  if(!veto_born_30) pyHelp.FillForEachWeight(vec_isodirectphoton_pt_bornveto30, p.event[i].pT(), vec_weights);
 	  if(i==iPhoton) pyHelp.FillForEachWeight(vec_isodirectphoton_pt_leading, p.event[i].pT(), vec_weights);	    
 	}
 
@@ -335,16 +355,20 @@ int main(int argc, char **argv) {
 
   h_nEvents->Write();
   
-  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_directphoton_pt, file, etaTPC-jetRadius); // NB: always "width" scaling applied
-  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_directphoton_pt_leading, file, etaTPC-jetRadius);
-  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_directphoton_pt_leading_bornveto00, file, etaTPC-jetRadius);
-  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_directphoton_pt_leading_bornveto20, file, etaTPC-jetRadius);
-  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_directphoton_pt_leading_bornveto30, file, etaTPC-jetRadius);
-  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_directphoton_pt_leading_bornveto40, file, etaTPC-jetRadius);
-  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_isodirectphoton_pt, file, etaTPC-jetRadius);
-  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_isodirectphoton_pt_leading, file, etaTPC-jetRadius);
-  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_chjet_pt, file, etaTPC-jetRadius);
-  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_chjet_pt_leading, file, etaTPC-jetRadius);
+  double deltaRap = (etaDetector-jetRadius)*2.;
+  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_directphoton_pt, file, deltaRap); // NB: always "width" scaling applied
+  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_directphoton_pt_FOCAL, file, 5.3 - 3.3);
+  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_directphoton_pt_leading, file, deltaRap);
+  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_directphoton_pt_leading_bornveto00, file, deltaRap);
+  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_directphoton_pt_leading_bornveto20, file, deltaRap);
+  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_directphoton_pt_leading_bornveto30, file, deltaRap);
+  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_directphoton_pt_leading_bornveto40, file, deltaRap);
+  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_isodirectphoton_pt, file, deltaRap);
+  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_isodirectphoton_pt_marcoBinning, file, 1.);// 1. = no eta normalization!
+  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_isodirectphoton_pt_bornveto30, file, deltaRap); 
+  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_isodirectphoton_pt_leading, file, deltaRap);
+  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_chjet_pt, file, deltaRap);
+  pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_chjet_pt_leading, file, deltaRap);
   
   // pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_isoCone_track_phi, file, 1.);
   // pyHelp.Add_Histos_Scale_Write2File_Powheg(vec_isoCone_track_eta, file, 1.);
@@ -381,14 +405,14 @@ void ReadInWeightIDs(Pythia &p, vector<string> &vec_weightsID, bool &isSudaWeigh
     }
   }
 
-  // // if more weights at the same time are used,
-  // // e.g. for scale or pdf variation, you can  access them like this
-  // for (map<string,double>::iterator it = p.info.weights_detailed->begin();
-  //      it != p.info.weights_detailed->end(); ++it) {
-  //   if (it->first.find("scales") != std::string::npos){
-  //     vec_weightsID.push_back(it->first);
-  //   }
-  // }
+  // if more weights at the same time are used,
+  // e.g. for scale or pdf variation, you can  access them like this
+  for (map<string,double>::iterator it = p.info.weights_detailed->begin();
+       it != p.info.weights_detailed->end(); ++it) {
+    if (it->first.find("scales") != std::string::npos){
+      vec_weightsID.push_back(it->first);
+    }
+  }
 
   // insert central value always at first position for convenience 
   for (map<string,double>::iterator it = p.info.weights_detailed->begin();
