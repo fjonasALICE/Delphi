@@ -1,3 +1,5 @@
+This fork is used to make code compatible with 587 cluster
+------
 This piece of software aims for an easier usage of Pythia8 and the Parton Showering of Powheg events.
 Funtions that are often used, such as "find shower photon in event and fill to histogram", are defined in src/PythiaAnalysisHelper.h.
 They are used for pythia events generated in the main directory ./ and also for powheg+shower events in ./powhegShower/  .
