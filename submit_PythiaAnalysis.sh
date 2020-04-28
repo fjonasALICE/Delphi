@@ -4,6 +4,12 @@
 #SBATCH -o /gluster2/h_popp01/Delphi/log/py8_%j.eo.log
 #SBATCH -e /gluster2/h_popp01/Delphi/log/py8_%j.eo.log
 
+export PYTHIA8=/clusterfs1/flo/alice/AliRoot/PYTHIA8/pythia8243
+export LD_LIBRARY_PATH=$PYTHIA8/lib:$LD_LIBRARY_PATH
+export PYTHIA8DATA=/clusterfs1/flo/alice/AliRoot/PYTHIA8/pythia8243/share/Pythia8/xmldoc
+
+eval `/usr/local/bin/alienv -w /clusterfs1/flo/alice/sw --no-refresh printenv AliPhysics/latest lhapdf/latest pythia/latest-release lhapdf-pdfsets/latest-release fastjet/latest`
+
 if [ "$#" -lt "3" ];
 then
     echo -e "Need at least first 3 arguments of:\n\
