@@ -101,7 +101,7 @@ sleep 1
 cd $OUTDIR
 sleep 1
 
-STR1="time ./PythiaAnalysis $SLURM_ARRAY_TASK_ID ${PROCESS} ${NEVENTS} ${CMENERGY} ${SHOWEROPT} ${RENSCALE} ${FACSCALE} ${BOOSTZ} ${PDF1} ${PDF2}"
+STR1="time ./PythiaAnalysis test.root ${PROCESS} ${NEVENTS} ${CMENERGY} ${SHOWEROPT} ${RENSCALE} ${FACSCALE} ${BOOSTZ} ${PDF1} ${PDF2}"
 
 echo $STR1
 eval $STR1

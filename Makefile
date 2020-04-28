@@ -1,11 +1,13 @@
 # Include the configuration.
 -include Makefile.inc
 
-PYTHIAFLAGS=$(CXX_COMMON) -I$(PREFIX_INCLUDE) -L$(PREFIX_LIB) -lpythia8
+PYTHIAFLAGS=-I/home/florianjonas/tools/alice/AliRoot/PYTHIA8/pythia8243/include -L/home/florianjonas/tools/alice/AliRoot/PYTHIA8/pythia8243/lib/ -L/home/florianjonas/tools/alice/AliRoot/PYTHIA8/pythia8243/lib/archive -lpythia8
 
-ROOT=$(shell /gluster2/h_popp01/software/root6/bin/root-config --cflags --libs)
+ROOT=$(shell root-config --cflags --libs)
 
-LHAPDF6=-I$(LHAPDF6_INCLUDE) $(LHAPDF6_LIB)/libLHAPDF.so
+LHAPDF6=$(shell lhapdf-config --cflags --ldflags)
+
+FASTJET=$(shell fastjet-config --cxxflags --libs)
 
 MERGE=macro/haddav.C
 
@@ -15,7 +17,7 @@ HELPER=PythiaAnalysisHelper
 
 # PYTHIA standalone
 PythiaAnalysis:	$(PYTHIA) $(HELPER).o 
-	$(CXX) -o $@ $+ $(PYTHIAFLAGS) $(LHAPDF6) -ldl $(ROOT)
+	$(CXX) -o $@ $+ $(PYTHIAFLAGS) $(FASTJET) $(LHAPDF6) -ldl $(ROOT)Anal
 
 # merge programs
 haddav: $(MERGE)
@@ -26,4 +28,4 @@ haddav_weightCut: $(MERGE2)
 
 # helpful functions for pythia
 PythiaAnalysisHelper.o: src/PythiaAnalysisHelper.cxx src/PythiaAnalysisHelper.h
-	$(CXX) -c src/PythiaAnalysisHelper.cxx $(PYTHIAFLAGS) -ldl $(ROOT)
+	$(CXX) $(CXXCOMMON) -c src/PythiaAnalysisHelper.cxx $(ROOT) $(PYTHIAFLAGS) 

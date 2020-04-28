@@ -1,8 +1,8 @@
 # Install directory prefixes.
-PREFIX_BIN=/gluster2/h_popp01/software/pythia8/bin
-PREFIX_INCLUDE=/gluster2/h_popp01/software/pythia8/include
-PREFIX_LIB=/gluster2/h_popp01/software/pythia8/lib
-PREFIX_SHARE=/gluster2/h_popp01/software/pythia8/share/Pythia8
+PREFIX_BIN= ${PYTHIA8}/bin
+PREFIX_INCLUDE= ${PYTHIA8}/include
+PREFIX_LIB= ${PYTHIA8}/lib
+PREFIX_SHARE= ${PYTHIA8}/share/Pythia8
 
 # Compilation flags (see ./configure --help for further documentation).
 ENABLE_SHARED=false
@@ -20,9 +20,9 @@ EVTGEN_LIB=
 
 # FASTJET3 configuration.
 FASTJET3_USE=true
-FASTJET3_BIN=/gluster2/h_popp01/software/fastjet3/bin/
-FASTJET3_INCLUDE=/gluster2/h_popp01/software/fastjet3/include
-FASTJET3_LIB=/gluster2/h_popp01/software/fastjet3/lib
+FASTJET3_BIN=/home/florianjonas/tools/alice/fastjet-3.3.3/bin/
+FASTJET3_INCLUDE=/home/florianjonas/tools/alice/fastjet-3.3.3/include
+FASTJET3_LIB=/home/florianjonas/tools/alice/fastjet-3.3.3/lib
 
 # HEPMC2 configuration.
 HEPMC2_USE=true
@@ -45,9 +45,9 @@ LHAPDF5_PLUGIN=LHAPDF5.h
 
 # LHAPDF6 configuration.
 LHAPDF6_USE=false
-LHAPDF6_BIN=/gluster2/h_popp01/software/lhapdf6/bin/
-LHAPDF6_INCLUDE=/gluster2/h_popp01/software/lhapdf6/include
-LHAPDF6_LIB=/gluster2/h_popp01/software/lhapdf6/lib
+LHAPDF6_BIN=/media/florianjonas/dae8586b-f761-47b0-b8ef-93a00caf0e11/tools/alice/sw/ubuntu1804_x86-64/lhapdf/v6.2.1-alice2-1/bin/
+LHAPDF6_INCLUDE=/media/florianjonas/dae8586b-f761-47b0-b8ef-93a00caf0e11/tools/alice/sw/ubuntu1804_x86-64/lhapdf/v6.2.1-alice2-1/include
+LHAPDF6_LIB=/media/florianjonas/dae8586b-f761-47b0-b8ef-93a00caf0e11/tools/alice/sw/ubuntu1804_x86-64/lhapdf/v6.2.1-alice2-1/lib
 LHAPDF6_PLUGIN=LHAPDF5.h
 
 # POWHEG configuration.
@@ -64,9 +64,9 @@ PROMC_LIB=
 
 # ROOT configuration.
 ROOT_USE=true
-ROOT_BIN=/gluster2/h_popp01/software/root6/bin/
-ROOT_INCLUDE=/gluster2/h_popp01/software/root6/include
-ROOT_LIB=/gluster2/h_popp01/software/root6/lib
+ROOT_BIN=/media/florianjonas/dae8586b-f761-47b0-b8ef-93a00caf0e11/tools/alice/sw/ubuntu1804_x86-64/ROOT/v6-18-04-alice1-3/bin/
+ROOT_INCLUDE=/media/florianjonas/dae8586b-f761-47b0-b8ef-93a00caf0e11/tools/alice/sw/ubuntu1804_x86-64/ROOT/v6-18-04-alice1-3/include
+ROOT_LIB=/media/florianjonas/dae8586b-f761-47b0-b8ef-93a00caf0e11/tools/alice/sw/ubuntu1804_x86-64/ROOT/v6-18-04-alice1-3/lib
 
 # GZIP configuration.
 GZIP_USE=false
