@@ -28,4 +28,4 @@ haddav_weightCut: $(MERGE2)
 
 # helpful functions for pythia
 PythiaAnalysisHelper.o: src/PythiaAnalysisHelper.cxx src/PythiaAnalysisHelper.h
-	$(CXX) $(CXXCOMMON) -c src/PythiaAnalysisHelper.cxx $(ROOT) $(PYTHIAFLAGS) 
+	$(CXX) $(CXXCOMMON) -c src/PythiaAnalysisHelper.cxx $(ROOT) $(PYTHIAFLAGS) $(FASTJET) 
