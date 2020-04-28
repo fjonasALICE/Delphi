@@ -24,7 +24,7 @@ Pythia8::Pythia p;
 PythiaAnalysisHelper pyHelp;
 
 int pTHatStartBin = 0; // option to skip the first pthat bins
-bool producePhotonIsoSpectra = false;
+bool producePhotonIsoSpectra = true;
 bool useGammaJetCorrelations = false;
 
 char rootFileName[1024]; // output file name

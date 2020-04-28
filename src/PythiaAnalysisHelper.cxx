@@ -64,6 +64,16 @@ void PythiaAnalysisHelper::Pass_Parameters_To_Pythia(Pythia8::Pythia &p, int arg
     else if( !strcmp(argv[5],"fullEvents") ){
       printf("\nFull pythia events will be generated (default)\n");
     }
+    else if (!strcmp(argv[5], "fullEventsMonash"))
+    {
+      p.readString("Tune:pp = 14");
+      printf("\nFull pythia events will be generated using Monash 2013 tune\n");
+    }
+    else if (!strcmp(argv[5], "fullEventsTune4C"))
+    {
+      p.readString("Tune:pp = 5");
+      printf("\nFull pythia events will be generated using Tune 4C tune\n");
+    }
     else
       printf("\nNo sensible argument argv[5] is given -> full pythia events will be generated (default)\n");
   }
@@ -87,6 +97,8 @@ void PythiaAnalysisHelper::Write_README(Pythia8::Pythia &p, TFile &file, int arg
   infoEnergyB = Form("%f", p.event[2].e());
 
   if( !strcmp(argv[5],"fullEvents") ) infoOption = "Full events have been processed (including hadronization, MPI etc...)";
+  if( !strcmp(argv[5],"fullEventsMonash") ) infoOption = "Full events have been processed (including hadronization, MPI etc...) using the Monash 2013 tune";
+  if( !strcmp(argv[5],"fullEventsTune4C") ) infoOption = "Full events have been processed (including hadronization, MPI etc...) using the Tune 4C";
   if( !strcmp(argv[5],"noMPI") ) infoOption = "BEWARE: events have been processed without Multiparton Interaction";
   if( !strcmp(argv[5],"noMPInoHadro") ) infoOption = "BEWARE: events have been processed without Multiparton Interaction and without hadronization";
   if( !strcmp(argv[5],"noShower") ) infoOption = "BEWARE: events have been processed without any parton shower, only the naked hard process";
