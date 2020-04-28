@@ -17,7 +17,7 @@ HELPER=PythiaAnalysisHelper
 
 # PYTHIA standalone
 PythiaAnalysis:	$(PYTHIA) $(HELPER).o 
-	$(CXX) -o $@ $+ $(PYTHIAFLAGS) $(FASTJET) $(LHAPDF6) -ldl $(ROOT)Anal
+	$(CXX) -o $@ $+ $(PYTHIAFLAGS) $(FASTJET) $(LHAPDF6) -ldl $(ROOT)
 
 # merge programs
 haddav: $(MERGE)
