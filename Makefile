@@ -1,7 +1,7 @@
 # Include the configuration.
 -include Makefile.inc
 
-PYTHIAFLAGS=-I/home/florianjonas/tools/alice/AliRoot/PYTHIA8/pythia8243/include -L/home/florianjonas/tools/alice/AliRoot/PYTHIA8/pythia8243/lib/ -L/home/florianjonas/tools/alice/AliRoot/PYTHIA8/pythia8243/lib/archive -lpythia8
+PYTHIAFLAGS=-I$(PYTHIA8)/include -L$(PYTHIA8)/lib/ -L$(PYTHIA8)/lib/archive -lpythia8
 
 ROOT=$(shell root-config --cflags --libs)
 
