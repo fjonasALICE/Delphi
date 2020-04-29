@@ -602,6 +602,114 @@ void PythiaAnalysisHelper::Fill_invXsec_Direct_Iso_Photon_Pt(Pythia8::Event &eve
   return;
 }
 //----------------------------------------------------------------------
+void PythiaAnalysisHelper::Fill_iso_Direct_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h,
+                                                             bool isoCharged, double iso_cone_radius, double iso_pt)
+{
+  for (int i = 5; i < event.size(); i++)
+  {
+    if (event[i].isFinal() && event[i].id() == 22 && TMath::Abs(event[i].eta()) < etaMax)
+    {
+      if (event[i].status() < 90)
+      {
+        // isolation check------------------------------
+        double pt_temp = 0.;
+        if (isoCharged)
+          for (int j = 5; j < event.size(); j++)
+          {
+            // only charged considered for iso cut
+            if (event[j].isFinal() && event[j].isVisible() && event[j].isCharged() && j != i)
+              if (TMath::Sqrt((event[i].phi() - event[j].phi()) * (event[i].phi() - event[j].phi()) + (event[i].eta() - event[j].eta()) * (event[i].eta() - event[j].eta())) < iso_cone_radius)
+                pt_temp += event[j].pT();
+          }
+
+        // charged + neutral pt considered for iso cut
+        if (!isoCharged)
+          for (int j = 5; j < event.size(); j++)
+          {
+            if (event[j].isFinal() && event[j].isVisible() && j != i)
+              if (TMath::Sqrt((event[i].phi() - event[j].phi()) * (event[i].phi() - event[j].phi()) + (event[i].eta() - event[j].eta()) * (event[i].eta() - event[j].eta())) < iso_cone_radius)
+                pt_temp += event[j].pT();
+          }
+
+          h->Fill(pt_temp);
+        //----------------------------------------------
+      }
+    }
+  }
+  return;
+}
+//----------------------------------------------------------------------
+void PythiaAnalysisHelper::Fill_iso_Decay_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h,
+                                                         bool isoCharged, double iso_cone_radius, double iso_pt)
+{
+  for (int i = 5; i < event.size(); i++)
+  {
+    if (event[i].isFinal() && event[i].id() == 22 && TMath::Abs(event[i].eta()) < etaMax)
+    {
+      if ((event[i].status() > 90) && (event[i].status() < 100))
+      {
+        // isolation check------------------------------
+        double pt_temp = 0.;
+        if (isoCharged)
+          for (int j = 5; j < event.size(); j++)
+          {
+            // only charged considered for iso cut
+            if (event[j].isFinal() && event[j].isVisible() && event[j].isCharged() && j != i)
+              if (TMath::Sqrt((event[i].phi() - event[j].phi()) * (event[i].phi() - event[j].phi()) + (event[i].eta() - event[j].eta()) * (event[i].eta() - event[j].eta())) < iso_cone_radius)
+                pt_temp += event[j].pT();
+          }
+
+        // charged + neutral pt considered for iso cut
+        if (!isoCharged)
+          for (int j = 5; j < event.size(); j++)
+          {
+            if (event[j].isFinal() && event[j].isVisible() && j != i)
+              if (TMath::Sqrt((event[i].phi() - event[j].phi()) * (event[i].phi() - event[j].phi()) + (event[i].eta() - event[j].eta()) * (event[i].eta() - event[j].eta())) < iso_cone_radius)
+                pt_temp += event[j].pT();
+          }
+
+        h->Fill(pt_temp);
+        //----------------------------------------------
+      }
+    }
+  }
+  return;
+}
+//----------------------------------------------------------------------
+void PythiaAnalysisHelper::Fill_iso_All_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h,
+                                                    bool isoCharged, double iso_cone_radius, double iso_pt)
+{
+  for (int i = 5; i < event.size(); i++)
+  {
+    if (event[i].isFinal() && event[i].id() == 22 && TMath::Abs(event[i].eta()) < etaMax)
+    {
+      // isolation check------------------------------
+      double pt_temp = 0.;
+      if (isoCharged)
+        for (int j = 5; j < event.size(); j++)
+        {
+          // only charged considered for iso cut
+          if (event[j].isFinal() && event[j].isVisible() && event[j].isCharged() && j != i)
+            if (TMath::Sqrt((event[i].phi() - event[j].phi()) * (event[i].phi() - event[j].phi()) + (event[i].eta() - event[j].eta()) * (event[i].eta() - event[j].eta())) < iso_cone_radius)
+              pt_temp += event[j].pT();
+        }
+
+      // charged + neutral pt considered for iso cut
+      if (!isoCharged)
+        for (int j = 5; j < event.size(); j++)
+        {
+          if (event[j].isFinal() && event[j].isVisible() && j != i)
+            if (TMath::Sqrt((event[i].phi() - event[j].phi()) * (event[i].phi() - event[j].phi()) + (event[i].eta() - event[j].eta()) * (event[i].eta() - event[j].eta())) < iso_cone_radius)
+              pt_temp += event[j].pT();
+        }
+
+      h->Fill(pt_temp);
+      //----------------------------------------------
+    }
+  }
+  return;
+}
+//----------------------------------------------------------------------
 void PythiaAnalysisHelper::Fill_invXsec_Decay_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h){
   for (int i = 5; i < event.size(); i++) {
     if(event[i].isFinal() && event[i].id() == 22 && TMath::Abs(event[i].eta()) < etaMax ) {

@@ -68,7 +68,12 @@ class PythiaAnalysisHelper{
   void Fill_invXsec_Decay_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h); // same with decay photons
   void Fill_invXsec_Direct_Iso_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h,
                                              bool isoCharged, double iso_cone_radius, double iso_pt); //  ...if you want to apply 1/(pt*2pi) as weight
-
+  void Fill_iso_Direct_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h,
+                                         bool isoCharged, double iso_cone_radius, double iso_pt); //  ...if you want to apply 1/(pt*2pi) as weight
+  void Fill_iso_Decay_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h,
+                                          bool isoCharged, double iso_cone_radius, double iso_pt); //  ...if you want to apply 1/(pt*2pi) as weight
+  void Fill_iso_All_Photon_Pt(Pythia8::Event &event, float etaMax, TH1 *h,
+                                     bool isoCharged, double iso_cone_radius, double iso_pt); //  ...if you want to apply 1/(pt*2pi) as weight
 
   // mother stuff
   void Fill_Electron_TopMotherID(Pythia8::Event &event, float etaMax, TH1 *h); // fill the top mothers id code into the histo
