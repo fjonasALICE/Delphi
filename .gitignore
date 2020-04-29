@@ -10,3 +10,5 @@ scratch/
 log/
 powhegShower/ShowerAnalysis
 beamE*/
+*.out
+*.root

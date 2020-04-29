@@ -1,9 +1,5 @@
 #!/bin/bash
 
-#SBATCH -D /gluster2/h_popp01/Delphi/
-#SBATCH -o /gluster2/h_popp01/Delphi/log/py8_%j.eo.log
-#SBATCH -e /gluster2/h_popp01/Delphi/log/py8_%j.eo.log
-
 export PYTHIA8=/clusterfs1/flo/alice/AliRoot/PYTHIA8/pythia8243
 export LD_LIBRARY_PATH=$PYTHIA8/lib:$LD_LIBRARY_PATH
 export PYTHIA8DATA=/clusterfs1/flo/alice/AliRoot/PYTHIA8/pythia8243/share/Pythia8/xmldoc
@@ -24,15 +20,6 @@ then
 [pdfB]\n"
     exit $?
 fi
-
-#SBATCH -J Py8
-#SBATCH -p long
-##SBATCH -p test
-##SBATCH --exclude=node33
- 
-##SBATCH --array=1-100
-#SBATCH --ntasks=1
-#SBATCH --mem-per-cpu=1000
 
 # argv[1]: process switch
 # argv[2]: number of events
@@ -56,7 +43,7 @@ PDF2=$9
 
 DATE=$(date +%F)
 
-DIRBASE=py8events_${CMENERGY}GeV
+DIRBASE=./py8events_${CMENERGY}GeV
 
 # Something to execute
 #---------------------------------------------------------------------
@@ -102,15 +89,15 @@ if [ ! -f $OUTDIR/PythiaAnalysisHelper.cxx ];
 then
     cp src/PythiaAnalysisHelper.cxx $OUTDIR
 fi
-
+OLDDIR=${PWD}
 sleep 1
 cd $OUTDIR
 sleep 1
 
-STR1="time ./PythiaAnalysis $SLURM_ARRAY_TASK_ID ${PROCESS} ${NEVENTS} ${CMENERGY} ${SHOWEROPT} ${RENSCALE} ${FACSCALE} ${BOOSTZ} ${PDF1} ${PDF2}"
+time ./PythiaAnalysis  $SLURM_ARRAY_TASK_ID ${PROCESS} ${NEVENTS} ${CMENERGY} ${SHOWEROPT} ${RENSCALE} ${FACSCALE} ${BOOSTZ} ${PDF1} ${PDF2}
 
-echo $STR1
-eval $STR1
+
+
 
 # create a merge script for the produced root files and to normalize histos per event
 ROOTFILENAME="merged_${PROCESS}.root"
@@ -120,7 +107,7 @@ if [[ ! -f do_merge_normalize.sh ]]; then
     cat << EOF >do_merge_normalize.sh
 hadd ${ROOTFILENAME} *.root
 wait
-root -l -q -b -x './macros/normalize_weightSum.C("${ROOTFILENAME}")'
+root -l -q -b -x '${OLDDIR}/macros/normalize_per_event.C("${ROOTFILENAME}")'
 EOF
 fi
  
