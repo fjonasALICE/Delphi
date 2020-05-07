@@ -648,28 +648,30 @@ void PythiaAnalysisHelper::Fill_iso_Decay_Photon_Pt(Pythia8::Event &event, float
     {
       if ((event[i].status() > 90) && (event[i].status() < 100))
       {
-        // isolation check------------------------------
-        double pt_temp = 0.;
-        if (isoCharged)
-          for (int j = 5; j < event.size(); j++)
-          {
-            // only charged considered for iso cut
-            if (event[j].isFinal() && event[j].isVisible() && event[j].isCharged() && j != i)
-              if (TMath::Sqrt((event[i].phi() - event[j].phi()) * (event[i].phi() - event[j].phi()) + (event[i].eta() - event[j].eta()) * (event[i].eta() - event[j].eta())) < iso_cone_radius)
-                pt_temp += event[j].pT();
-          }
+        if (TMath::Abs(event[event[i].iTopCopy()].status()) < 40){
+          // isolation check------------------------------
+          double pt_temp = 0.;
+          if (isoCharged)
+            for (int j = 5; j < event.size(); j++)
+            {
+              // only charged considered for iso cut
+              if (event[j].isFinal() && event[j].isVisible() && event[j].isCharged() && j != i)
+                if (TMath::Sqrt((event[i].phi() - event[j].phi()) * (event[i].phi() - event[j].phi()) + (event[i].eta() - event[j].eta()) * (event[i].eta() - event[j].eta())) < iso_cone_radius)
+                  pt_temp += event[j].pT();
+            }
 
-        // charged + neutral pt considered for iso cut
-        if (!isoCharged)
-          for (int j = 5; j < event.size(); j++)
-          {
-            if (event[j].isFinal() && event[j].isVisible() && j != i)
-              if (TMath::Sqrt((event[i].phi() - event[j].phi()) * (event[i].phi() - event[j].phi()) + (event[i].eta() - event[j].eta()) * (event[i].eta() - event[j].eta())) < iso_cone_radius)
-                pt_temp += event[j].pT();
-          }
+          // charged + neutral pt considered for iso cut
+          if (!isoCharged)
+            for (int j = 5; j < event.size(); j++)
+            {
+              if (event[j].isFinal() && event[j].isVisible() && j != i)
+                if (TMath::Sqrt((event[i].phi() - event[j].phi()) * (event[i].phi() - event[j].phi()) + (event[i].eta() - event[j].eta()) * (event[i].eta() - event[j].eta())) < iso_cone_radius)
+                  pt_temp += event[j].pT();
+            }
 
-        h->Fill(pt_temp);
+          h->Fill(pt_temp);
         //----------------------------------------------
+        }
       }
     }
   }
